@@ -201,22 +201,15 @@ elseif(isset($_GET['q']))
            $mysqli_connection->close();
            echo json_encode($resp);
            break;
-        case 2:
-            // dummy session
-            // TODO:
-            // uncomment this code next release
-            /*
-            session_start();
-            session_register("kecamatan_id", "5");
+        case 2:            
             // getting kelurahan id based on kecamatan
             if(!isset($_SESSION['kecamatan_id']))
             {
                 echo "error, authorized failure. you should login first...";
                 exit();
             }
-            $kecamatan_id = $_SESSION['kecamatan_id'];
-            */
-            $kecamatan_id = 5;                   
+            $kecamatan_id = $_SESSION['kecamatan_id'];        
+                             
             echo select("kelurahan", "id", "nama_kelurahan","kecamatan_id", "kecamatan_id=$kecamatan_id");
         break;
      }

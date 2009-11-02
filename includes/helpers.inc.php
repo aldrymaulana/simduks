@@ -87,30 +87,33 @@ function check_existing_groups($kecamatan_id)
  *         1 jika user dan password sesuai dengan data table.
  */         
 function check_valid_user_password($user, $password)
-{
-    include('db.inc.php');
+{    
+    include "mysqli.inc.php";
     
-    $query = "select count(*) from users where username='$user' and password=password('$password')";
-
-    $result = mysqli_query($link,  $query);
-        //$mysqli->query($query);
+    $query = "select count(*) as count from users where username='$user' and password=password('$password')";
     
-    if(!$result)
-    {
-       $error = 'error fetchin users : '.mysqli_error($link);
-       include('error.html.php');
-       exit();
-    }
-    $found = 0;
-    while($row = mysqli_fetch_array($result))
-    {
-      // processing row
-      $found = (int) $row['count(*)'];
-      
-    }
-    $result->free();
-    mysqli_close($link);
+    $result = $mysqli_connection->query($query);
+    check_error($mysqli_connection);
+    $row = $result->fetch_object();
+    $found = $row->count;
+    
+    $mysqli_connection->close();
     return $found;
+}
+
+/*
+ * get kecamatan Id defined at access_group for username specified in parameter
+ * @param $username username
+ * @return kecamatan_id
+ */
+function get_kecamatan_from_username($username)
+{
+    include "mysqli.inc.php";
+    $sql = "select a.kecamatan_id as kecamatan_id from access_groups a, users u where u.username ='$username' and u.group_id = a.id";
+    $result = $mysqli_connection->query($sql);
+    check_error($mysqli_connection);
+    $row = $result->fetch_object();
+    return $row->kecamatan_id;
 }
 
 /*
@@ -158,6 +161,7 @@ function __selected_index($array, $selected_item)
 
 function select_enum($table, $column, $selected_enum = '')
 {
+    /*
     include 'db.inc.php';
     $sql = "show columns from $table like '$column'";
     
@@ -171,6 +175,22 @@ function select_enum($table, $column, $selected_enum = '')
     $str = str_replace("'","", substr($row[1],6,strlen($row[1])-7));
     $array = split(",", $str);
     mysqli_close($link);
+    $selected_index = 0;
+    if(sizeof($selected_enum) > 0)
+    {
+        $selected_index = __selected_index($array, $selected_enum);
+    }
+    return __select_input($column, $array, $selected_index);
+    */
+    include "mysqli.inc.php";
+    $sql = "show columns from $table like '$column'";
+    $result = $mysqli_connection->query($sql);
+    check_error($mysqli_connection);
+    $row = $result->fetch_object();
+    $str = $row->columns;
+    $str = str_replace("'","", substr($str[1],6,strlen($str[1])-7));
+    $array = split(",", $str);
+    $mysqli_connection->close();
     $selected_index = 0;
     if(sizeof($selected_enum) > 0)
     {

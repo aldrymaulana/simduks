@@ -85,7 +85,8 @@ var kk = jQuery("#kk").jqGrid({
 
 jQuery("#vcol").click(function (){ jQuery("#kk").setColumns(); }); 
 // kartu keluarga details ....
-var kkdetail = jQuery("#kkdetail").jqGrid({ 
+var kkdetail = jQuery("#kkdetail").jqGrid({
+    master : kk,
     url:'kependudukan/penduduk.php?q=1&keluarga_id=0',
     datatype: "json",
     colNames:['id','NIK', 'Nama', 'Jenis Kelamin', 'Status Pernikahan', 'Status Hub. Keluarga'/*,

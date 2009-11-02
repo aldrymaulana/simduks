@@ -2,7 +2,7 @@
 session_start();
 
 if(isset($_GET['q'])) {
-	include "../includes/mysqli.inc.php";
+	
 
     $req = $_GET['q'];
     $page = $_GET['page'];
@@ -16,7 +16,7 @@ if(isset($_GET['q'])) {
 
     switch($req) {
         case 1:
-
+			include "../includes/mysqli.inc.php";
             $sql = "select count(*) as count from users where username not like 'admin'";
             $result =  $mysqli_connection->query($sql);
 			check_error($mysqli_connection);
@@ -121,7 +121,7 @@ if(isset($_POST['data'])) {
                 if(true == do_login($user, $pass)) {
                     $_SESSION['user'] = $user;
                     // adding session var with current user' kecamatan rights
-
+					$_SESSION['kecamatan_id'] = get_kecamatan_from_username($user);
                     $resp = array('result'=>1, 'menu' => retrieve_admin_menus(), 'user'=> $user);
                     echo json_encode($resp);
                 }
@@ -137,6 +137,7 @@ if(isset($_POST['data'])) {
             break;
         case 3: // processing log out information
             session_unregister('user');
+			session_unregister('kecamatan_id');
             break;
         case 4: // getting menus after user already login
             if(isset($_SESSION['user'])) {
@@ -163,6 +164,7 @@ function retrieve_admin_menus() {
     array_push($menus, '<li><a href="master/kecamatan.html" class="ui-widget-content ui-state-default">Kecamatan</a></li>');
     array_push($menus, '<li><a href="kependudukan/kartukeluarga.html" class="ui-widget-content ui-state-default">KK</a></li>');
     array_push($menus, '<li><a href="admin/users.html" class="ui-widget-content ui-state-default">Users</a></li>');
+	array_push($menus, '<li><a href="report.html" class="ui-widget-content ui-state-default">Report</a></li>');
     return $menus;
 }
 
@@ -170,5 +172,11 @@ function retrieve_admin_menus() {
 function do_login($username, $password) {
     include "../includes/helpers.inc.php";
     return check_valid_user_password($username, $password) == 0 ? false: true;
+}
+
+function get_kecamatan($username)
+{
+	include "../includes/helper.inc.php";
+	return get_kecamatan_from_username($username);
 }
 ?>
