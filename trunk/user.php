@@ -52,6 +52,7 @@ function retrieve_admin_menus()
 	array_push($menus, '<li><a href="masterex.php" class="ui-widget-content ui-state-default">Master</a></li>');
 	array_push($menus, '<li><a href="celledit.php" class="ui-widget-content ui-state-default">Cell</a></li>');
 	array_push($menus, '<li><a href="personil.html" class="ui-widget-content ui-state-default">Personil</a></li>');
+	array_push($menus, '<li><a href="report.html" class="ui-widget-content ui-state-default">Report</a></li>');
 	return $menus;
 }
 ?>
