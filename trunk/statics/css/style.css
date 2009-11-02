@@ -1,0 +1,61 @@
+html, body{       
+    font-size: 85%;
+}
+ul.menu{
+    list-style: none;
+    margin-left: 0;   
+}
+
+ul.menu li{
+    display: inline;
+    margin: 0;
+}
+ul.menu li a{
+    text-decoration: none;
+    padding: 4px 5px
+}
+
+ul.menu li a:hover, ul.menu li a:active{
+    text-decoration: none;
+}
+
+ul.side-menu{    
+    list-style: none;
+    margin-top: 5px;
+}
+ul.side-menu li{
+    margin-left: 0;
+    margin-bottom: 10px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+ul.side-menu li a{
+    text-decoration: none;  
+}
+
+ul.side-menu li a:hover, ul.side-menu li a:active{
+    text-decoration: none;
+    color: #ccc;
+}
+div.footer p{
+    font-style: italic;
+    text-align: center;
+}
+
+#login{
+    float: right !important;
+}
+
+div.header{
+    margin: 0 0 0 0;
+}
+div.title h1{
+    position: relative;
+    text-align: left;
+    top: 20px;
+    left: 10px;
+    font-family: cursive fantasy sans-serif serif;
+    font-size: 300%;
+}
+.ui-datepicker {z-index:1200;}
