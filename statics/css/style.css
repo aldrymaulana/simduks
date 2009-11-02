@@ -9,6 +9,7 @@ ul.menu{
 ul.menu li{
     display: inline;
     margin: 0;
+    padding: 0;
 }
 ul.menu li a{
     text-decoration: none;
@@ -17,6 +18,13 @@ ul.menu li a{
 
 ul.menu li a:hover, ul.menu li a:active{
     text-decoration: none;
+}
+#login{
+	position: relative;    
+    margin-top: 5px;
+    padding: 4px 5px;
+    top: 2px;
+    float: right;
 }
 
 ul.side-menu{    
@@ -43,9 +51,7 @@ div.footer p{
     text-align: center;
 }
 
-#login{
-    float: right !important;
-}
+
 
 div.header{
     margin: 0 0 0 0;
@@ -58,4 +64,11 @@ div.title h1{
     font-family: cursive fantasy sans-serif serif;
     font-size: 300%;
 }
-.ui-datepicker {z-index:1200;}
+
+div.title h2{
+	position: relative;
+	text-align: left;
+	font-size: 150%;
+	top: 23px;
+	left: 60px;
+}
