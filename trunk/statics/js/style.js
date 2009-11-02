@@ -10,7 +10,7 @@ jQuery(document).ready(function(){
     $('#login').click(function(event) {
 		//check confirmation from server to determine if current uses is already login/log out.
 		$.ajax({
-			url: "user.php",
+			url: "admin/users.php",
 			type: "POST",
 			data: {data: 1},
 			dataType: 'json',
@@ -54,7 +54,7 @@ jQuery(document).ready(function(){
 		buttons:{
 			"Login": function() {
 				$.ajax({
-					url: "user.php",
+					url: "admin/users.php",
 					type: "POST",
 					data: {
 							data : 2,
@@ -100,7 +100,7 @@ jQuery(document).ready(function(){
 			},
 			"Log Out": function() {
 				$.ajax({
-					url : "user.php",
+					url : "admin/users.php",
 					type: "POST",
 					data: {
 						data: 3
@@ -166,7 +166,7 @@ jQuery(document).ready(function(){
 	
 	//when refresh button is pressed
 	$.ajax({
-		url: "user.php",
+		url: "admin/users.php",
 		type: "POST",
 		data: {
 			data: 4
