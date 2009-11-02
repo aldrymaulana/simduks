@@ -33,6 +33,7 @@ var kecGrid = jQuery("#kecamatan").jqGrid({
 
 
 var kelGrid = jQuery("#kelurahan").jqGrid({
+    master : kecGrid,
     url: "master/kelurahan.php?q=1&kecamatan_id=0",
 	datatype: "json",
 	colNames :["Id", "Lurah", "Kelurahan"],
@@ -51,10 +52,7 @@ var kelGrid = jQuery("#kelurahan").jqGrid({
 	editurl: "master/kelurahan.php"
 }).navGrid("#kelurahannav", 
     {
-	    add:true, edit:true, del:true, search:false,
-	    cancelShowingAddForm : function() {
-            return null == kecGrid.getGridParam('selrow') ? true : false;
-		}
+	    add:true, edit:true, del:true, search:false	   
 	},
 	{ /** editing form **/
         onclickSubmit : function(re, data) {

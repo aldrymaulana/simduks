@@ -66,14 +66,40 @@ if(isset($_GET['q']))
 
 if(isset($_POST['oper']))
 {
+	include "../includes/mysqli.inc.php";
     $operation = $_POST['oper'];
 	switch($operation)
 	{
         case "add":
+			$kecamatan_id = $_POST['kecamatan'];
+			$name = $_POST['name'];
+			$sql = "insert into access_groups set name = '$name', kecamatan_id = $kecamatan_id";
+			$mysqli_connection->query($sql);
+			check_error($mysqli_connection);
+			$mysqli_connection->close();
+			echo "ok";
 		    break;
 		case "edit":
+			$id = $_POST['id'];
+			$kecamatan = $_POST['kecamatan'];
+			$name = $_POST['name'];
+			$sql = "update access_groups set name = '$name', kecamatan_id = $kecamatan where id = $id";
+			$mysqli_connection->query($sql);
+			check_error($mysqli_connection);
+			$mysqli_connection->close();
+			echo "ok";
 		    break;
 		case "del";
+			// delete groups automatically delete users too..
+			$id = $_POST['id'];
+			$sql = "delete from users where group_id = $id ";
+			$mysqli_connection->query($sql);
+			check_error($mysqli_connection);
+			$sql = "delete from access_groups where id = $id";
+			$mysqli_connection->query($sql);
+			check_error($mysqli_connection);
+			$mysqli_connection->close();
+			echo "ok";
 		    break;
 	}
 }
