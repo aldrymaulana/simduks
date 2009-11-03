@@ -102,7 +102,7 @@ switch($request)
        
         $x_axis = new x_axis();
         $x_axis->set_colour('#909090');
-        $x_axis->set_labels(array(1,2,3,4,5,6,7,8,9,10));
+        $x_axis->set_labels(array("Gedangan", "Sawo","3","4","5","6","7","8","9","10"));
         
         $chart = new open_flash_chart();
         $chart->set_title( $title );
@@ -110,6 +110,13 @@ switch($request)
         $chart->set_x_axis($x_axis );
         
         echo $chart->toPrettyString();
+        break;
+    case "5":
+        include "../includes/helpers.inc.php";
+        echo "<label for='kecamatan'>Kecamatan</label>";
+        echo select("kecamatan", "id", "nama_kecamatan","kecamatan",'class="text ui-widget ui-widget-content ui-corner-all"');
+        echo "<label for='desa'>Desa/Kelurahan</label>";
+		//<select name="desa" id="desa" value="" class="text ui-widget ui-widget-content ui-corner-all" />       
         break;
 }
 

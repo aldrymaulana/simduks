@@ -87,7 +87,7 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
     ],
     colModel:[
             {name:'id',index:'id', width:2},
-            {name:'nik',index:'nik', width:16, editable:true},
+            {name:'nik',index:'nik', width:16},
             {name:'nama', index: 'nama', width: 10, editable: true},
             {name:'jenis_kelamin', index:'jenis_kelamin', width: 10, editable: true,
                 edittype: "select",
@@ -96,7 +96,7 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
                     },
                     dataUrl:"kependudukan/penduduk.php?q=2&id=jenis_kelamin"
                 },
-                formoptions:{rowpos: 3, label: "Jenis Kelamin"},
+                
                 editrules: {required: true}
             },
             {name:'status_nikah', index: 'status_nikah', width:10, editable:true,
@@ -116,7 +116,7 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
                     },
                     dataUrl: "kependudukan/penduduk.php?q=2&id=status_hub_kel"
                 },
-                formoptions:{rowpos:5, label: "Status Hub. Keluarga"},
+                
                 editrules: {required: true}
             },
             {name:'gol_darah', index: 'gol_darah', width:10, editable:true,
@@ -127,14 +127,17 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
                     },
                     dataUrl: "kependudukan/penduduk.php?q=2&id=gol_darah"
                 },
-                formoptions:{rowpos:6, label: "Gol. Darah"},
+              
                 editrules: {required: true}
             },
             {name:'tmp_lahir', index: 'tmp_lahir', width:20, editable:true,               
                 editoptions:{
-                    size: 20
+                    size: 20,
+                    defaultValue : function() {
+                        return "Tulungagung";
+                    }
                 },
-                formoptions:{rowpos:7, label: "Tempat lahir"},
+                
                 editrules: {required: true}
             },
             {name:'tgl_lahir', index: 'tgl_lahir', width:10, editable:true,               
@@ -153,7 +156,7 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
                         return year+"-"+month + "-"+day;
                     }
                 },
-                formoptions:{rowpos:8, label: "Tanggal lahir"},
+               
                 editrules: {required: true},
                 sorttype:"date"
             },
@@ -165,7 +168,7 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
                     },
                     dataUrl: "kependudukan/penduduk.php?q=2&id=agama"
                 },
-                formoptions:{rowpos:9, label: "Status Hub. Keluarga"},
+                
                 editrules: {required: true}
             },
             {name: "pendidikan", index: "pendidikan", width: 30, editable: true,
