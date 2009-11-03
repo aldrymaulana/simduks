@@ -1,9 +1,7 @@
+<p>Pendidikan</p>
 <div id="select_data" title="Select data">	
-	<form>	
-		<label for="kecamatan">Kecamatan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-		<select name="name" id="kecamatan" class="text ui-widget ui-widget-content ui-corner-all"/><br/>
-		<label for="desa">Desa/Kelurahan</label>
-		<select name="desa" id="desa" value="" class="text ui-widget ui-widget-content ui-corner-all" />        
+	<form id="form">	
+		      
 	</form>
     <a href="lihat" id="show">Lihat</a>
 </div>
@@ -24,7 +22,15 @@ $(document).ready(function() {
         {version: 9});
     });
     
-    
+    $.ajax({
+        url: "reports/report_generator.php?q=5",
+        data: "get",
+        data: {},
+        dataType: "html",
+        success: function(data, status) {
+            $("#form").append(data);
+        }
+    });		
 });
 
 </script>

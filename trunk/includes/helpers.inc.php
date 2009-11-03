@@ -167,7 +167,7 @@ function __select_input($name, $values, $selected_id = 1, $attributes= '')
     {
         return "not array";
     }
-    $result = "<select name='$name' $attributes >";
+    $result = "<select name='$name' $attributes id='$name'>";
     foreach($values as $row)
     {
         $id = (int) $row['key'];        
