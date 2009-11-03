@@ -16,7 +16,8 @@ if(isset($_GET['q'])) {
 
     switch($req) {
         case 1:
-			include "../includes/mysqli.inc.php";
+			include_once "../includes/mysqli.inc.php";
+			include_once "../includes/helpers.inc.php";
             $sql = "select count(*) as count from users where username not like 'admin'";
             $result =  $mysqli_connection->query($sql);
 			check_error($mysqli_connection);
@@ -57,7 +58,7 @@ if(isset($_GET['q'])) {
 			echo json_encode($resp);
             break;
         case 2:
-			include "../includes/helpers.inc.php";
+			include_once "../includes/helpers.inc.php";
 			echo select('kecamatan', 'id', 'nama_kecamatan', "nama_kecamatan");
             break;
     }
@@ -121,7 +122,7 @@ if(isset($_POST['data'])) {
                 if(true == do_login($user, $pass)) {
                     $_SESSION['user'] = $user;
                     // adding session var with current user' kecamatan rights
-					$_SESSION['kecamatan_id'] = get_kecamatan_from_username($user);
+					$_SESSION['kecamatan_id'] = get_kecamatan($user);
                     $resp = array('result'=>1, 'menu' => retrieve_admin_menus(), 'user'=> $user);
                     echo json_encode($resp);
                 }
@@ -170,13 +171,13 @@ function retrieve_admin_menus() {
 
 
 function do_login($username, $password) {
-    include "../includes/helpers.inc.php";
+    require_once "../includes/helpers.inc.php";
     return check_valid_user_password($username, $password) == 0 ? false: true;
 }
 
 function get_kecamatan($username)
-{
-	include "../includes/helper.inc.php";
+{		
+    require_once "../includes/helpers.inc.php";
 	return get_kecamatan_from_username($username);
 }
 ?>

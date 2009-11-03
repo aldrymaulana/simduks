@@ -63,6 +63,17 @@ function filled_out($form_vars)
     return true;
 }
 
+
+function check_error($connection)
+{
+   if(mysqli_errno($connection))
+   {
+      $error = "error query :".mysqli_error($connection);
+      include "error.html.php";
+      exit();
+   }
+}
+
 /*
  * check if existing group with kecamatan id already exist
  * or not
@@ -101,18 +112,15 @@ function check_valid_user_password($user, $password)
     return $found;
 }
 
-/*
- * get kecamatan Id defined at access_group for username specified in parameter
- * @param $username username
- * @return kecamatan_id
- */
 function get_kecamatan_from_username($username)
 {
-    include "mysqli.inc.php";
+    require "mysqli.inc.php";
     $sql = "select a.kecamatan_id as kecamatan_id from access_groups a, users u where u.username ='$username' and u.group_id = a.id";
+   
     $result = $mysqli_connection->query($sql);
     check_error($mysqli_connection);
     $row = $result->fetch_object();
+    $mysqli_connection->close();
     return $row->kecamatan_id;
 }
 

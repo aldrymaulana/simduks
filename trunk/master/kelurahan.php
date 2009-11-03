@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 if(isset($_POST['oper']))
 {
     if($_POST['oper'] == 'edit')
