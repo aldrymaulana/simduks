@@ -9,6 +9,9 @@
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
+drop database `kohana`;
+create database `kohana`;
+use `kohana`;
 --
 -- Database: `kohana`
 --
@@ -22,6 +25,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 CREATE TABLE IF NOT EXISTS `access_groups` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
+  `kecamatan_id` int(11) not null default -1,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2 ;
 
@@ -676,3 +680,9 @@ ALTER TABLE `pindah_alamat`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `FK_users` FOREIGN KEY (`group_id`) REFERENCES `access_groups` (`id`);
+  
+create table nikcounter
+(id int(11) not null primary key auto_increment,
+kecamatan_id int(11) not null,
+tanggal date not null,
+counter int(11) not null default 0);
