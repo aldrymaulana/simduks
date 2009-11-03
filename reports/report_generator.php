@@ -117,7 +117,7 @@ switch($request)
         echo select("kecamatan", "id", "nama_kecamatan","kecamatan",'class="text ui-widget ui-widget-content ui-corner-all"');
         echo "<label for='desa'>Desa/Kelurahan</label>";
 		//<select name="desa" id="desa" value="" class="text ui-widget ui-widget-content ui-corner-all" />
-        echo "<div id='desa'></div>";
+       
         break;
     case "6":
         include "../includes/helpers.inc.php";
