@@ -19,13 +19,5 @@ if(mysqli_connect_errno())
    echo "koneksi ke database gagal :".mysqli_connect_error();
 }
 
-function check_error($connection)
-{
-   if(mysqli_errno($connection))
-   {
-      $error = "error query :".mysqli_error($connection);
-      include "error.html.php";
-      exit();
-   }
-}
+
 ?>

@@ -1,0 +1,16 @@
+<div id="chart"></div>
+<script type="text/javascript" src="statics/js/jquery.swfobject.1-0-7.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+    $("#chart").flash({
+        swf : "open-flash-chart.swf",
+        width: 500,
+        height: 200,
+        flashvars: { "data-file": "reports/usia_productive.php?q=1"}
+    },
+    {version: 9});
+});
+
+</script>
+

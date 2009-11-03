@@ -9,7 +9,7 @@ for( $i=0; $i<10; $i++ )
 
 require_once('OFC/OFC_Chart.php');
 
-$title = new OFC_Elements_Title( date("D M d Y") );
+$title = new OFC_Elements_Title("Laporan Penduduk Usia Produktif" );
 
 $bar = new OFC_Charts_Bar_3d();
 $bar->set_values( $data );

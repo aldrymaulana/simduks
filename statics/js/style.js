@@ -125,6 +125,23 @@ jQuery(document).ready(function(){
 		}
 	});
 	
+	function side_menu(){
+		$("#side-menu li a").click(function(event){
+			event.preventDefault();
+			
+			$.ajax({
+				url : $(this).attr("href"),
+				data : "get",
+				dataType : "html",
+				success: function(data, status){
+					$("#main").html("");
+					$("#main").append(data);
+				}
+			});
+			
+		});
+	}
+	
 	function add_menu_effect() {
 		$("#main-menu li a").hover(
 			function() {
@@ -184,5 +201,7 @@ jQuery(document).ready(function(){
 				$("#login").text("logout (" + data.user + ")");
 			}
 		}
-	});	
+	});
+	
+	side_menu();
 });
