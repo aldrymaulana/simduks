@@ -1,4 +1,5 @@
 <?php
+session_start();
 function get_alamat_id($sql)
 {
     if(strlen($sql) == 0){
@@ -117,7 +118,7 @@ if(isset($_POST['oper']))
 elseif(isset($_GET['q']))
 {
     include '../includes/helpers.inc.php';
-    include '../includes/db.inc.php';
+    include '../includes/mysqli.inc.php';
     $resp = "";
     $req = $_GET['q'];
     $page = $_GET['page'];
@@ -200,19 +201,20 @@ elseif(isset($_GET['q']))
      // SELECT count(*) as count from keluarga kk WHERE kk.alamat_id IN (select al.id from alamat al where al.kelurahan_id in (select id from kelurahan kel where kel.kecamatan_id = 4));
     // -- LIST keluarga in kecamatan
     // select kk.id, kk.kode_keluarga, kk.no_formulir, al.alamat, al.rukun_tetangga, al.rukun_warga from keluarga kk, alamat al where kk.alamat_id = al.id and al.kelurahan_id in (select id from kelurahan where kecamatan_id = 4);
+   
      switch($req)
      {
-         case 1:// request data agama
+         case 1:// request data penduduk
             // get total data
-            /*
-            $kec_id = $_SESSION['kecamatan_id']; // The value kecamatan_id is set when user process login            
-            */
-            $kec_id = 5;
+            
+            $kec_id = $_SESSION['kecamatan_id']; // The value kecamatan_id is set when user process login 
+            
             $sql = "SELECT count(*) as count FROM keluarga k WHERE k.alamat_id IN (SELECT id FROM alamat a WHERE a.kelurahan_id IN (SELECT id FROM kelurahan kel WHERE kel.kecamatan_id = $kec_id ))";
             
-            $result = mysqli_query($link, $sql);
-            $row = mysqli_fetch_array($result);
-            $count = $row['count'];  
+            $result = $mysqli_connection->query($sql);
+            check_error($mysqli_connection);
+            $row = $result->fetch_object();
+            $count = $row->count;
             
             if($count > 0){
                 $total_pages = ceil($count/$limit);
@@ -226,44 +228,35 @@ elseif(isset($_GET['q']))
                 $start = 0;
             $sql = "";
             // TODO: 
-            // perbaiki query .. optimize it.            
-            if(!isset($kec_id))
-            {
-                if(sizeof($wh) > 2)
-                    $sql = "select k.id, k.kode_keluarga, k.no_formulir, a.alamat, a.rukun_tetangga, a.rukun_warga, kel.nama_kelurahan from keluarga k, alamat a, kelurahan kel where k.alamat_id = a.id and a.kelurahan_id = kel.id and kel.kecamatan_id = $kec_id and $wh order by $sidx $sord limit $start, $limit";
-                else
-                    $sql = "select k.id, k.kode_keluarga, k.no_formulir, a.alamat, a.rukun_tetangga, a.rukun_warga, kel.nama_kelurahan from keluarga k, alamat a, kelurahan kel where k.alamat_id = a.id and a.kelurahan_id = kel.id and kel.kecamatan_id = $kec_id  order by $sidx $sord limit $start, $limit";
-            }
+            // perbaiki query .. optimize it.  
+            if(sizeof($wh) > 2)
+                $sql = "select k.id, k.kode_keluarga, k.no_formulir, a.alamat, a.rukun_tetangga, a.rukun_warga, kel.nama_kelurahan from keluarga k, alamat a, kelurahan kel where k.alamat_id = a.id and a.kelurahan_id = kel.id and kel.kecamatan_id = $kec_id and $wh order by $sidx $sord limit $start, $limit";
             else
-            {
-                if(sizeof($wh) > 2)
-                    $sql = "select k.id, k.kode_keluarga, k.no_formulir, a.alamat, a.rukun_tetangga, a.rukun_warga, kel.nama_kelurahan from keluarga k, alamat a, kelurahan kel where k.alamat_id = a.id and a.kelurahan_id = kel.id and kel.kecamatan_id = $kec_id and $wh order by $sidx $sord limit $start, $limit";
-                else
-                    $sql = "select k.id, k.kode_keluarga, k.no_formulir, a.alamat, a.rukun_tetangga, a.rukun_warga, kel.nama_kelurahan from keluarga k, alamat a, kelurahan kel where k.alamat_id = a.id and a.kelurahan_id = kel.id and kel.kecamatan_id = $kec_id  order by $sidx $sord limit $start, $limit";
-            }
+                $sql = "select k.id, k.kode_keluarga, k.no_formulir, a.alamat, a.rukun_tetangga, a.rukun_warga, kel.nama_kelurahan from keluarga k, alamat a, kelurahan kel where k.alamat_id = a.id and a.kelurahan_id = kel.id and kel.kecamatan_id = $kec_id  order by $sidx $sord limit $start, $limit";
+            
            //
            //echo $sql;
            //exit();
-           $result = mysqli_query($link, $sql);
+           $result = $mysqli_connection->query($sql);
+           check_error($mysqli_connection);
            $resp->page =$page;
            $resp->total = $total_pages;
            $resp->records = $count;
            $i = 0;
-           while($row = mysqli_fetch_array($result))
+           while($row = $result->fetch_object())
            {
-               $resp->rows[$i]['id'] = $row[id];
-               $resp->rows[$i]['cell'] = array($row[id], $row[kode_keluarga], $row[no_formulir], $row[alamat], $row[rukun_tetangga], $row[rukun_warga], $row[nama_kelurahan]);
+               $resp->rows[$i]['id'] = $row->id;
+               $resp->rows[$i]['cell'] = array($row->id, $row->kode_keluarga, $row->no_formulir, $row->alamat, $row->rukun_tetangga, $row->rukun_warga, $row->nama_kelurahan);
                $i++;            
            }
-           mysqli_close($link);
+           $mysqli_connection->close();
+           echo json_encode($resp);
         break;
         case 2:
             
             
         break;
-     }
-     
-    echo json_encode($resp);
+     }   
     exit();
 }
 ?>

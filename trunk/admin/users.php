@@ -104,7 +104,7 @@ if(isset($_POST['data'])) {
         case 1:
         // already exist a user
             if(isset($_SESSION['user'])) {
-                $menus = retrieve_admin_menus();
+                $menus = retrieve_menus();
                 $user = $_SESSION['user'];
                 $resp = array('result'=>1, 'menu' => $menus, 'user' => $user);
                 echo json_encode($resp);
@@ -123,7 +123,7 @@ if(isset($_POST['data'])) {
                     $_SESSION['user'] = $user;
                     // adding session var with current user' kecamatan rights
 					$_SESSION['kecamatan_id'] = get_kecamatan($user);
-                    $resp = array('result'=>1, 'menu' => retrieve_admin_menus(), 'user'=> $user);
+                    $resp = array('result'=>1, 'menu' => retrieve_menus(), 'user'=> $user);
                     echo json_encode($resp);
                 }
                 else {
@@ -143,7 +143,7 @@ if(isset($_POST['data'])) {
         case 4: // getting menus after user already login
             if(isset($_SESSION['user'])) {
                 $user = $_SESSION['user'];
-                $resp = array('menu' => retrieve_admin_menus(), 'user' => $user);
+                $resp = array('menu' => retrieve_menus(), 'user' => $user);
                 echo json_encode($resp);
             } else {
                 $resp = array('menu' => '', 'user'=>'');
@@ -156,16 +156,22 @@ if(isset($_POST['data'])) {
     }
 }
 
-function retrieve_admin_menus() {
+function retrieve_menus() {
     $menus = array();
-    array_push($menus, '<li><a href="master/agama.html" class="ui-widget-content ui-state-default">Agama</a></li>');
-    array_push($menus, '<li><a href="master/kb.html" class="ui-widget-content ui-state-default">Kb</a></li>');
-    array_push($menus, '<li><a href="master/pekerjaan.html" class="ui-widget-content ui-state-default">Pekerjaan</a></li>');
-    array_push($menus, '<li><a href="master/pendidikan.html" class="ui-widget-content ui-state-default">Pendidikan</a></li>');
-    array_push($menus, '<li><a href="master/kecamatan.html" class="ui-widget-content ui-state-default">Kecamatan</a></li>');
-    array_push($menus, '<li><a href="kependudukan/kartukeluarga.html" class="ui-widget-content ui-state-default">KK</a></li>');
-    array_push($menus, '<li><a href="admin/users.html" class="ui-widget-content ui-state-default">Users</a></li>');
-	array_push($menus, '<li><a href="report.html" class="ui-widget-content ui-state-default">Report</a></li>');
+   
+    
+	if(isset($_SESSION['kecamatan_id']) and $_SESSION['kecamatan_id'] == "-1"){
+		array_push($menus, '<li><a href="master/agama.html" class="ui-widget-content ui-state-default">Agama</a></li>');
+		array_push($menus, '<li><a href="master/kb.html" class="ui-widget-content ui-state-default">Kb</a></li>');
+		array_push($menus, '<li><a href="master/pekerjaan.html" class="ui-widget-content ui-state-default">Pekerjaan</a></li>');
+		array_push($menus, '<li><a href="master/pendidikan.html" class="ui-widget-content ui-state-default">Pendidikan</a></li>');
+		array_push($menus, '<li><a href="master/kecamatan.html" class="ui-widget-content ui-state-default">Kecamatan</a></li>');
+		array_push($menus, '<li><a href="admin/users.html" class="ui-widget-content ui-state-default">Users</a></li>');
+	} else {
+		array_push($menus, '<li><a href="kependudukan/kartukeluarga.html" class="ui-widget-content ui-state-default">KK</a></li>');
+		array_push($menus, '<li><a href="kependudukan/kelahiran.html" class="ui-widget-content ui-state-default">Kelahiran</a></li>');
+		array_push($menus, '<li><a href="kependudukan/ktp.html" class="ui-widget-content ui-state-default">KTP</a></li>');
+	}
     return $menus;
 }
 

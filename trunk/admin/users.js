@@ -56,12 +56,7 @@ var usersGrid = jQuery("#users").jqGrid({
    caption: "Daftar Users",
    editurl: "admin/users.php"
 }).navGrid("#usersnav",
-    {add:true, edit:true, del:true, search: false,
-	cancelShowingAddForm : function() {       
-        return null == groupGrid.getGridParam('selrow') ? true : false;
-
-	}
-	},
+    {add:true, edit:true, del:true, search: false},
 	{ /** editing form **/
 	    onclickSubmit :  function(re, data) {
             return {"group_id" : groupGrid.getGridParam('selrow') };

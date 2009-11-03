@@ -37,21 +37,32 @@ ul.side-menu li{
     padding-left: 4px;
     padding-right: 4px;
 }
+a {
+	text-decoration: none;
+	color: #3383bb;
+	font-weight: bold;
+}
+a:hover, a:active{
+	text-decoration: none;
+}
 
 ul.side-menu li a{
-    text-decoration: none;  
+    text-decoration: none;
+	color: #3383bb;
+	font-weight: bold;
 }
 
 ul.side-menu li a:hover, ul.side-menu li a:active{
-    text-decoration: none;
-    color: #ccc;
+    text-decoration: none;    
 }
 div.footer p{
     font-style: italic;
     text-align: center;
 }
 
-
+#main {
+	margin-top: 10px;
+}
 
 div.header{
     margin: 0 0 0 0;
@@ -72,3 +83,5 @@ div.title h2{
 	top: 23px;
 	left: 60px;
 }
+/** for datepicker display on top **/
+.ui-datepicker {z-index:1200;}

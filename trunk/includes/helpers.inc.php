@@ -1,15 +1,4 @@
 <?php
-
-function html($text)
-{
-    return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
-}
-
-function htmlout($text)
-{
-    echo html($text);
-}
-
 class NikHelper {
     var $name = "";
     
@@ -46,6 +35,8 @@ function build_nik($kode_prop = null, $kode_kab = null, $kode_kec, $tanggal_lahi
     return $nik->generate_nik($kode_prop, $kode_kab, $kode_kec, $tanggal_lahir, $laki, $nomor_urut);
 }
 
+
+
 /*
  * check apakah semua field yang ada telah di isi ?
  * @return true jika semua field sudah di isi
@@ -69,7 +60,7 @@ function check_error($connection)
    if(mysqli_errno($connection))
    {
       $error = "error query :".mysqli_error($connection);
-      include "error.html.php";
+      require_once "error.html.php";
       exit();
    }
 }
@@ -167,36 +158,14 @@ function __selected_index($array, $selected_item)
     return $selected_index;
 }
 
-function select_enum($table, $column, $selected_enum = '')
-{
-    /*
-    include 'db.inc.php';
-    $sql = "show columns from $table like '$column'";
-    
-    $result = mysqli_query($link, $sql);
-    if(!$result)
-    {
-        $error = "error retrieving enum column $column from $table";
-        include "error.html.php";
-    }
-    $row = mysqli_fetch_array($result);
-    $str = str_replace("'","", substr($row[1],6,strlen($row[1])-7));
-    $array = split(",", $str);
-    mysqli_close($link);
-    $selected_index = 0;
-    if(sizeof($selected_enum) > 0)
-    {
-        $selected_index = __selected_index($array, $selected_enum);
-    }
-    return __select_input($column, $array, $selected_index);
-    */
+function select_enum($table, $column, $selected_enum = '', $attributes='')
+{    
     include "mysqli.inc.php";
     $sql = "show columns from $table like '$column'";
     $result = $mysqli_connection->query($sql);
     check_error($mysqli_connection);
-    $row = $result->fetch_object();
-    $str = $row->columns;
-    $str = str_replace("'","", substr($str[1],6,strlen($str[1])-7));
+    $row = $result->fetch_array();
+    $str = str_replace("'","", substr($row[1],6,strlen($row[1])-7));
     $array = split(",", $str);
     $mysqli_connection->close();
     $selected_index = 0;
@@ -204,25 +173,21 @@ function select_enum($table, $column, $selected_enum = '')
     {
         $selected_index = __selected_index($array, $selected_enum);
     }
-    return __select_input($column, $array, $selected_index);
+    return __select_input($column, $array, $selected_index, $attributes);
 }
 
 function select_enum_without_default_value($table, $column, $attributes='')
-{
-    include "db.inc.php";
+{    
+    include "mysqli.inc.php";
     $sql = "show columns from $table like '$column'";
-    $result = mysqli_query($link, $sql);
-    if(!$result)
-    {
-        $error = "error retrieving enum column '$column' from $table";
-        include "error.html.php";
-    }
-    $row = mysqli_fetch_array($result);
+    $result = $mysqli_connection->query($sql);
+    check_error($mysqli_connection);
+    $row = $result->fetch_array();    
     $str = str_replace("'","", substr($row[1], 6, strlen($row[1]) - 7));
-    $array = split(",", $str);
-    mysqli_close($link);
+    $mysqli_connection->close();
     
-    $result = "<select name='$name' $attributes >";
+    $array = split(",", $str);
+    $result = "<select name='$column' $attributes >";
     foreach($array as $item)
     {            
         $option = "<option value='".$item."'";       
@@ -233,28 +198,25 @@ function select_enum_without_default_value($table, $column, $attributes='')
     return $result;
 }
 
-function select($table, $key, $value, $select_name, $where = "", $selected_key = 1)
-{
-    include 'db.inc.php';    
-    $sql = "select $key, $value from $table";
+function select($table, $key, $value, $select_name, $attributes='', $where = "", $selected_key = 1)
+{    
+    require 'mysqli.inc.php';
+    $sql = "select $key as k , $value as val from $table";
     if(strlen($where) > 1)
     {
-        $sql = "select $key, $value from $table where $where";
-    }
-    $result = mysqli_query($link, $sql);
-    if(!$result)
-    {
-	$error = "error mengambil data $table(function helpers.inc.php -> select())";
-	include 'error.html.php';
-	exit();
-    }
-    $list = array();
-    while($row = mysqli_fetch_array($result))
-    {
-	$list[] = array("key"=>$row[$key], "value"=>$row[$value]);
+        $sql = "select $key as k, $value as val from $table where $where";
     }
     
-    return __select_input($select_name, $list, $selected_key);
+    $list = array();
+    $result = $mysqli_connection->query($sql);
+    check_error($mysqli_connection);
+    while($row = $result->fetch_object())
+    {
+        $list[] = array("key" => $row->k, "value" => $row->val);
+    }
+    
+    $mysqli_connection->close();
+    return __select_input($select_name, $list, $selected_key, $attributes);
 }
 
 function Strip($value)

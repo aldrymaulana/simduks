@@ -3,30 +3,23 @@ var kk = jQuery("#kk").jqGrid({
     datatype: "json",
     colNames:['id','No. Kartu Keluarga', 'No. Formulir', 'Alamat', 'RT', 'RW', 'Kelurahan'],
     colModel:[
-            {name:'id',index:'id', width:2, editable: false,
-                editoptions:{readonly:true, size:2}
-            },
+            {name:'id',index:'id', width:2},
             {name:'kode_keluarga',index:'kode_keluarga', width:10, editable:true,
-                editoptions:{size:5},
-                formoptions:{rowpos:1, label: "No. Kartu Keluarga"},
                 edirules:{required: true}
             },
-            {name:'no_formulir', index: 'no_formulir', width: 10, editable: true,
-                editoptions:{size: 20},
-                formoptions:{rowpos:2, label: "No. Formulir"},
+            {name:'no_formulir', index: 'no_formulir', width: 10, editable: true,                
                 editrules: {required: true}
             },
             {name:'alamat', index:'alamat', width: 10, editable: true,
-                editoptions:{size: 30},
-                formoptions:{rowpos: 3, label: "Alamat"},
+                
                 editrules: {required: true}
             },
             {name:'rukun_tetangga', index: 'rukun_tetangga', width:5, editable:true,
-                editoptions:{size:5}, formoptions:{rowpos:4, label: "RT"},
+               
                 editrules: {required: true}
             },
             {name:'rukun_warga', index: 'rukun_warga', width:5, editable:true,
-                editoptions:{size:5}, formoptions:{rowpos:5, label: "RW"},
+                
                 editrules: {required: true}
             },
             {name:'kelurahan_id', index: 'kelurahan_id', width:10, editable:true,
@@ -53,7 +46,7 @@ var kk = jQuery("#kk").jqGrid({
     sortorder: "desc",
     caption:"Daftar Keluarga",
     editurl: "kependudukan/kartukeluarga.php",
-    ondblClickRow: function(ids){
+    onSelectRow: function(ids){
         if(null == ids)
         {
             ids = 0;
@@ -89,22 +82,13 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
     master : kk,
     url:'kependudukan/penduduk.php?q=1&keluarga_id=0',
     datatype: "json",
-    colNames:['id','NIK', 'Nama', 'Jenis Kelamin', 'Status Pernikahan', 'Status Hub. Keluarga'/*,
-              'Gol. Darah', 'Tempat Lahir','Tanggal Lahir','Agama', 'Pendidikan', 'Pekerjaan','Warga Negara'*/
+    colNames:['id','NIK', 'Nama', 'Jenis Kelamin', 'Status Pernikahan', 'Status Hub. Keluarga',
+              'Gol. Darah', 'Tempat Lahir','Tanggal Lahir','Agama', 'Pendidikan', 'Pekerjaan','Warga Negara'
     ],
     colModel:[
-            {name:'id',index:'id', width:2, editable: false,
-                editoptions:{readonly:true, size:2}
-            },
-            {name:'nik',index:'nik', width:16, editable:true,
-                editoptions:{size:16},
-                formoptions: {rowpos: 1, label: "NIK"}
-            },
-            {name:'nama', index: 'nama', width: 10, editable: true,
-                editoptions:{size: 20},
-                formoptions:{rowpos:2, label: "Nama"},
-                editrules: {required: true}
-            },
+            {name:'id',index:'id', width:2},
+            {name:'nik',index:'nik', width:16, editable:true},
+            {name:'nama', index: 'nama', width: 10, editable: true},
             {name:'jenis_kelamin', index:'jenis_kelamin', width: 10, editable: true,
                 edittype: "select",
                 editoptions:{defaultValue: function(){
@@ -122,9 +106,7 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
                         return "Tidak kawin";
                     },
                     dataUrl: "kependudukan/penduduk.php?q=2&id=status_nikah"
-                },
-                formoptions:{rowpos:4, label: "Status Pernikahan"},
-                editrules: {required: true}
+                }                
             },
             {name:'status_hub_kel', index: 'status_hub_kel', width:10, editable:true,
                 edittype: "select",
@@ -136,7 +118,7 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
                 },
                 formoptions:{rowpos:5, label: "Status Hub. Keluarga"},
                 editrules: {required: true}
-            }/*,
+            },
             {name:'gol_darah', index: 'gol_darah', width:10, editable:true,
                 edittype: "select",
                 editoptions:{
@@ -155,9 +137,9 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
                 formoptions:{rowpos:7, label: "Tempat lahir"},
                 editrules: {required: true}
             },
-            {name:'tgl_lahir', index: 'tgl_lahir', width:20, editable:true,               
+            {name:'tgl_lahir', index: 'tgl_lahir', width:10, editable:true,               
                 editoptions:{
-                    size: 20,
+                    size: 10,
                     dataInit: function(el){
                         $(el).datepicker({dateFormat: 'yy-mm-dd'});
                     },
@@ -185,24 +167,60 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
                 },
                 formoptions:{rowpos:9, label: "Status Hub. Keluarga"},
                 editrules: {required: true}
-            }*/
+            },
+            {name: "pendidikan", index: "pendidikan", width: 30, editable: true,
+                edittype: "select",
+                editoptions: {
+                    defaultValue : function(){
+                        return "Islam";
+                    },
+                    dataUrl: "kependudukan/penduduk.php?q=2&id=pendidikan"
+                },
+                editrules: {required: true}
+            },
+            {name: "pekerjaan", index: "pekerjaan", width: 30,editable: true,
+                edittype: "select",
+                editoptions: {
+                    defaultValue : function(){
+                        return "";
+                    },
+                    dataUrl : "kependudukan/penduduk.php?q=2&id=pekerjaan"
+                }
+            },
+            {name: "warga", index: "warga", width: 10, editable: true,
+                edittype: "select",
+                editoptions: {
+                    defaultValue : function() {
+                        return "WNI";
+                    },
+                    dataUrl : "kependudukan/penduduk.php?q=2&id=warga_negara"
+                }                
+            }
     ],
     rowNum:10,
     rowList:[10,20,30],
     imgpath: gridimgpath,
     pager: jQuery('#kkdetailnav'),
     sortname: 'id',
-    width: 700,
+    width: 900,
     height: 210,
     multiselect: false,
     viewrecords: true,
     sortorder: "desc",
     caption:"Daftar Keluarga Detail",
-    editurl: "kependudukan/kartukeluarga.php"    
+    editurl: "kependudukan/penduduk.php"    
 }).navGrid("#kkdetailnav",
     {view: true, edit: true, add: true},
-    {height: 210, width: 500, reloadAfterSubmit: true, jqModal: false, closeOnEscape:true}, // edit
-    {height: 210, width: 500, reloadAfterSubmit: true, jqModal: false, closeOnEscape: true}, // add
+    {
+        onclickSubmit :  function(re, data) {
+            return {"kk_id" : kk.getGridParam('selrow') };
+		}
+    }, // edit
+    {
+        onclickSubmit :  function(re, data) {
+            return {"kk_id" : kk.getGridParam('selrow') };
+		}
+    }, // add
     {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true}, // delete
     {closeOnEscape: true}, // search
     {height: 210, width: 500, jqModal: false, closeOnEscape: true} //view
