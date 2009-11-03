@@ -1,4 +1,6 @@
 <?php
+include "../includes/helpers.inc.php";
+
 if(isset($_REQUEST['q']))
 {
     $request_type = $_REQUEST['q'];
@@ -63,28 +65,61 @@ if(isset($_REQUEST['q']))
         case 2:
             if(isset($_REQUEST['id']))
             {
+                
                 $data_type = $_REQUEST['id'];
                 switch($data_type)
                 {
-                    case "jenis_kelamin":
-                        echo "<select><option value='Laki-laki'>Laki-laki</option><option value='Perempuan'>Perempuan</option></select>";
+                    case "jenis_kelamin":                        
+                        echo select_enum_without_default_value("penduduk", "jenis_kelamin","class='select ui-widget-content ui-corner-all'");
                         break;
-                    case "golongan_darah":
-                        echo "<select><option value='-'>-</option><option value='A'>A</option><option value='B'>B</option><option value='AB'>AB</option><option value='O'>O</option></select>";
+                    case "gol_darah":
+                        echo select_enum_without_default_value("penduduk", "gol_darah","class='select ui-widget-content ui-corner-all'");
                         break;
-                    case "status_nikah":
-                        include '../includes/helpers.inc.php';
+                    case "status_nikah":                        
                         echo select_enum_without_default_value("penduduk", "status_nikah", "class='select ui-widget-content ui-corner-all'");
                         break;
-                    case "status_hub_kel":
-                        include '../includes/helpers.inc.php';
+                    case "status_hub_kel":                        
                         echo select_enum_without_default_value("penduduk", "status_hub_kel", "class='select ui-widget-content ui-corner-all'");
+                        break;
+                    case "agama":                        
+                        echo select("agama","id","agama", "agama","class='select ui-widget-content ui-corner-all'");
+                        break;
+                    case "pendidikan":                        
+                        echo select("pendidikan", "id", "pendidikan", "pendidikan", "class='select ui-widget-content ui-corner-all'");
+                        break;
+                    case "pekerjaan":                        
+                        echo select("pekerjaan", "id","pekerjaan", "pekerjaan", "class='select ui-widget-content ui-corner-all'");
+                        break;
+                    case "warga_negara":                       
+                        echo select_enum_without_default_value("penduduk", "wni", "class='select ui-widget-content ui-corner-all'");
                         break;
                 }
             }
             break;
         default:
             echo "";
+            break;
+    }
+}
+
+if(isset($_POST['oper']))
+{
+    $operation = $_POST['oper'];
+    switch($operation)
+    {
+        case "add":
+            $jenis_kelamin = $_POST['jenis_kelamin'];
+            $kk_id = $_POST['kk_id'];
+            $name = $_POST['nama'];
+            $status_hub_kel = $_POST['status_hub_kel'];
+            $status_nikah = $_POST['status_nikah'];
+            $nik = $_POST['nik'];
+            break;
+        case "edit":
+            
+            break;
+        case "del":
+            
             break;
     }
 }

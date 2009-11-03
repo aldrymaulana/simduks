@@ -1,5 +1,6 @@
 <?php
-$link = mysqli_connect('localhost', 'root', 'heru');
+include "connection.php";
+$link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD);
 if(!$link)
 {
   $error = 'unable to connect to the database server.';
@@ -14,7 +15,7 @@ if(!mysqli_set_charset($link, 'utf8'))
   exit();
 }
 
-if(!mysqli_select_db($link, 'kohana'))
+if(!mysqli_select_db($link, DB_NAME))
 {
   $error = 'Unable to locate the simduk database.';
   include('error.html.php');
