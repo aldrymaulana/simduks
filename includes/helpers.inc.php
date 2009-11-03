@@ -9,15 +9,15 @@ class NikHelper {
     
     function generate_nik($kodeProp = null, $kodeKab = null, $kodeKec, $dob, $laki=true, $nomorUrut) {
         if(!$kodeProp)
-                $kodeProp = 36; // jatim
+            $kodeProp = 36; // jatim
         if(!$kodeKab)
-                $kodeKab = 40; // surabaya
+            $kodeKab = 40; // surabaya
                 
         $date = '';
-        $monthYear = '';		
-        $monthYear = $this->output(strftime(date('my', $dob)));
+        $monthYear = '';		        
+        $monthYear = strftime(date('my', $dob));       
         
-        $y = $this->output(strftime(date('d', $dob)));
+        $y = strftime(date('d', $dob));
         $date = (int) $y;		
         if(!$laki) {
                 $date = (int) $date;
@@ -35,7 +35,46 @@ function build_nik($kode_prop = null, $kode_kab = null, $kode_kec, $tanggal_lahi
     return $nik->generate_nik($kode_prop, $kode_kab, $kode_kec, $tanggal_lahir, $laki, $nomor_urut);
 }
 
-
+function nik($kode_kec, $tanggal_lahir, $laki = true)
+{
+    include "mysqli.inc.php";
+    // check kode_wilayah
+    $sql = "select kd_wilayah from kecamatan where id = $kode_kec";
+    $result = $mysqli_connection->query($sql);
+    check_error($mysqli_connection);
+    $row = $result->fetch_object();
+    $kode_wilayah = $row->kd_wilayah;
+    echo $kode_wilayah."<br/>";
+    
+    // check counter
+    $sql = "select count(*) as count from nikcounter where kecamatan_id = $kode_kec and tanggal = '$tanggal_lahir'";
+    $result = $mysqli_connection->query($sql);
+    check_error($mysqli_connection);
+    $row = $result->fetch_object();
+    $count = $row->count;
+    
+    if($count == 0){// create new 
+        $sql = "insert into nikcounter set kecamatan_id = $kode_kec, tanggal = '$tanggal_lahir', counter = 1";
+        $mysqli_connection->query($sql);
+        check_error($mysqli_connection);
+        $mysqli_connection->close();
+        
+        return build_nik(null, null, $kode_wilayah, strtotime($tanggal_lahir), $laki, 1);
+    } else {
+        $sql = "select id, counter from nikcounter where kecamatan_id = $kode_kec and tanggal = '$tanggal_lahir'";
+        $result = $mysqli_connection->query($sql);
+        check_error($mysqli_connection);
+        $row = $result->fetch_object();
+        $count =$row->counter;
+        $id = $row->id;
+        $count = $count + 1;
+        $sql = "update nikcounter set counter = $count where id = $id ";
+        $mysqli_connection->query($sql);
+        check_error($mysqli_connection);
+        $mysqli_connection->close();
+        return build_nik(null, null, $kode_wilayah,  strtotime($tanggal_lahir), $laki, $count);
+    }
+}
 
 /*
  * check apakah semua field yang ada telah di isi ?

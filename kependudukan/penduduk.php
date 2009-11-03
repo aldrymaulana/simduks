@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "../includes/helpers.inc.php";
 
 if(isset($_REQUEST['q']))
@@ -40,7 +41,13 @@ if(isset($_REQUEST['q']))
             if($start < 0)
                     $start = 0;
 
-            $sql = "SELECT id, nik, nama, jenis_kelamin, status_nikah, status_hub_kel FROM penduduk where keluarga_id = $kk_id order by $order_column $order limit $start, $rows";
+            $sql = "SELECT p.id as id, p.nik as nik, p.nama as nama, p.jenis_kelamin as jenis_kelamin,
+                p.status_nikah as status_nikah, p.status_hub_kel as status_hub_kel,
+                p.gol_darah as gol_darah, p.tmp_lahir as tmp_lahir, p.tgl_lahir as tgl_lahir,
+                a.agama as agama, pen.pendidikan as pendidikan, pek.pekerjaan as pekerjaan,
+                p.wni as wni FROM penduduk p, agama a, pendidikan pen, pekerjaan pek where p.keluarga_id = $kk_id
+                AND p.agama_id = a.id AND p.pendidikan_id = pen.id AND p.pekerjaan_id = pek.id
+                order by $order_column $order limit $start, $rows";
             // XXX - sementara abaikan filter data
             $resp = "";
             $resp->page = $page;
@@ -56,7 +63,10 @@ if(isset($_REQUEST['q']))
             $i = 0;
             while($row = mysqli_fetch_array($result)){
                 $resp->rows[$i]['id'] = $row['id'];
-                $resp->rows[$i]['cell'] = array($row[id], $row[nik], $row[nama], $row[jenis_kelamin], $row[status_nikah], $row[status_hub_kel]);
+                $resp->rows[$i]['cell'] = array($row[id], $row[nik], $row[nama],
+                    $row[jenis_kelamin], $row[status_nikah], $row[status_hub_kel],
+                    $row[gol_darah], $row[tmp_lahir], $row[tgl_lahir], $row[agama],
+                    $row[pendidikan], $row[pekerjaan], $row[wni]);
                 $i++;    
             }
             mysqli_close($link);
@@ -70,28 +80,36 @@ if(isset($_REQUEST['q']))
                 switch($data_type)
                 {
                     case "jenis_kelamin":                        
-                        echo select_enum_without_default_value("penduduk", "jenis_kelamin","class='select ui-widget-content ui-corner-all'");
+                        echo select_enum_without_default_value("penduduk",
+                            "jenis_kelamin","class='select ui-widget-content ui-corner-all'");
                         break;
                     case "gol_darah":
-                        echo select_enum_without_default_value("penduduk", "gol_darah","class='select ui-widget-content ui-corner-all'");
+                        echo select_enum_without_default_value("penduduk",
+                            "gol_darah","class='select ui-widget-content ui-corner-all'");
                         break;
                     case "status_nikah":                        
-                        echo select_enum_without_default_value("penduduk", "status_nikah", "class='select ui-widget-content ui-corner-all'");
+                        echo select_enum_without_default_value("penduduk",
+                            "status_nikah", "class='select ui-widget-content ui-corner-all'");
                         break;
                     case "status_hub_kel":                        
-                        echo select_enum_without_default_value("penduduk", "status_hub_kel", "class='select ui-widget-content ui-corner-all'");
+                        echo select_enum_without_default_value("penduduk",
+                            "status_hub_kel", "class='select ui-widget-content ui-corner-all'");
                         break;
                     case "agama":                        
-                        echo select("agama","id","agama", "agama","class='select ui-widget-content ui-corner-all'");
+                        echo select("agama","id","agama", "agama",
+                            "class='select ui-widget-content ui-corner-all'");
                         break;
                     case "pendidikan":                        
-                        echo select("pendidikan", "id", "pendidikan", "pendidikan", "class='select ui-widget-content ui-corner-all'");
+                        echo select("pendidikan", "id", "pendidikan", "pendidikan",
+                            "class='select ui-widget-content ui-corner-all'");
                         break;
                     case "pekerjaan":                        
-                        echo select("pekerjaan", "id","pekerjaan", "pekerjaan", "class='select ui-widget-content ui-corner-all'");
+                        echo select("pekerjaan", "id","pekerjaan", "pekerjaan",
+                            "class='select ui-widget-content ui-corner-all'");
                         break;
                     case "warga_negara":                       
-                        echo select_enum_without_default_value("penduduk", "wni", "class='select ui-widget-content ui-corner-all'");
+                        echo select_enum_without_default_value("penduduk", "wni",
+                            "class='select ui-widget-content ui-corner-all'");
                         break;
                 }
             }
@@ -104,22 +122,72 @@ if(isset($_REQUEST['q']))
 
 if(isset($_POST['oper']))
 {
+    include "../includes/mysqli.inc.php";
     $operation = $_POST['oper'];
     switch($operation)
     {
-        case "add":
+        case "add":            
+            $agama = $_POST['agama'];
+            $gol_darah = $_POST['gol_darah'];
             $jenis_kelamin = $_POST['jenis_kelamin'];
             $kk_id = $_POST['kk_id'];
-            $name = $_POST['nama'];
+            $nama = $_POST['nama'];
+            $pekerjaan = $_POST['pekerjaan'];
+            $pendidikan = $_POST['pendidikan'];
             $status_hub_kel = $_POST['status_hub_kel'];
             $status_nikah = $_POST['status_nikah'];
-            $nik = $_POST['nik'];
+            $tgl_lahir = $_POST['tgl_lahir'];
+            $tempat_lahir = $_POST['tmp_lahir'];
+            $kewarganegaraan = $_POST['warga'];
+            $kecamatan_id = $_SESSION['kecamatan_id'];
+            // calculate nik first.
+            $laki = $jenis_kelamin == 'Perempuan' ? false : true;
+            $nik = nik($kecamatan_id, $tgl_lahir, $laki);
+            $sql = "insert into penduduk set nik = '$nik', nama = '$nama', status_hub_kel = '$status_hub_kel',
+                tmp_lahir = '$tempat_lahir', tgl_lahir = '$tgl_lahir', pendidikan_id = $pendidikan,
+                pekerjaan_id = $pekerjaan, gol_darah = '$gol_darah', agama_id = $agama,
+                wni = '$kewarganegaraan', status_nikah = '$status_nikah', jenis_kelamin = '$jenis_kelamin',
+                keluarga_id = $kk_id";
+            $mysqli_connection->query($sql);
+            check_error($mysqli_connection);
+            $mysqli_connection->close();
+            echo "ok";           
             break;
         case "edit":
-            
+            $id = $_POST['id'];
+            $agama = $_POST['agama'];
+            $gol_darah = $_POST['gol_darah'];
+            $jenis_kelamin = $_POST['jenis_kelamin'];
+            $kk_id = $_POST['kk_id'];
+            $nama = $_POST['nama'];
+            $pekerjaan = $_POST['pekerjaan'];
+            $pendidikan = $_POST['pendidikan'];
+            $status_hub_kel = $_POST['status_hub_kel'];
+            $status_nikah = $_POST['status_nikah'];
+            $tgl_lahir = $_POST['tgl_lahir'];
+            $tempat_lahir = $_POST['tmp_lahir'];
+            $kewarganegaraan = $_POST['warga'];
+            $kecamatan_id = $_SESSION['kecamatan_id'];
+            // calculate nik first.
+            $laki = $jenis_kelamin == 'Perempuan' ? false : true;
+            $nik = nik($kecamatan_id, $tgl_lahir, $laki);
+            $sql = "update penduduk set nik = '$nik', nama = '$nama', status_hub_kel = '$status_hub_kel',
+                tmp_lahir = '$tempat_lahir', tgl_lahir = '$tgl_lahir', pendidikan_id = $pendidikan,
+                pekerjaan_id = $pekerjaan, gol_darah = '$gol_darah', agama_id = $agama,
+                wni = '$kewarganegaraan', status_nikah = '$status_nikah', jenis_kelamin = '$jenis_kelamin',
+                keluarga_id = $kk_id where id = $id";
+            $mysqli_connection->query($sql);
+            check_error($mysqli_connection);
+            $mysqli_connection->close();
+            echo "ok";           
             break;
         case "del":
-            
+            $id = $_POST['id'];
+            $sql = "delete from penduduk where id = $id";
+            $mysqli_connection->query($sql);
+            check_error($mysqli_connection);
+            $mysqli_connection->close();
+            echo "ok";
             break;
     }
 }
