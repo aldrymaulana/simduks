@@ -22,15 +22,37 @@ $(document).ready(function() {
         {version: 9});
     });
     
+   
+    function show_desa(kecamatan_id)
+    {
+        $.ajax({
+            url : "reports/report_generator.php?q=6&kecamatan_id=" + kecamatan_id,
+            type: "get",
+            data: {},
+            dataType: "html",
+            success : function(data, status){
+                $("#kelurahan").remove();
+                $("#form").append(data);
+            }
+        });
+    }
+    
     $.ajax({
         url: "reports/report_generator.php?q=5",
-        data: "get",
+        type: "get",
         data: {},
         dataType: "html",
         success: function(data, status) {
             $("#form").append(data);
+            
+            $("#kecamatan").change(function(){
+                $("#kecamatan option:selected").each(function(){
+                    var id = $(this).val();
+                    show_desa(id);
+                });
+            }).trigger('change');
         }
-    });		
+    });
 });
 
 </script>

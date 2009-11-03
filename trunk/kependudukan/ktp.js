@@ -18,5 +18,5 @@ jQuery(document).ready(function(){
         $("#ktpadd").dialog('open');
     });
     
-    $("#ktpadd").dialog('open');
+   
 })
