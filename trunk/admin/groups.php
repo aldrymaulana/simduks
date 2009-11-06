@@ -66,6 +66,7 @@ if(isset($_GET['q']))
 
 if(isset($_POST['oper']))
 {
+	include "../includes/helpers.inc.php";
 	include "../includes/mysqli.inc.php";
     $operation = $_POST['oper'];
 	switch($operation)

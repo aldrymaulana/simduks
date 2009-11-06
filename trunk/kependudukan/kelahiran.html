@@ -1,38 +1,46 @@
+<div id="search_ayah" title="Cari Data Ayah">
+	<p id="search_ayah_error"></p>
+	<form>	
+		<label for="name" class="ui-dialog-content ui-widget-content">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+		<input type="text" name="name_ayah" id="name_ayah" class="text ui-widget ui-widget-content ui-corner-all"/><br/>		
+	</form>
+    <div id="hasil_search_ayah">
+        
+    </div>
+</div>
+
+<div id="search_ibu" title="Cari Data Ibu">
+	<p id="search_ibu_error"></p>
+	<form>	
+		<label for="name" class="ui-dialog-content ui-widget-content">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+		<input type="text" name="name_ibu" id="name_ibu" class="text ui-widget ui-widget-content ui-corner-all"/><br/>		
+	</form>
+    <div id="hasil_search_ibu">
+        
+    </div>
+</div>
+
 <div id="kelahiran" title="Register Data Kelahiran">    
-    <form>
+    <form class="form">
         <fieldset>
             <legend>Register Data Kelahiran</legend>
             <ol id="id">
                 <li>
                     <label for="no_akte">No Akta</label>
-                    <input type="text" name="no_akte" id="no_akte"  class="text ui-widget-content ui-corner-all"/>
+                    <input type="text" name="no_akte" id="no_akte" value="no. akte ..." onfocus="this.value='';this.onfocus=null;"  class="text ui-widget-content ui-corner-all"/>
                 </li>
                 <li>
                     Data Anak
-                    <ul>
-                        <li>
-                            <label for="nik">NIK</label>
-                            <input type="text" name="nik" id="nik" class="text ui-widget-content ui-corner-all"/>
-                        </li>
+                    <ul>                       
                         <li>
                             <label for="nama">Nama</label>
-                            <input type="text" name="nama" id="nama" class="text ui-widget-content ui-corner-all"/>
+                            <input type="text" name="nama" id="nama" value="nama anak ..." onfocus="this.value=''; this.onfocus=null;" class="text ui-widget-content ui-corner-all"/>
                         </li>
                         <li>
-                            <label for="jenis_kelamin">Jenis Kelamin</label>
-                            <select name="jenis_kelamin" id="jenis_kelamin" class="select ui-widget-content ui-corner-all">
-                                <option value="Perempuan">Perempuan</option>
-                                <option value="Laki-laki">Laki-laki</option>
-                            </select>
-                            
-                            <label for="gol_darah">Gol. Darah</label>
-                            <select name="gol_darah" id="gol_darah" class="select ui-widget-content ui-corner-all"/>
-                                <option value="-">-</option>
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="AB">AB</option>
-                                <option value="O">O</option>
-                            </select>
+                            <label for="jenis_kelamin" id="lbl_jenis_kelamin">Jenis Kelamin</label>                            
+                        </li>
+                        <li>
+                            <label for="gol_darah" id="lbl_gol_darah">Gol. Darah</label>                            
                         </li>
                     </ul>
                 </li>   
@@ -41,9 +49,11 @@
                     <ul>
                         <li>
                             <label for="tmp_lahir">Tempat Lahir</label>
-                            <input type="text" name="tmp_lahir" id="tmp_lahir" class="text ui-widget-content ui-corner-all"/>
+                            <input type="text" name="tmp_lahir" value="tempat lahir ..." onfocus="this.value=''; this.onfocus=null;" id="tmp_lahir" class="text ui-widget-content ui-corner-all"/>
+                        </li>
+                        <li>
                             <label for="tgl_lahir">Tanggal Lahir</label>
-                            <input type="text" name="tgl_lahir" id="tgl_lahir" class="text ui-widget-content ui-corner-all"/>
+                            <input type="text" size="10" name="tgl_lahir" value="tanggal lahir ..." onfocus="this.value=''; this.onfocus=null;" id="tgl_lahir" class="text ui-widget-content ui-corner-all"/>
                         </li>
                     </ul>
                 </li>
@@ -51,34 +61,37 @@
                     Orang Tua
                     <ul>
                         <li>
-                            Ayah
-                            <ul id="detail_ayah">
-                                <li>
-                                    <label for="nik_ayah">NIK&nbsp;Ayah</label>
-                                    <input type="text" name="nik_ayah" id="nik_ayah" class="text ui-widget-content ui-corner-all"/>
-                                    <span class="ui-helper-hidden">Data Ayah Tidak Ditemukan</span>
-                                    <button id="lookup_ayah" class="ui-button ui-state-default ui-corner-all">Cari</button>
-                                    <input type="hidden" name="id_ayah" id="id_ayah"/>
-                                </li>
-                            </ul>                            
+                            <label for="nik_ayah">NIK&nbsp;Ayah</label>
+                            <input type="text" readonly="readonly" value="klik tombol cari ..." name="nik_ayah" id="nik_ayah" class="text ui-widget-content ui-corner-all"/>
+                            <span class="ui-helper-hidden">Data Ayah Tidak Ditemukan</span>
+                            <button id="lookup_ayah" class="ui-button ui-state-default ui-corner-all">Cari</button>
                         </li>
-                        <li>Ibu
-                            <ul id="detail_ibu">
-                                <li>
-                                    <label for="nik_ibu">NIK&nbsp;Ibu</label>
-                                    <input type="text" name="nik_ibu" id="nik_ibu" class="text ui-widget-content ui-corner-all"/>
-                                    <span class="ui-helper-hidden">Data Ibu Tidak Ditemukan</span>
-                                    <button id="lookup_ibu" class="ui-button ui-state-default ui-corner-all">Cari</button>
-                                    <input type="hidden" name="id_ibu" id="id_ibu"/>
-                                </li>
-                            </ul>
+                        <li>
+                            <label for="nik_ibu">NIK&nbsp;Ibu</label>
+                            <input type="text" value="klik tombol cari .." readonly="readonly" name="nik_ibu" id="nik_ibu" class="text ui-widget-content ui-corner-all"/>
+                            <span class="ui-helper-hidden">Data Ibu Tidak Ditemukan</span>
+                            <button id="lookup_ibu" class="ui-button ui-state-default ui-corner-all">Cari</button>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Saksi
+                    <ul>
+                        <li>
+                            <label for="saksi_1">Saksi I</label>
+                            <input type="text" name="saksi_1" value="saksi I ..." onfocus="this.value='';this.onfocus=null;" id="saksi_1" class="text ui-widget-content ui-corner-all"/>
+                        </li>
+                        <li>
+                            <label for="saksi_2">Saksi II</label>
+                            <input type="text" name="saksi_2" value="saksi II ..." onfocus="this.value='';this.onfocus=null;" id="saksi_2" class="text ui-widget-content ui-corner-all"/>
                         </li>
                     </ul>
                 </li>
             </ol>
-            <button id="save" class="ui-button ui-state-default ui-corner-all">Simpan</button>
-            <button id="cancel" class="ui-button ui-state-default ui-corner-all">Batal</button>
+             <button id="save" class="ui-button ui-state-default ui-corner-all">Simpan</button>
+        <button id="cancel" class="ui-button ui-state-default ui-corner-all">Batal</button>
         </fieldset>
+       
     </form>
 </div>
 <script src="kependudukan/kelahiran.js" type="text/javascript"/>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+include "../includes/statics.id.inc.php";
 if(isset($_GET['q'])) {
 	
 
@@ -59,7 +59,10 @@ if(isset($_GET['q'])) {
             break;
         case 2:
 			include_once "../includes/helpers.inc.php";
-			echo select('kecamatan', 'id', 'nama_kecamatan', "nama_kecamatan");
+			$add = array();
+            $add[] = array("key"=>CAPIL_KEY, "value"=>"Capil");
+            $add[] = array("key"=>KUA_KEY, "value"=>"KUA");
+			echo select('kecamatan', 'id', 'nama_kecamatan', "nama_kecamatan","","",1,$add);
             break;
     }
 }
@@ -160,7 +163,7 @@ function retrieve_menus() {
     $menus = array();
    
     
-	if(isset($_SESSION['kecamatan_id']) and $_SESSION['kecamatan_id'] == "-1"){
+	if(isset($_SESSION['kecamatan_id']) and $_SESSION['kecamatan_id'] == ADMIN_KEY){
 		array_push($menus, '<li><a href="master/agama.html" class="ui-widget-content ui-state-default">Agama</a></li>');
 		array_push($menus, '<li><a href="master/kb.html" class="ui-widget-content ui-state-default">Kb</a></li>');
 		array_push($menus, '<li><a href="master/pekerjaan.html" class="ui-widget-content ui-state-default">Pekerjaan</a></li>');
@@ -169,7 +172,7 @@ function retrieve_menus() {
 		array_push($menus, '<li><a href="admin/users.html" class="ui-widget-content ui-state-default">Users</a></li>');
 	} else {
 		array_push($menus, '<li><a href="kependudukan/kartukeluarga.html" class="ui-widget-content ui-state-default">KK</a></li>');
-		///array_push($menus, '<li><a href="kependudukan/kelahiran.html" class="ui-widget-content ui-state-default">Kelahiran</a></li>');
+		array_push($menus, '<li><a href="kependudukan/kelahiran.html" class="ui-widget-content ui-state-default">Kelahiran</a></li>');
 		array_push($menus, '<li><a href="kependudukan/ktp.html" class="ui-widget-content ui-state-default">KTP</a></li>');
 	}
     return $menus;

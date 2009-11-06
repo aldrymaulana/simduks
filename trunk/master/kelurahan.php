@@ -211,8 +211,11 @@ elseif(isset($_GET['q']))
                 exit();
             }
             $kecamatan_id = $_SESSION['kecamatan_id'];        
-                             
-            echo select("kelurahan", "id", "nama_kelurahan","kecamatan_id", "kecamatan_id=$kecamatan_id");
+            $add = array();
+            $add[] = array("key"=>"-5", "value"=>"Capil");
+            $add[] = array("key"=>"-6", "value"=>"KUA");
+            echo select("kelurahan", "id", "nama_kelurahan","kecamatan_id",
+                "class='select ui-widget-content ui-corner-all'", "kecamatan_id=$kecamatan_id",1, $add);
         break;
      }
      

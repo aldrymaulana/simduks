@@ -1,28 +1,81 @@
+
+<div id="KTP" title="Pembuatan KTP">    
+    <form class="form">
+        <fieldset>
+            <legend>Pengelolaan KTP</legend>
+			<ol>
+				<li>
+					<label for="nik">No NIK</label>
+					<input type="text" name="nik" id="nik" size="40" maxlength="30" onfocus="this.value='';this.onfocus=null;" value="ketik NIK, kemudian klik tombol load data ..." class="text ui-widget-content ui-corner-all" />
+					<button id="load_data" class="ui-button ui-state-default ui-corner-all">Load Data</button>
+				</li>
+				<li>
+					<label for="nama">Nama</label>
+					<input type="text" readonly="readonly" name="nama" id="nama" class="text ui-widget-content ui-corner-all"/>
+				</li>
+				<li>
+					<label for="jenis_kelamin">Jenis Kelamin</label>
+                    <input type="text" size="10" maxlength="10" readonly='readonly' class="text ui-widget-content ui-corner-all"  id="jenis_kelamin" name="jenis_kelamin"/>
+                </li>
+				<li>
+				    <label for="gol_darah">Gol. Darah</label>
+                    <input type="text" size="2" maxlength="2" readonly='readonly' class="text ui-widget-content ui-corner-all"  id="gol_darah" name="gol_darah"/>
+					
+                </li>   
+                <li>
+                    <span>Data&nbsp;Kelahiran</span>
+                    <ul>
+                        <li>
+                            <label for="tmp_lahir">Tempat/Tgl. lahir</label>
+                            <input type="text" readonly="readonly" name="tmp_lahir" id="tmp_lahir" class="text ui-widget-content ui-corner-all"/>                           
+                            <input type="text" readonly="readonly" size="10" maxlength="10"  name="tgl_lahir" id="tgl_lahir" class="text ui-widget-content ui-corner-all"/>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <label for="alamat">Alamat</label>
+					<input type="text" readonly="readonly" name="alamat" id="alamat" class="text ui-widget-content ui-corner-all"/>
+                    <ul>
+						<li><label for="rt">R.T/R.W</label>
+							<input type="text" readonly="readonly" name="rt" size="4" maxlength="4" id="rt" class="text ui-widget-content ui-corner-all"/>
+							<input type="text" readonly="readonly" name="rt" size="4" maxlength="4" id="rt" class="text ui-widget-content ui-corner-all"/>
+						</li>
+						<li>
+							<label for="desa">Desa</label>
+							<input type="text" readonly="readonly" name="desa" id="desa" class="text ui-widget-content ui-corner-all"/>
+							
+						</li>
+						<li>
+							<label for="kecamatan">Kecamatan</label>
+							<input type="text" readonly="readonly" name="kecamatan" id="kecamatan" class="text ui-widget-content ui-corner-all"/>
+						</li>
+						<li>
+							<label for="kodepos">Kodepos</label>
+							<input type="text" readonly="readonly" name="kodepos" id="kodepos" class="text ui-widget-content ui-corner-all"/>
+						</li>
+					</ul>
+                </li>
+				<li>
+					<label for="agama">Agama</label>
+					<input type="text" readonly="readonly" name="agama" id="agama" class="text ui-widget-content ui-corner-all"/>				
+				</li>
+				<li>
+					<label for="status_pernikahan">Status Perkawinan</label>
+					<input type="text" readonly="readonly" name="status_pernikahan" id="status_pernikahan" class="text ui-widget-content ui-corner-all"/>
+				</li>
+				<li>
+					<label for="pekerjaan">Pekerjaan</label>
+					<input type="text" readonly="readonly" name="pekerjaan" id="pekerjaan" class="text ui-widget-content ui-corner-all"/>
+				</li>
+				<li>
+					<label for="kewarganegaran">Kewarganegaraan</label>
+					<input type="text" readonly="readonly" name="kewarganegaraan" id="kewarganegaraan" class="text ui-widget-content ui-corner-all"/>
+				</li>
+            </ol>
+			
+            <button id="save" class="ui-button ui-state-default ui-corner-all">Simpan</button>
+            <button id="cancel" class="ui-button ui-state-default ui-corner-all">Batal</button>
+        </fieldset>
+    </form>
+</div>
 <script type="text/javascript" src="kependudukan/ktp.js"></script>
-<div style="font-size: 12px;">
-    Pengelolaan KTP
-</div>
-<br/>
-<br/>
-<div id="ktpadd" title="Pembuatan KTP">
-    <p id="validateTips">All form fields are required.</p>
-
-	<form>
-
-	<fieldset>
-		
-		<label for="name">Name</label>
-		<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
-		<label for="email">Email</label>
-		<input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all" />
-		<label for="password">Password</label>
-		<input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" />
-
-	</fieldset>
-	</form>
-
-</div>
-
-<button id="ktp_create" class="ui-button ui-state-default ui-corner-all">Create</button>
-<button id="ktp_search" class="ui-button ui-state-default ui-corner-all">Search</button>
-

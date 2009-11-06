@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Komodo Project File - DO NOT EDIT -->
 <project id="3233eb9c-8a9d-4adc-87b6-a53b1eaa2391" kpf_version="4" name="scenic2.kpf">
+<livefolder id="3233eb9c-8a9d-4adc-87b6-a53b1eaa2391/includes/examples" idref="3233eb9c-8a9d-4adc-87b6-a53b1eaa2391/includes" name="examples" url="examples">
+</livefolder>
 <preference-set idref="3233eb9c-8a9d-4adc-87b6-a53b1eaa2391">
   <boolean id="import_live">1</boolean>
 </preference-set>

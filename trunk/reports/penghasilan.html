@@ -1,9 +1,13 @@
-<p>Penghasilan</p>
 <div id="select_data" title="Select data">	
-	<form id="form">	
-		
-	</form>
-    <a href="lihat" id="show">Lihat</a>
+	<form id="form" class="form">		
+		<fieldset>
+            <legend id="legend">Lihat Data Penghasilan</legend>
+            <ol id="field">
+                
+            </ol>
+            <button id="show" class="ui-button ui-state-default ui-corner-all">Lihat</button>
+        </fieldset>
+	</form> 
 </div>
 <div id="chart"></div>
 <script type="text/javascript" src="statics/js/jquery.swfobject.1-0-7.js"></script>
@@ -31,8 +35,7 @@ $(document).ready(function() {
             data: {},
             dataType: "html",
             success : function(data, status){
-                $("#kelurahan").remove();
-                $("#form").append(data);
+                $("#lbl_desa").after(data);
             }
         });
     }
@@ -43,9 +46,10 @@ $(document).ready(function() {
         data: {},
         dataType: "html",
         success: function(data, status) {
-            $("#form").append(data);
+            $("#field").html(data);
             
             $("#kecamatan").change(function(){
+                $("#kelurahan").remove();
                 $("#kecamatan option:selected").each(function(){
                     var id = $(this).val();
                     show_desa(id);
