@@ -113,17 +113,15 @@ switch($request)
         break;
     case "5":
         include "../includes/helpers.inc.php";
-        echo "<label for='kecamatan'>Kecamatan</label>";
-        echo select("kecamatan", "id", "nama_kecamatan","kecamatan",'class="text ui-widget ui-widget-content ui-corner-all"');
-        echo "<label for='desa'>Desa/Kelurahan</label>";
-		//<select name="desa" id="desa" value="" class="text ui-widget ui-widget-content ui-corner-all" />
-       
+        echo "<li><label for='kecamatan'>Kecamatan</label>";
+        echo select("kecamatan", "id", "nama_kecamatan","kecamatan",'class="ui-widget-content ui-corner-all"');
+        echo "</li><li><label for='kelurahan' id='lbl_desa'>Desa/Kelurahan</label></li>";		       
         break;
     case "6":
         include "../includes/helpers.inc.php";
         $kec_id = $_GET['kecamatan_id'];
         echo select("kelurahan", "id", "nama_kelurahan", "kelurahan",
-            'class="text ui-widget ui-widget-content ui-corner-all"',
+            'class="ui-widget-content ui-corner-all"',
             "kecamatan_id = $kec_id");
         break;
 }

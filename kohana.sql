@@ -686,3 +686,6 @@ create table nikcounter
 kecamatan_id int(11) not null,
 tanggal date not null,
 counter int(11) not null default 0);
+
+ALTER TABLE `access_groups` ADD COLUMN `group_type` integer(11)  NOT NULL AFTER `kecamatan_id`;
+alter table `access_groups` add column `group_name` varchar(30) not null default ``  after  `group_type`;

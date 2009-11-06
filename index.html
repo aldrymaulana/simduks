@@ -30,7 +30,7 @@
 	<p id="login_error"></p>
 	<form>	
 		<label for="name" class="ui-dialog-content ui-widget-content">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-		<input type="text" name="name" id="name" class="text ui-widget ui-widget-content ui-corner-all"/><br/>
+		<input type="text" onfocus="this.value='';this.onfocus=null;" name="name" id="name" class="text ui-widget ui-widget-content ui-corner-all" value="username"/><br/>
 		<label for="password" class="ui-dialog-content ui-widget-content">Password</label>
 		<input type="password" name="password" id="password" value="" class="text ui-widget ui-widget-content ui-corner-all" />	
 	</form>

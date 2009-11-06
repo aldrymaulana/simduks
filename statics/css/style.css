@@ -1,5 +1,6 @@
 html, body{       
     font-size: 85%;
+	background-color: #F7F7F7;
 }
 ul.menu{
     list-style: none;
@@ -85,3 +86,62 @@ div.title h2{
 }
 /** for datepicker display on top **/
 .ui-datepicker {z-index:1200;}
+
+
+/** form **/
+
+input{
+	font-size: 85%;
+}
+
+select {
+	font-size: 85%;
+}
+input:focus, input:hover{
+	border: 2px solid #900;
+	background-color:#F0FFE6;	
+}
+
+fieldset {
+	border:1px dashed #CCC;
+	padding:0;
+	padding-left: 10px;
+	margin-top:10px;
+	margin-bottom:20px;
+}
+legend {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 110%;
+	letter-spacing: -1px;
+	font-weight: bold;
+	line-height: 1.1;
+	color:#fff;
+	background: #666;
+	border: 1px solid #333;
+	padding: 2px 6px;
+}
+
+.form {
+	margin:0;
+	padding:0;
+}
+
+.form label {
+	float: left;
+	text-align: right;
+	margin-right: 10px;
+	width: 120px;
+}
+
+.form ol{
+	margin-left: 10px;
+	list-style: none;	
+}
+
+.form ol li ul{	
+	list-style: none;
+}
+
+.form button{
+	font-size: 85%;
+}

@@ -81,39 +81,48 @@ if(isset($_REQUEST['q']))
                 {
                     case "jenis_kelamin":                        
                         echo select_enum_without_default_value("penduduk",
-                            "jenis_kelamin","class='select ui-widget-content ui-corner-all'");
+                            "jenis_kelamin","class='ui-widget-content ui-corner-all'");
                         break;
                     case "gol_darah":
                         echo select_enum_without_default_value("penduduk",
-                            "gol_darah","class='select ui-widget-content ui-corner-all'");
+                            "gol_darah","class='ui-widget-content ui-corner-all'");
                         break;
                     case "status_nikah":                        
                         echo select_enum_without_default_value("penduduk",
-                            "status_nikah", "class='select ui-widget-content ui-corner-all'");
+                            "status_nikah", "class='ui-widget-content ui-corner-all'");
                         break;
                     case "status_hub_kel":                        
                         echo select_enum_without_default_value("penduduk",
-                            "status_hub_kel", "class='select ui-widget-content ui-corner-all'");
+                            "status_hub_kel", "class='ui-widget-content ui-corner-all'");
                         break;
                     case "agama":                        
                         echo select("agama","id","agama", "agama",
-                            "class='select ui-widget-content ui-corner-all'");
+                            "class='ui-widget-content ui-corner-all'");
                         break;
                     case "pendidikan":                        
                         echo select("pendidikan", "id", "pendidikan", "pendidikan",
-                            "class='select ui-widget-content ui-corner-all'");
+                            "class='ui-widget-content ui-corner-all'");
                         break;
                     case "pekerjaan":                        
                         echo select("pekerjaan", "id","pekerjaan", "pekerjaan",
-                            "class='select ui-widget-content ui-corner-all'");
+                            "class='ui-widget-content ui-corner-all'");
                         break;
                     case "warga_negara":                       
                         echo select_enum_without_default_value("penduduk", "wni",
-                            "class='select ui-widget-content ui-corner-all'");
+                            "class='ui-widget-content ui-corner-all'");
                         break;
                 }
             }
             break;
+        case 3: // cari data ayah & ibu
+            include "../includes/mysqli.inc.php";
+            $nama = $_GET['nama'];
+            $ortu = $_GET["ortu"];
+            $result->nama ="nama ".$nama;
+            $result->nik = "1234567";
+            echo json_encode($result);
+            break;
+        
         default:
             echo "";
             break;
