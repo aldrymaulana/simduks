@@ -1,24 +1,4 @@
 <?php
-/*
-* Copyright (c) 2008 http://www.webmotionuk.com / http://www.webmotionuk.co.uk
-* "PHP & Jquery image upload & crop"
-* Date: 2008-11-21
-* Ver 1.2
-* Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-* ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-* IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
-* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
-* PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
-* INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
-* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
-* THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* http://www.opensource.org/licenses/bsd-license.php
-*/
 error_reporting (E_ALL ^ E_NOTICE);
 session_start(); //Do not remove this
 //only assign a new timestamp if the session variable is empty
@@ -268,33 +248,12 @@ if ($_GET['a']=="delete" && strlen($_GET['t'])>0){
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<meta name="generator" content="WebMotionUK" />
-	<title>WebMotionUK - PHP &amp; Jquery image upload &amp; crop</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />	
+	<title>Image crop</title>
 	<script type="text/javascript" src="statics/js/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" src="statics/js/jquery.imgareaselect.min.js"></script>
 </head>
 <body>
-<!-- 
-* Copyright (c) 2008 http://www.webmotionuk.com / http://www.webmotionuk.co.uk
-* Date: 2008-11-21
-* "PHP & Jquery image upload & crop"
-* Ver 1.2
-* Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-* ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-* IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
-* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
-* PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
-* INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
-* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
-* THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* http://www.opensource.org/licenses/bsd-license.php
--->
 <?php
 //Only display the javacript if an image has been uploaded
 if(strlen($large_photo_exists)>0){
@@ -375,7 +334,7 @@ if(strlen($large_photo_exists)>0 && strlen($thumb_photo_exists)>0){
 			</form>
 		</div>
 	<hr />
-	<?php 	} ?>
+<?php } ?>
 	<h2>Upload Photo</h2>
 	<form name="photo" enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
 	Photo <input type="file" name="image" size="30" /> <input type="submit" name="upload" value="Upload" />
