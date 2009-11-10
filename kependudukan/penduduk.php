@@ -106,14 +106,16 @@ if(isset($_REQUEST['q']))
             }
             break;
         case 3: // cari data ayah & ibu
-            include "../includes/mysqli.inc.php";
+           
             $nama = $_GET['nama'];
             $ortu = $_GET["ortu"];
             $result->nama ="nama ".$nama;
             $result->nik = "1234567";
             echo json_encode($result);
             break;
-        
+        case 4: // cari data penduduk
+            $nik = $_GET['nik'];
+            echo json_encode("success");
         default:
             echo "";
             break;

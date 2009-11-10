@@ -104,6 +104,41 @@ jQuery(document).ready(function(){
 			$("#name_ibu").val("");
 		}
 	});
+	
+	$("#fotodialog").dialog({
+		bgiframe: true,
+		autoOpen : false,
+		modal: true,
+		buttons: {
+			"Crop" : function(){
+				alert("croped");
+			},
+			"Tutup": function(){
+				$(this).dialog("close");
+			}
+		}
+	});
+	
+	$("#jcrop").Jcrop({
+		onChange: showPreview,
+		onSelect: showPreview,
+		aspectRatio: 1
+	});
+	
+	function showPreview(coord){
+		if (parseInt(coords.w) > 0)
+		{
+			var rx = 100 / coords.w;
+			var ry = 100 / coords.h;
+
+			jQuery('#preview').css({
+				width: Math.round(rx * 500) + 'px',
+				height: Math.round(ry * 370) + 'px',
+				marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+				marginTop: '-' + Math.round(ry * coords.y) + 'px'
+			});
+		}
+	}
 
 	$("#save").click(function(event){
 		event.preventDefault();
@@ -135,5 +170,10 @@ jQuery(document).ready(function(){
 	$("#cancel").click(function(event){
 		event.preventDefault();
 		$("#report_link").remove();
+	});
+	
+	$("#load_foto").click(function(event){
+		event.preventDefault();
+		$("#fotodialog").dialog("open");
 	});
 });
