@@ -111,7 +111,21 @@ jQuery(document).ready(function(){
 			url: "kependudukan/kelahiran.php",
 			type: "post",
 			dataType: "html",
-			data: {},
+			data: {
+				no_akte: $("#no_akte").val(),
+				nama: $("#nama_anak").val(),
+				jenis_kelamin : $("#jenis_kelamin").val(),
+				gol_darah : $("#gol_darah").val(),
+				tempat_lahir : $("#tmp_lahir").val(),
+				tanggal_lahir : $("#tgl_lahir").val(),
+				jam_lahir : $("#jam_lahir").val(),
+				nik_ayah : $("#nik_ayah").val(),
+				nik_ibu : $("#nik_ibu").val(),
+				saksi1 : $("#saksi_1").val(),
+				saksi2 : $("#saksi_2").val(),
+				mode : $("#mode").val(),
+				penduduk_id : $("#penduduk_id").val()
+				},
 			success : function(data, status){
 				$("#save").after(data);
 			}

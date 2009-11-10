@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "../includes/helpers.inc.php";
+include_once "../includes/helpers.inc.php";
 
 if(isset($_REQUEST['q']))
 {
@@ -8,7 +8,7 @@ if(isset($_REQUEST['q']))
     switch($request_type)
     {
         case 1:
-            include '../includes/db.inc.php';
+            $connection = MysqlManager::get_connection();
             
             // get list of keluarga based on kartu keluarga
             $kk_id = $_REQUEST['keluarga_id'];
@@ -20,14 +20,9 @@ if(isset($_REQUEST['q']))
             
             $count_query = "select count(*) as count from penduduk where keluarga_id = $kk_id";
             
-            $result = mysqli_query($link, $count_query);            
-            if(!$result)
-            {
-                $error = "cannot counting penduduk which keluarga_id = $kk_id";
-                include "../includes/error.html.php";
-                exit();
-            }
-            $row = mysqli_fetch_array($result);
+            $result = $connection->query($count_query);            
+            check_error($connection);
+            $row = $result->fetch_array();
             $count = $row['count'];
 
             if($count > 0) {
@@ -54,14 +49,10 @@ if(isset($_REQUEST['q']))
             $resp->total = $total_pages;
             $resp->records = $count;
 
-            $result = mysqli_query($link, $sql);
-            if(!$result) {
-                $error = "failed fetch data from penduduk with SQL:$sql";
-                include "../includes/error.html.php";
-                exit();
-            }
+            $result = $connection->query($sql);
+            check_error($connection);
             $i = 0;
-            while($row = mysqli_fetch_array($result)){
+            while($row = $result->fetch_array()){
                 $resp->rows[$i]['id'] = $row['id'];
                 $resp->rows[$i]['cell'] = array($row[id], $row[nik], $row[nama],
                     $row[jenis_kelamin], $row[status_nikah], $row[status_hub_kel],
@@ -69,7 +60,7 @@ if(isset($_REQUEST['q']))
                     $row[pendidikan], $row[pekerjaan], $row[wni]);
                 $i++;    
             }
-            mysqli_close($link);
+            MysqlManager::close_connection($connection);
             echo json_encode($resp);
             break;
         case 2:
@@ -81,19 +72,19 @@ if(isset($_REQUEST['q']))
                 {
                     case "jenis_kelamin":                        
                         echo select_enum_without_default_value("penduduk",
-                            "jenis_kelamin","class='ui-widget-content ui-corner-all'");
+                            "jenis_kelamin","id='jenis_kelamin' class='ui-widget-content ui-corner-all'");
                         break;
                     case "gol_darah":
                         echo select_enum_without_default_value("penduduk",
-                            "gol_darah","class='ui-widget-content ui-corner-all'");
+                            "gol_darah","id='gol_darah' class='ui-widget-content ui-corner-all'");
                         break;
                     case "status_nikah":                        
                         echo select_enum_without_default_value("penduduk",
-                            "status_nikah", "class='ui-widget-content ui-corner-all'");
+                            "status_nikah", "id='status_nikah' class='ui-widget-content ui-corner-all'");
                         break;
                     case "status_hub_kel":                        
                         echo select_enum_without_default_value("penduduk",
-                            "status_hub_kel", "class='ui-widget-content ui-corner-all'");
+                            "status_hub_kel", "id='status_hub_keluarga' class='ui-widget-content ui-corner-all'");
                         break;
                     case "agama":                        
                         echo select("agama","id","agama", "agama",
@@ -131,7 +122,7 @@ if(isset($_REQUEST['q']))
 
 if(isset($_POST['oper']))
 {
-    include "../includes/mysqli.inc.php";
+    $conn = MysqlManager::get_connection();
     $operation = $_POST['oper'];
     switch($operation)
     {
@@ -157,9 +148,9 @@ if(isset($_POST['oper']))
                 pekerjaan_id = $pekerjaan, gol_darah = '$gol_darah', agama_id = $agama,
                 wni = '$kewarganegaraan', status_nikah = '$status_nikah', jenis_kelamin = '$jenis_kelamin',
                 keluarga_id = $kk_id";
-            $mysqli_connection->query($sql);
-            check_error($mysqli_connection);
-            $mysqli_connection->close();
+            $conn->query($sql);
+            check_error($conn);
+            MysqlManager::close_connection($conn);
             echo "ok";           
             break;
         case "edit":
@@ -185,19 +176,20 @@ if(isset($_POST['oper']))
                 pekerjaan_id = $pekerjaan, gol_darah = '$gol_darah', agama_id = $agama,
                 wni = '$kewarganegaraan', status_nikah = '$status_nikah', jenis_kelamin = '$jenis_kelamin',
                 keluarga_id = $kk_id where id = $id";
-            $mysqli_connection->query($sql);
-            check_error($mysqli_connection);
-            $mysqli_connection->close();
+            $conn->query($sql);
+            check_error($conn);
+            MysqlManager::close_connection($conn);
             echo "ok";           
             break;
         case "del":
             $id = $_POST['id'];
             $sql = "delete from penduduk where id = $id";
-            $mysqli_connection->query($sql);
-            check_error($mysqli_connection);
-            $mysqli_connection->close();
+            $conn->query($sql);
+            check_error($conn);
+            MysqlManager::close_connection($conn);
             echo "ok";
             break;
     }
 }
+
 ?>

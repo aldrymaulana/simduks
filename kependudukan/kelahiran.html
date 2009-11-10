@@ -34,7 +34,7 @@
                     <ul>                       
                         <li>
                             <label for="nama">Nama</label>
-                            <input type="text" name="nama" id="nama" value="nama anak ..." onfocus="this.value=''; this.onfocus=null;" class="text ui-widget-content ui-corner-all"/>
+                            <input type="text" name="nama" id="nama_anak" value="nama anak ..." onfocus="this.value=''; this.onfocus=null;" class="text ui-widget-content ui-corner-all"/>
                         </li>
                         <li>
                             <label for="jenis_kelamin" id="lbl_jenis_kelamin">Jenis Kelamin</label>                            
@@ -55,6 +55,10 @@
                             <label for="tgl_lahir">Tanggal Lahir</label>
                             <input type="text" size="10" name="tgl_lahir" value="tanggal lahir ..." onfocus="this.value=''; this.onfocus=null;" id="tgl_lahir" class="text ui-widget-content ui-corner-all"/>
                         </li>
+                        <li>
+                            <label for="jam_lahir">Jam Lahir</label>
+                            <input type="text" size="20" name="jam_lahir" value="jam lahir (mode 24, eg: 16:17)..." onfocus="this.value=''; this.onfocus=null;" id="jam_lahir" class="text ui-widget-content ui-corner-all"/>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -62,13 +66,13 @@
                     <ul>
                         <li>
                             <label for="nik_ayah">NIK&nbsp;Ayah</label>
-                            <input type="text" readonly="readonly" value="klik tombol cari ..." name="nik_ayah" id="nik_ayah" class="text ui-widget-content ui-corner-all"/>
+                            <input type="text" onfocus="this.value='';this.onfocus=null;" readonly="readonly" value="klik tombol cari ..." name="nik_ayah" id="nik_ayah" class="text ui-widget-content ui-corner-all"/>
                             <span class="ui-helper-hidden">Data Ayah Tidak Ditemukan</span>
                             <button id="lookup_ayah" class="ui-button ui-state-default ui-corner-all">Cari</button>
                         </li>
                         <li>
                             <label for="nik_ibu">NIK&nbsp;Ibu</label>
-                            <input type="text" value="klik tombol cari .." readonly="readonly" name="nik_ibu" id="nik_ibu" class="text ui-widget-content ui-corner-all"/>
+                            <input type="text" onfocus="this.value='';this.onfocus=null;" value="klik tombol cari .." readonly="readonly" name="nik_ibu" id="nik_ibu" class="text ui-widget-content ui-corner-all"/>
                             <span class="ui-helper-hidden">Data Ibu Tidak Ditemukan</span>
                             <button id="lookup_ibu" class="ui-button ui-state-default ui-corner-all">Cari</button>
                         </li>
@@ -88,8 +92,10 @@
                     </ul>
                 </li>
             </ol>
-             <button id="save" class="ui-button ui-state-default ui-corner-all">Simpan</button>
-        <button id="cancel" class="ui-button ui-state-default ui-corner-all">Batal</button>
+            <input type="hidden" name="penduduk_id" id="penduduk_id" value="__"/>
+            <input type="hidden" name="mode" id="mode" value="add"
+            <button id="save" class="ui-button ui-state-default ui-corner-all">Simpan</button>
+            <button id="cancel" class="ui-button ui-state-default ui-corner-all">Batal</button>
         </fieldset>
        
     </form>
