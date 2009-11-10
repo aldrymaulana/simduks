@@ -1,0 +1,7 @@
+- penambahan group catatan sipil dan KUA (menu access group),
+- mockup form-form (target harus selesai malam ini)
+- pindah alamat di kecamatan saja
+- informasi total penduduk/kk/pria/wanita di letakan di home
+- form kk perlu filter kecamatan/desa
+- group kecamatan : kk dan ktp
+- group capil : akte kelahiran
