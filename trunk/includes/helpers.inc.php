@@ -1,4 +1,5 @@
 <?php
+include_once "mysqli.inc.php";
 class NikHelper {
     var $name = "";
     
@@ -37,41 +38,41 @@ function build_nik($kode_prop = null, $kode_kab = null, $kode_kec, $tanggal_lahi
 
 function nik($kode_kec, $tanggal_lahir, $laki = true)
 {
-    include "mysqli.inc.php";
+    $connection = MysqlManager::get_connection();
     // check kode_wilayah
     $sql = "select kd_wilayah from kecamatan where id = $kode_kec";
-    $result = $mysqli_connection->query($sql);
-    check_error($mysqli_connection);
+    $result = $connection->query($sql);
+    check_error($connection);
     $row = $result->fetch_object();
     $kode_wilayah = $row->kd_wilayah;
     echo $kode_wilayah."<br/>";
     
     // check counter
     $sql = "select count(*) as count from nikcounter where kecamatan_id = $kode_kec and tanggal = '$tanggal_lahir'";
-    $result = $mysqli_connection->query($sql);
-    check_error($mysqli_connection);
+    $result = $connection->query($sql);
+    check_error($connection);
     $row = $result->fetch_object();
     $count = $row->count;
     
     if($count == 0){// create new 
         $sql = "insert into nikcounter set kecamatan_id = $kode_kec, tanggal = '$tanggal_lahir', counter = 1";
-        $mysqli_connection->query($sql);
-        check_error($mysqli_connection);
-        $mysqli_connection->close();
+        $connection->query($sql);
+        check_error($connection);
+        $connection->close();
         
         return build_nik(null, null, $kode_wilayah, strtotime($tanggal_lahir), $laki, 1);
     } else {
         $sql = "select id, counter from nikcounter where kecamatan_id = $kode_kec and tanggal = '$tanggal_lahir'";
-        $result = $mysqli_connection->query($sql);
-        check_error($mysqli_connection);
+        $result = $connection->query($sql);
+        check_error($connection);
         $row = $result->fetch_object();
         $count =$row->counter;
         $id = $row->id;
         $count = $count + 1;
         $sql = "update nikcounter set counter = $count where id = $id ";
-        $mysqli_connection->query($sql);
-        check_error($mysqli_connection);
-        $mysqli_connection->close();
+        $connection->query($sql);
+        check_error($connection);
+        $connection->close();
         return build_nik(null, null, $kode_wilayah,  strtotime($tanggal_lahir), $laki, $count);
     }
 }
@@ -110,12 +111,12 @@ function check_error($connection)
  */
 function check_existing_groups($kecamatan_id)
 {
-    include "mysqli.inc.php";
+    $connection = MysqlManager::get_connection();
     $sql= "select count(*) as count from access_groups where kecamatan_id = $kecamatan_id";
-    $result = $mysqli_connection->query($sql);
-    check_error($mysqli_connection);
+    $result = $connection->query($sql);
+    check_error($connection);
     $row = $result->fetch_object();
-    $mysqli_connection->close();
+    MysqlManager::close_connection($connection);
     return $row->count;
 }
 
@@ -129,28 +130,29 @@ function check_existing_groups($kecamatan_id)
  */         
 function check_valid_user_password($user, $password)
 {    
-    include "mysqli.inc.php";
+    $conn = MysqlManager::get_connection();
     
     $query = "select count(*) as count from users where username='$user' and password=password('$password')";
     
-    $result = $mysqli_connection->query($query);
-    check_error($mysqli_connection);
+    $result = $conn->query($query);
+    check_error($conn);
     $row = $result->fetch_object();
     $found = $row->count;
     
-    $mysqli_connection->close();
+    MysqlManager::close_connection($conn);
     return $found;
 }
 
 function get_kecamatan_from_username($username)
 {
-    require "mysqli.inc.php";
+   
+    $connection = MysqlManager::get_connection();
     $sql = "select a.kecamatan_id as kecamatan_id from access_groups a, users u where u.username ='$username' and u.group_id = a.id";
    
-    $result = $mysqli_connection->query($sql);
-    check_error($mysqli_connection);
+    $result = $connection->query($sql);
+    check_error($connection);
     $row = $result->fetch_object();
-    $mysqli_connection->close();
+    MysqlManager::close_connection($connection);
     return $row->kecamatan_id;
 }
 
@@ -206,14 +208,14 @@ function __selected_index($array, $selected_item)
 
 function select_enum($table, $column, $selected_enum = '', $attributes='')
 {    
-    include "mysqli.inc.php";
+    $conn = MysqlManager::get_connection();
     $sql = "show columns from $table like '$column'";
-    $result = $mysqli_connection->query($sql);
-    check_error($mysqli_connection);
+    $result = $conn->query($sql);
+    check_error($conn);
     $row = $result->fetch_array();
     $str = str_replace("'","", substr($row[1],6,strlen($row[1])-7));
     $array = split(",", $str);
-    $mysqli_connection->close();
+    MysqlManager::close_connection($conn);
     $selected_index = 0;
     if(sizeof($selected_enum) > 0)
     {
@@ -224,13 +226,13 @@ function select_enum($table, $column, $selected_enum = '', $attributes='')
 
 function select_enum_without_default_value($table, $column, $attributes='')
 {    
-    include "mysqli.inc.php";
+    $conn = MysqlManager::get_connection();
     $sql = "show columns from $table like '$column'";
-    $result = $mysqli_connection->query($sql);
-    check_error($mysqli_connection);
+    $result = $conn->query($sql);
+    check_error($conn);
     $row = $result->fetch_array();    
     $str = str_replace("'","", substr($row[1], 6, strlen($row[1]) - 7));
-    $mysqli_connection->close();
+    MysqlManager::close_connection($conn);
     
     $array = split(",", $str);
     $result = "<select name='$column' $attributes >";
@@ -246,7 +248,7 @@ function select_enum_without_default_value($table, $column, $attributes='')
 
 function select($table, $key, $value, $select_name, $attributes='', $where = "", $selected_key = 1, $interceps = array())
 {    
-    require 'mysqli.inc.php';
+    $conn = MysqlManager::get_connection();
     $sql = "select $key as k , $value as val from $table";
     if(strlen($where) > 1)
     {
@@ -254,14 +256,14 @@ function select($table, $key, $value, $select_name, $attributes='', $where = "",
     }
    
     $list = array();
-    $result = $mysqli_connection->query($sql);
-    check_error($mysqli_connection);
+    $result = $conn->query($sql);
+    check_error($conn);
     while($row = $result->fetch_object())
     {
         $list[] = array("key" => $row->k, "value" => $row->val);
     }
     
-    $mysqli_connection->close();
+    MysqlManager::close_connection($conn);
     return __select_input($select_name, $list, $selected_key, $attributes, $interceps);
 }
 

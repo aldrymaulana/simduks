@@ -1,15 +1,15 @@
 <?php
 session_start();
+include_once '../includes/helpers.inc.php';
 function get_alamat_id($sql)
 {
     if(strlen($sql) == 0){
         return "";
     }
-    
-    include '../includes/db.inc.php';
-    $result = mysqli_query($link, $sql);
-    $row = mysqli_fetch_array($result);
-    mysqli_close($link);
+    $conn = MysqlManager::get_connection();    
+    $result = $conn->query($sql);
+    $row = $result->fetch_array();
+    MysqlManager::close_connection($conn);
     return $row['id'];
 }
 
@@ -17,7 +17,7 @@ if(isset($_POST['oper']))
 {
     if($_POST['oper'] == 'edit')
     {
-        include '../includes/db.inc.php';
+        $conn = MysqlManager::get_connection();
         $alamat = $_POST['alamat'];
         $id = $_POST['id'];
         $kelurahan_id  = $_POST['kelurahan_id'];
@@ -44,7 +44,8 @@ if(isset($_POST['oper']))
             // update existing alamat id with new values
             $update_alamat = "update alamat set alamat = '$alamat', rukun_tetangga = $rt, rukun_warga = $rw, kelurahan_id = $kelurahan_id where id = $existing_alamatid";
            
-            $result = mysqli_query($link, $update_alamat);
+            $result = $conn->query($update_alamat);
+            
             if(!$result) {
                 $error = "error updating alamat ...";
                 include "../includes/error.html.php";
@@ -56,29 +57,20 @@ if(isset($_POST['oper']))
         $sql = "update keluarga set kode_keluarga = '$kode_keluarga', no_formulir = '$no_formulir',
             alamat_id = $existing_alamatid where id = $id";
         
-        $result = mysqli_query($link, $sql);
-        if(!$result)
-        {
-            $error = "Error, cannot update keluarga ";
-            include '../includes/error.html.php';
-            exit();
-        }  
-             
+        $result = $conn->query( $sql);
+        check_error($conn);
+        MysqlManager::close_connection($conn);    
     } elseif($_POST['oper'] == 'del')
     {
-        include '../includes/db.inc.php';
+        $connection = MysqlManager::get_connection();
         $id = $_POST['id'];
         $sql = "delete from keluarga where id = $id";
-        $result = mysqli_query($link, $sql);
-        if(!$result)
-        {
-            $error = "tidak dapat menghapus data kecamatan ";
-            include '../includes/error.html.php';
-            exit();
-        }
+        $result = $connection->query( $sql);
+        check_error($connection);
+        MysqlManager::close_connection($connection);
     } elseif($_POST['oper'] == 'add')
     {
-        include '../includes/db.inc.php';
+        $connection = MysqlManager::get_connection();
         $alamat = $_POST['alamat'];
         $rt = $_POST['rukun_tetangga'];
         $rw  = $_POST['rukun_warga'];
@@ -92,33 +84,22 @@ if(isset($_POST['oper']))
         $alamatid = get_alamat_id($find_alamat);
         if(strlen($alamatid) == 0){
             $insert_alamat = "insert into alamat set alamat = '$alamat', rukun_tetangga = $rt, rukun_warga = $rw, kelurahan_id = $kelurahan_id";
-            $result = mysqli_query($link, $insert_alamat);
-            if(!$result)
-            {
-                $error = "tidak dapat menambah alamat ";
-                include '../includes/error.html.php';
-                exit();
-            }
+            $result = $connection->query($insert_alamat);
+            check_error($connection);
             $alamatid = get_alamat_id($find_alamat);
         }
         // insert data keluarga
         $sql = "insert into keluarga set kode_keluarga = '$kode_keluarga', alamat_id = $alamatid, no_formulir = '$no_formulir'";
                 
-        $result = mysqli_query($link, $sql);
-        if(!$result)
-        {
-            $error = "tidak dapat menambah keluarga ";
-            include '../includes/error.html.php';
-            exit();
-        }
-        mysqli_close($link);
+        $result = $connection->query($sql);
+        check_error($connection);
+        MysqlManager::close_connection($connection);
         echo "success";
     }
 }
 elseif(isset($_GET['q']))
 {
-    include '../includes/helpers.inc.php';
-    include '../includes/mysqli.inc.php';
+    $connection = MysqlManager::get_connection();    
     $resp = "";
     $req = $_GET['q'];
     $page = $_GET['page'];
@@ -211,8 +192,8 @@ elseif(isset($_GET['q']))
             
             $sql = "SELECT count(*) as count FROM keluarga k WHERE k.alamat_id IN (SELECT id FROM alamat a WHERE a.kelurahan_id IN (SELECT id FROM kelurahan kel WHERE kel.kecamatan_id = $kec_id ))";
             
-            $result = $mysqli_connection->query($sql);
-            check_error($mysqli_connection);
+            $result = $connection->query($sql);
+            check_error($connection);
             $row = $result->fetch_object();
             $count = $row->count;
             
@@ -235,10 +216,10 @@ elseif(isset($_GET['q']))
                 $sql = "select k.id, k.kode_keluarga, k.no_formulir, a.alamat, a.rukun_tetangga, a.rukun_warga, kel.nama_kelurahan from keluarga k, alamat a, kelurahan kel where k.alamat_id = a.id and a.kelurahan_id = kel.id and kel.kecamatan_id = $kec_id  order by $sidx $sord limit $start, $limit";
             
            //
-           //echo $sql;
+          
            //exit();
-           $result = $mysqli_connection->query($sql);
-           check_error($mysqli_connection);
+           $result = $connection->query($sql);
+           check_error($connection);
            $resp->page =$page;
            $resp->total = $total_pages;
            $resp->records = $count;
@@ -249,7 +230,7 @@ elseif(isset($_GET['q']))
                $resp->rows[$i]['cell'] = array($row->id, $row->kode_keluarga, $row->no_formulir, $row->alamat, $row->rukun_tetangga, $row->rukun_warga, $row->nama_kelurahan);
                $i++;            
            }
-           $mysqli_connection->close();
+           
            echo json_encode($resp);
         break;
         case 2:
@@ -257,6 +238,6 @@ elseif(isset($_GET['q']))
             
         break;
      }   
-    exit();
+    MysqlManager::close_connection($connection);
 }
 ?>

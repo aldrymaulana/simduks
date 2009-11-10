@@ -121,7 +121,7 @@ switch($request)
         include "../includes/helpers.inc.php";
         $kec_id = $_GET['kecamatan_id'];
         echo select("kelurahan", "id", "nama_kelurahan", "kelurahan",
-            'class="ui-widget-content ui-corner-all"',
+            'class="wui-widget-content ui-corner-all"',
             "kecamatan_id = $kec_id");
         break;
 }
