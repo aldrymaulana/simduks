@@ -1,5 +1,6 @@
 <?php
 include_once "mysqli.inc.php";
+include_once "statics.id.inc.php";
 class NikHelper {
     var $name = "";
     
@@ -8,12 +9,7 @@ class NikHelper {
         $this->name = "NikHelper";
     }
     
-    function generate_nik($kodeProp = null, $kodeKab = null, $kodeKec, $dob, $laki=true, $nomorUrut) {
-        if(!$kodeProp)
-            $kodeProp = 36; // jatim
-        if(!$kodeKab)
-            $kodeKab = 40; // surabaya
-                
+    function generate_nik($kodeKec, $dob, $laki=true, $nomorUrut) {        
         $date = '';
         $monthYear = '';		        
         $monthYear = strftime(date('my', $dob));       
@@ -26,14 +22,14 @@ class NikHelper {
         }			
         $date = sprintf('%02d', $date);
         $urutan = sprintf('%04d', $nomorUrut);			
-        return $kodeProp.''.$kodeKab.''.$kodeKec.''.$date.''.$monthYear.''.$urutan; 
+        return $kodeKec.''.$date.''.$monthYear.''.$urutan; 
     }
 }
 
-function build_nik($kode_prop = null, $kode_kab = null, $kode_kec, $tanggal_lahir, $laki = true, $nomor_urut)
+function build_nik($kode_kec, $tanggal_lahir, $laki = true, $nomor_urut)
 {
     $nik = new NikHelper();
-    return $nik->generate_nik($kode_prop, $kode_kab, $kode_kec, $tanggal_lahir, $laki, $nomor_urut);
+    return $nik->generate_nik($kode_kec, $tanggal_lahir, $laki, $nomor_urut);
 }
 
 function nik($kode_kec, $tanggal_lahir, $laki = true)
@@ -45,8 +41,7 @@ function nik($kode_kec, $tanggal_lahir, $laki = true)
     check_error($connection);
     $row = $result->fetch_object();
     $kode_wilayah = $row->kd_wilayah;
-    echo $kode_wilayah."<br/>";
-    
+       
     // check counter
     $sql = "select count(*) as count from nikcounter where kecamatan_id = $kode_kec and tanggal = '$tanggal_lahir'";
     $result = $connection->query($sql);
@@ -60,7 +55,7 @@ function nik($kode_kec, $tanggal_lahir, $laki = true)
         check_error($connection);
         $connection->close();
         
-        return build_nik(null, null, $kode_wilayah, strtotime($tanggal_lahir), $laki, 1);
+        return build_nik($kode_wilayah, strtotime($tanggal_lahir), $laki, 1);
     } else {
         $sql = "select id, counter from nikcounter where kecamatan_id = $kode_kec and tanggal = '$tanggal_lahir'";
         $result = $connection->query($sql);
@@ -73,7 +68,7 @@ function nik($kode_kec, $tanggal_lahir, $laki = true)
         $connection->query($sql);
         check_error($connection);
         $connection->close();
-        return build_nik(null, null, $kode_wilayah,  strtotime($tanggal_lahir), $laki, $count);
+        return build_nik($kode_wilayah,  strtotime($tanggal_lahir), $laki, $count);
     }
 }
 
@@ -261,10 +256,16 @@ function select($table, $key, $value, $select_name, $attributes='', $where = "",
     while($row = $result->fetch_object())
     {
         $list[] = array("key" => $row->k, "value" => $row->val);
-    }
-    
+    }    
     MysqlManager::close_connection($conn);
     return __select_input($select_name, $list, $selected_key, $attributes, $interceps);
+}
+
+function get_capil_kua_key(){
+    $add = array();
+    $add[] = array("key"=>CAPIL_KEY, "value"=>"Capil");
+    $add[] = array("key"=>KUA_KEY, "value"=>"KUA");
+    return $add;
 }
 
 function Strip($value)

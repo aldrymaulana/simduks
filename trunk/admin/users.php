@@ -1,26 +1,27 @@
 <?php
 session_start();
 include "../includes/statics.id.inc.php";
+include_once "../includes/helpers.inc.php";
 if(isset($_GET['q'])) {
 	
 
     $req = $_GET['q'];
-    $page = $_GET['page'];
-	$limit = $_GET['rows'];
-	$sord = $_GET['sord'];
-	$sidx = $_GET['sidx'];
-	$group_id = $_GET['group_id'];
-	if(!sidx) {
-        $sidx = 1;
-	}
+    
 
     switch($req) {
         case 1:
-			include_once "../includes/mysqli.inc.php";
-			include_once "../includes/helpers.inc.php";
+			$page = $_GET['page'];
+			$limit = $_GET['rows'];
+			$sord = $_GET['sord'];
+			$sidx = $_GET['sidx'];
+			$group_id = $_GET['group_id'];
+			if(!$sidx) {
+				$sidx = 1;
+			}
+			$connection = MysqlManager::get_connection();
             $sql = "select count(*) as count from users where username not like 'admin'";
-            $result =  $mysqli_connection->query($sql);
-			check_error($mysqli_connection);
+            $result =  $connection->query($sql);
+			check_error($connection);
 			$row = $result->fetch_object();
 			$count = $row->count;
 			if($count and $count > 0)
@@ -42,8 +43,8 @@ if(isset($_GET['q'])) {
                  $start = 0;
 			}
 			$sql = "select id ,username, password from users where group_id = $group_id";
-			$result = $mysqli_connection->query($sql);
-			check_error($mysqli_connection);
+			$result = $connection->query($sql);
+			check_error($connection);
 			$resp->page = $page;
 			$resp->total = $total_pages;
 			$resp->records = $count;
@@ -54,14 +55,11 @@ if(isset($_GET['q'])) {
 				$resp->rows[$i]['cell'] = array($row->id, $row->username, $row->password);
 				$i++;
 			}
-			$mysqli_connection->close();
+			MysqlManager::close_connection($connection);
 			echo json_encode($resp);
             break;
-        case 2:
-			include_once "../includes/helpers.inc.php";
-			$add = array();
-            $add[] = array("key"=>CAPIL_KEY, "value"=>"Capil");
-            $add[] = array("key"=>KUA_KEY, "value"=>"KUA");
+        case 2:			
+			$add = get_capil_kua_key();
 			echo select('kecamatan', 'id', 'nama_kecamatan', "nama_kecamatan","","",1,$add);
             break;
     }
@@ -69,7 +67,7 @@ if(isset($_GET['q'])) {
 
 if(isset($_POST['oper']))
 {
-	include "../includes/mysqli.inc.php";
+	$connection = MysqlManager::get_connection();
 	$oper = $_POST['oper'];
 	switch($oper)
 	{
@@ -78,25 +76,25 @@ if(isset($_POST['oper']))
 			$password = $_POST['password'];
 			$group_id = $_POST['group_id'];
 			$sql = "insert into users set username='$username', password=password('$password'), group_id = $group_id";
-			$mysqli_connection->query($sql);
-			check_error($mysqli_connection);
-			$mysqli_connection->close();
+			$connection->query($sql);
+			check_error($connection);
+			MysqlManager::close_connection($connection);
 			break;
 		case "edit":
 			$username = $_POST['username'];
 			$password = $_POST['password'];
 			$id = $_POST['id'];
 			$sql = "update users set username = '$username', password = password('$password') where id = $id";
-			$mysqli_connection->query($sql);
-			check_error($mysqli_connection);
-			$mysqli_connection->close();
+			$connection->query($sql);
+			check_error($connection);
+			MysqlManager::close_connection($connection);
 			break;
 		case "del":
 			$id = $_POST['id'];
 			$sql = "delete from users where id = $id";
-			$mysqli_connection->query($sql);
-			check_error($mysqli_connection);
-			$mysqli_connection->close();
+			$connection->query($sql);
+			check_error($connection);
+			MysqlManager::close_connection($connection);
 			break;
 	}
 }
@@ -179,14 +177,12 @@ function retrieve_menus() {
 }
 
 
-function do_login($username, $password) {
-    require_once "../includes/helpers.inc.php";
+function do_login($username, $password) {    
     return check_valid_user_password($username, $password) == 0 ? false: true;
 }
 
 function get_kecamatan($username)
-{		
-    require_once "../includes/helpers.inc.php";
+{		   
 	return get_kecamatan_from_username($username);
 }
 ?>

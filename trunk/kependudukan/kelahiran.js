@@ -27,6 +27,16 @@ jQuery(document).ready(function(){
 		}
 	})
 	
+	$.ajax({
+		url : "kependudukan/penduduk.php?q=2&id=kecamatan",
+		type: "get",
+		dataType: "html",
+		data: {},
+		success: function(data, status){
+			$("#lbl_kecamatan").after(data);
+		}
+	});
+	
 	$("#lookup_ayah").click(function(event){
 		event.preventDefault();
 		$("#search_ayah").dialog("open");
@@ -105,41 +115,7 @@ jQuery(document).ready(function(){
 		}
 	});
 	
-	$("#fotodialog").dialog({
-		bgiframe: true,
-		autoOpen : false,
-		modal: true,
-		buttons: {
-			"Crop" : function(){
-				alert("croped");
-			},
-			"Tutup": function(){
-				$(this).dialog("close");
-			}
-		}
-	});
 	
-	$("#jcrop").Jcrop({
-		onChange: showPreview,
-		onSelect: showPreview,
-		aspectRatio: 1
-	});
-	
-	function showPreview(coord){
-		if (parseInt(coords.w) > 0)
-		{
-			var rx = 100 / coords.w;
-			var ry = 100 / coords.h;
-
-			jQuery('#preview').css({
-				width: Math.round(rx * 500) + 'px',
-				height: Math.round(ry * 370) + 'px',
-				marginLeft: '-' + Math.round(rx * coords.x) + 'px',
-				marginTop: '-' + Math.round(ry * coords.y) + 'px'
-			});
-		}
-	}
-
 	$("#save").click(function(event){
 		event.preventDefault();
 		$.ajax({
@@ -159,7 +135,8 @@ jQuery(document).ready(function(){
 				saksi1 : $("#saksi_1").val(),
 				saksi2 : $("#saksi_2").val(),
 				mode : $("#mode").val(),
-				penduduk_id : $("#penduduk_id").val()
+				penduduk_id : $("#penduduk_id").val(),
+				kecamatan_id : $("#kecamatan_id").val()
 				},
 			success : function(data, status){
 				$("#save").after(data);
