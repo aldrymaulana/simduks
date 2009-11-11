@@ -87,7 +87,7 @@ div.title h2{
 
 #upload_output{
 	position: absolute;
-	z-index: 1000;
+	z-index: 50;
 	top: 150px;
 	left: 780px;
 }
@@ -152,4 +152,28 @@ legend {
 
 .form button{
 	font-size: 85%;
+}
+
+/** jcrop additional style */
+.jcropper-holder{
+	border: 1px black solid;
+}
+#outer {
+	text-align: center;
+}
+.jcExample
+{
+	text-align: left;
+	background: white;
+	width: 700px;
+	font-size: 80%;
+	margin: 3.5em auto 2em auto;
+	*margin: 3.5em 10% 2em 10%;
+	border: 1px black solid;
+	padding: 1em 2em 2em;
+}
+
+.jcExample .article
+{
+	width: 565px;
 }

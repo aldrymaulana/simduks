@@ -97,7 +97,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
 		<!-- This is the image we're attaching Jcrop to -->
 		<img src="demo_files/flowers.jpg" id="cropbox" />
-
+		<div style="width:100px;height:100px;overflow:hidden;">
+			<img src="demo_files/flowers.jpg" id="preview" />
+		</div>
 		<!-- This is the form that our event handler fills -->
 		<form action="crop.php" method="post" onsubmit="return checkCoords();">
 			<input type="hidden" id="x" name="x" />
@@ -113,9 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 			button, the form will be submitted and a 150x150 thumbnail will be
 			dumped to the browser. Try it!
 		</p>
-		<div style="width:100px;height:100px;overflow:hidden;">
-			<img src="demo_files/flowers.jpg" id="preview" />
-		</div>
+		
 		<div id="dl_links">
 			<a href="http://deepliquid.com/content/Jcrop.html">Jcrop Home</a> |
 			<a href="http://deepliquid.com/content/Jcrop_Manual.html">Manual (Docs)</a>

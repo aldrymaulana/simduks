@@ -38,16 +38,66 @@ jQuery(document).ready(function(){
                 $("#penduduk_id").val(data.id);
                 $("#oper").val("upload");
                 $("#photo").val("");
+                if(data.umur < 17){
+                    $("#save").attr("disabled", "disabled");
+                    $("#error").html("<p style='color:red;'>Umur belum mencukupi untuk membuat KTP</p>");
+                }
+                
+                if(data.photo.length > 0){
+                    $("#upload_output").html(
+                        "<img src=\"" + data.photo + "\/>"  
+                    );
+                }
             }
         });
     });
     
-    $("#form_ktp").ajaxForm({
+    function updateCoords(c)
+    {
+        $('#x').val(c.x);
+        $('#y').val(c.y);
+        $('#w').val(c.w);
+        $('#h').val(c.h);
+        
+        if (parseInt(c.w) > 0)
+        {
+            var rx = 100 / c.w;
+            var ry = 100 / c.h;
+
+            jQuery('#preview').css({
+                width: Math.round(rx * 500) + 'px',
+                height: Math.round(ry * 370) + 'px',
+                marginLeft: '-' + Math.round(rx * c.x) + 'px',
+                marginTop: '-' + Math.round(ry * c.y) + 'px'
+            });
+        }
+    };
+    
+    var form_ktp = $("#form_ktp").ajaxForm({
         beforeSubmit : function(a, f, o){
             o.dataType = "html";
         },
-        success : function(data){            
+        success : function(data){
+            $("#pdf").remove();
             $("#upload_output").html(data);
+            $('#cropbox').Jcrop({
+                aspectRatio: 1,
+                onSelect: updateCoords,
+                onChange: updateCoords
+            });
+            var id = $("#penduduk_id").val();
+            var pdf = "&nbsp;&nbsp;<a href=\"reports/pdf/lap3.php?penduduk_id=" + id + "\" target=\"_blank\" id=\"pdf\">pdf</a>";
+            $("#cancel").after(
+                pdf
+            );
         }
     });
+    
+    $("#cancel").click(function(event){
+        event.preventDefault();
+        $("#form_ktp").resetForm();
+        $("#error").html("");
+        $("#nik").attr("onfocus","this.value='';this.onfocus=null;");
+    });
+    
 })
