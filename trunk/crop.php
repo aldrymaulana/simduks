@@ -340,6 +340,5 @@ if(strlen($large_photo_exists)>0 && strlen($thumb_photo_exists)>0){
 	Photo <input type="file" name="image" size="30" /> <input type="submit" name="upload" value="Upload" />
 	</form>
 <?php } ?>
-<!-- Copyright (c) 2008 http://www.webmotionuk.com -->
 </body>
 </html>
