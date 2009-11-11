@@ -1,5 +1,6 @@
 <?php
 include "../../fpdf.php";
+include_once "../../includes/helpers.inc.php";
 
 class PDF extends FPDF
 {
@@ -40,8 +41,12 @@ class PDF extends FPDF
     }
 }
 
-$pdf = new PDF();
-$pdf->AddPage();
-$pdf->add_table();
-$pdf->Output();
+if(isset($_GET['id'])){
+    $penduduk_id = $_GET['id'];
+    
+    $pdf = new PDF();
+    $pdf->AddPage();
+    $pdf->add_table();
+    $pdf->Output();   
+}
 ?>

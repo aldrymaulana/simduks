@@ -1,6 +1,9 @@
 <?php
 include_once "mysqli.inc.php";
 include_once "statics.id.inc.php";
+
+date_default_timezone_set("Asia/Jakarta");
+
 class NikHelper {
     var $name = "";
     
@@ -298,5 +301,15 @@ function array_is_associative ($array)
         return ! array_key_exists(0, $array);
     }
     return false;
+}
+
+function CalculateAge($dob){
+   $d1 = strtotime($dob);
+   $d2 = strtotime("now");
+   $age = 0;
+   while($d2 > $d1 = strtotime("+1 year", $d1)){
+        ++$age;
+   }
+   return $age;
 }
 ?>

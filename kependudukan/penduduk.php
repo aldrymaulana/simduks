@@ -120,7 +120,7 @@ if(isset($_REQUEST['q']))
         case 4: // cari data penduduk
             $nik = $_GET['nik'];
             $connection = MysqlManager::get_connection();
-            $sql = "SELECT p.id as id, p.nik as nik, p.nama as nama, p.jenis_kelamin as jenis_kelamin,
+            $sql = "SELECT p.id as id, p.nik as nik, p.nama as nama, p.jenis_kelamin as jenis_kelamin, p.photo as photo,
                 p.status_nikah as status_nikah, p.gol_darah as gol_darah, p.tmp_lahir as tmp_lahir, p.tgl_lahir as tgl_lahir,
                 a.agama as agama, pen.pendidikan as pendidikan, pek.pekerjaan as pekerjaan, p.keluarga_id as keluarga_id,
                 p.wni as wni FROM penduduk p, agama a, pendidikan pen, pekerjaan pek where p.nik = '$nik' 
@@ -141,7 +141,11 @@ if(isset($_REQUEST['q']))
             $resp->pendidikan = $row->pendidikan;
             $resp->pekerjaan = $row->pekerjaan;
             $resp->wni = $row->wni;
+            $resp->photo = $row->photo;
             $keluarga_id = $row->keluarga_id;
+            // check umur
+            $umur = CalculateAge($row->tgl_lahir);
+            $resp->umur = $umur;
             // find alamat
             $sql = "select alamat_id from keluarga where id = $keluarga_id";
             $result = $connection->query($sql);
@@ -258,11 +262,21 @@ if(isset($_POST['oper']))
                 move_uploaded_file($userfile_tmp, $image_path);
                 $image_path = "statics/images/foto/$filename";
                 $connection = MysqlManager::get_connection();
-                $sql = "update penduduk set photo = '$image_path' where id=$penduduk_id";
+                $sql = "update penduduk set photo = '$filename' where id=$penduduk_id";
                 $result = $connection->query($sql);
                 check_error($connection);
                 MysqlManager::close_connection($connection);
-                echo "<img src='$image_path'/>";
+                
+                echo '<div id="outer">';
+                //echo '<div class="jcExample">';
+                //echo '<div class="article">';
+                echo '<img src="'.$image_path.'" id="cropbox" />';
+                echo '<div style="width:100px;height:100px;overflow:hidden;">';
+                echo '    <img src="'.$image_path.'" id="preview" />';
+                echo '</div>';
+                //echo '</div>';
+                //echo '</div>';
+                echo '</div>';
             }           
             break;
     }
