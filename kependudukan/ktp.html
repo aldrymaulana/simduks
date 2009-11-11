@@ -1,6 +1,6 @@
 
 <div id="KTP" title="Pembuatan KTP">    
-    <form class="form">
+    <form class="form" id="form_ktp" action="kependudukan/penduduk.php" method="post" enctype="multipart/form-data">
         <fieldset>
             <legend>Pengelolaan KTP</legend>
 			<ol>
@@ -38,7 +38,7 @@
                     <ul>
 						<li><label for="rt">R.T/R.W</label>
 							<input type="text" readonly="readonly" name="rt" size="4" maxlength="4" id="rt" class="text ui-widget-content ui-corner-all"/>
-							<input type="text" readonly="readonly" name="rt" size="4" maxlength="4" id="rt" class="text ui-widget-content ui-corner-all"/>
+							<input type="text" readonly="readonly" name="rw" size="4" maxlength="4" id="rw" class="text ui-widget-content ui-corner-all"/>
 						</li>
 						<li>
 							<label for="desa">Desa</label>
@@ -71,11 +71,22 @@
 					<label for="kewarganegaran">Kewarganegaraan</label>
 					<input type="text" readonly="readonly" name="kewarganegaraan" id="kewarganegaraan" class="text ui-widget-content ui-corner-all"/>
 				</li>
+				<li>
+					<label for="photo">Photo</label>
+					<input type="file" id="photo" name="photo" class="ui-widget-content ui-corner-all"/>
+				</li>
             </ol>
-			
-            <button id="save" class="ui-button ui-state-default ui-corner-all">Simpan</button>
+			<input type="hidden" name="penduduk_id" id="penduduk_id"/>
+			<input type="hidden" name="oper" id="oper"/>
+			<input type="hidden" name="MAX_FILE_SIZE" value="100000" /> 
+            <button type="submit" id="save" class="ui-button ui-state-default ui-corner-all">Simpan</button>
             <button id="cancel" class="ui-button ui-state-default ui-corner-all">Batal</button>
         </fieldset>
     </form>
 </div>
+<div id="upload_output">
+	
+</div>
+<script src="statics/js/jquery.form.js" type="text/javascript"/>
+<!-- script src="statics/js/jquery.Jcrop.min.js" type="text/javascript"/ -->
 <script type="text/javascript" src="kependudukan/ktp.js"></script>

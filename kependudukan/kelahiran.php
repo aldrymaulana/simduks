@@ -1,10 +1,10 @@
 <?php
 // processing akta kelahiran
 session_start();
-include_once "../includes/helpers.inc.php";
 include_once "../dbaccess/orangtua_controller.php";
 if(isset($_POST['mode']))
 {
+	$connection = MysqlManager::get_connection();
 	$ortu_controller = new OrangTuaController();
 	$mode = $_POST['mode'];
 	switch($mode)
@@ -28,7 +28,24 @@ if(isset($_POST['mode']))
 			$jam_lahir = $_POST['jam_lahir'];
 			$saksi1 = $_POST['saksi1'];
 			$saksi2 = $_POST['saksi2'];
-			
+			//insert datapenduduk
+			$kecamatan_id = $_POST['kecamatan_id'];
+			$laki = $jenis_kelamin == 'Perempuan' ? false : true;
+			$nik = nik($kecamatan_id, $tanggal_lahir, $laki);
+			$sql = "insert into penduduk set nik = '$nik', nama = '$nama', status_hub_kel = 'Anak',
+                tmp_lahir = '$tempat_lahir', tgl_lahir = '$tanggal_lahir', 
+                gol_darah = '$golongan_darah', 
+                status_nikah = 'Tidak kawin', jenis_kelamin = '$jenis_kelamin',
+                keluarga_id = $kartukeluarga_id";				
+			$connection->query($sql);
+			check_error($connection);
+			//insert akte penduduk
+			$id_anak = $ortu_controller->get_penduduk_id($nik);
+			$sql = "insert into akta_kelahiran set penduduk_id = $id_anak, no_akta = '$no_akte', jam_lahir = '$jam_lahir', saksi1 = '$saksi1',
+				saksi2 = '$saksi2', created_at = now()";
+			$connection->query($sql);
+			check_error($connection);
+			echo "<a id='report_link' href='reports/pdf/lap1.php?nik=$nik'>Sukses, klik disini untuk cetak</a>";
 		    break;
 		case "update":
 		    break;
@@ -47,5 +64,5 @@ function get_kartukeluarga_id($nik)
 	MysqlManager::close_connection($connection);
 	return $row->keluarga_id;
 }
-echo "<a id='report_link' href='kependudukan/kelahiran.php?q=report&id=1'>Sukses, klik disini untuk cetak</a>";
+
 ?>

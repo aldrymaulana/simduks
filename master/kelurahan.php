@@ -1,11 +1,12 @@
 <?php
 session_start();
+include_once "../includes/helpers.inc.php";
 
 if(isset($_POST['oper']))
 {
+    $connection = MysqlManager::get_connection();
     if($_POST['oper'] == 'edit')
-    {
-        include '../includes/mysqli.inc.php';        
+    {               
         $id = $_POST['id'];
         $kec_id = $_POST['kecamatan_id'];
         $nama_kelurahan = $_POST['nama_kelurahan'];
@@ -14,27 +15,18 @@ if(isset($_POST['oper']))
         $sql = "update kelurahan set lurah = '$lurah', nama_kelurahan = '$nama_kelurahan',
             kecamatan_id = $kec_id where id=$id";
        
-        $result = $mysqli_connection->query($sql); //mysqli_query($link, $sql);
-        if(!$result)
-        {
-            $error = "Error, cannot update kelurahan ".mysqli_connect_error();
-            include '../includes/error.html.php';
-            exit();
-        }
-        $mysqli_connection->close(); //mysqli_close($link);
+        $result = $connection->query($sql); //mysqli_query($link, $sql);
+        check_error($connection);
     } elseif($_POST['oper'] == 'del')
     {
-        include '../includes/mysqli.inc.php';
+        
         $id = $_POST['id'];
         $sql = "delete from kelurahan where id=$id";
        
-        $result = $mysqli_connection->query($sql); //mysqli_query($link, $sql);
-        check_error($mysqli_connection);
-        
-        $mysqli_connection->close(); //mysqli_close($link);
+        $result = $connection->query($sql); //mysqli_query($link, $sql);
+        check_error($connection);
     } elseif($_POST['oper'] == 'add')
-    {
-        include '../includes/mysqli.inc.php';
+    {       
         $lurah = $_POST['lurah'];
         $nama_kelurahan = $_POST['nama_kelurahan'];
         $kecamatan_id  = $_POST['kecamatan_id'];
@@ -42,107 +34,93 @@ if(isset($_POST['oper']))
         $sql = "insert into kelurahan set lurah = '$lurah', nama_kelurahan = '$nama_kelurahan',
             kecamatan_id = '$kecamatan_id'";
         
-        $result = $mysqli_connection->query($sql);// mysqli_query($link, $sql);
-        if(!$result)
-        {
-            $error = "tidak dapat menambah kelurahan ".mysqli_connect_error();
-            include '../includes/error.html.php';
-            exit();
-        }
-        $mysqli_connection->close(); //mysqli_close($link);
+        $result = $connection->query($sql);// mysqli_query($link, $sql);
+        check_error($connection);
     }
 }
 elseif(isset($_GET['q']))
-{
-    include '../includes/helpers.inc.php';
+{    
     $resp = "";
     $req = $_GET['q'];
-    $page = $_GET['page'];
-    $limit = $_GET['rows'];
-    $sord = $_GET['sord'];
-    $sidx = $_GET['sidx'];
-    $total_pages = '';
-    if(!$sidx)
-        $sidx = 1;
-        /*
-    $kecamatan_id = $_GET['kecamatan_id'];
-    if(0 == $kecamatan_id)
-    {
-        echo json_encode($resp);
-        exit();
-    }*/
-    $wh = "";
-     $searchOn = Strip($_REQUEST['_search']);
-     if($searchOn=='true') {
-         $fld = Strip($_REQUEST['searchField']);
-         if( $fld=='id' || $fld =='invdate' || $fld=='name' || $fld=='amount' || $fld=='tax' || $fld=='total' || $fld=='note' ) {
-             $fldata = Strip($_REQUEST['searchString']);
-             $foper = Strip($_REQUEST['searchOper']);
-             // costruct where
-             $wh .= " AND ".$fld;
-             switch ($foper) {
-                 case "bw":
-                     $fldata .= "%";
-                     $wh .= " LIKE '".$fldata."'";
-                     break;
-                 case "eq":
-                     if(is_numeric($fldata)) {
-                             $wh .= " = ".$fldata;
-                     } else {
-                             $wh .= " = '".$fldata."'";
-                     }
-                     break;
-                 case "ne":
-                     if(is_numeric($fldata)) {
-                             $wh .= " <> ".$fldata;
-                     } else {
-                             $wh .= " <> '".$fldata."'";
-                     }
-                     break;
-                 case "lt":
-                     if(is_numeric($fldata)) {
-                             $wh .= " < ".$fldata;
-                     } else {
-                             $wh .= " < '".$fldata."'";
-                     }
-                     break;
-                 case "le":
-                     if(is_numeric($fldata)) {
-                             $wh .= " <= ".$fldata;
-                     } else {
-                             $wh .= " <= '".$fldata."'";
-                     }
-                     break;
-                 case "gt":
-                     if(is_numeric($fldata)) {
-                             $wh .= " > ".$fldata;
-                     } else {
-                             $wh .= " > '".$fldata."'";
-                     }
-                     break;
-                 case "ge":
-                     if(is_numeric($fldata)) {
-                             $wh .= " >= ".$fldata;
-                     } else {
-                             $wh .= " >= '".$fldata."'";
-                     }
-                     break;
-                 case "ew":
-                     $wh .= " LIKE '%".$fldata."'";
-                     break;
-                 case "ew":
-                     $wh .= " LIKE '%".$fldata."%'";
-                     break;
-                 default :
-                     $wh = "";
-             }
-         }
-     }
-     
-     include '../includes/mysqli.inc.php';
+    $connection = MysqlManager::get_connection(); 
      switch($req)
      {
          case 1:// request data agama
+            $page = $_GET['page'];
+            $limit = $_GET['rows'];
+            $sord = $_GET['sord'];
+            $sidx = $_GET['sidx'];
+            $total_pages = '';
+            if(!$sidx)
+                $sidx = 1;
+            
+            $wh = "";
+             $searchOn = Strip($_REQUEST['_search']);
+             if($searchOn=='true') {
+                 $fld = Strip($_REQUEST['searchField']);
+                 if( $fld=='id' || $fld =='invdate' || $fld=='name' || $fld=='amount' || $fld=='tax' || $fld=='total' || $fld=='note' ) {
+                     $fldata = Strip($_REQUEST['searchString']);
+                     $foper = Strip($_REQUEST['searchOper']);
+                     // costruct where
+                     $wh .= " AND ".$fld;
+                     switch ($foper) {
+                         case "bw":
+                             $fldata .= "%";
+                             $wh .= " LIKE '".$fldata."'";
+                             break;
+                         case "eq":
+                             if(is_numeric($fldata)) {
+                                     $wh .= " = ".$fldata;
+                             } else {
+                                     $wh .= " = '".$fldata."'";
+                             }
+                             break;
+                         case "ne":
+                             if(is_numeric($fldata)) {
+                                     $wh .= " <> ".$fldata;
+                             } else {
+                                     $wh .= " <> '".$fldata."'";
+                             }
+                             break;
+                         case "lt":
+                             if(is_numeric($fldata)) {
+                                     $wh .= " < ".$fldata;
+                             } else {
+                                     $wh .= " < '".$fldata."'";
+                             }
+                             break;
+                         case "le":
+                             if(is_numeric($fldata)) {
+                                     $wh .= " <= ".$fldata;
+                             } else {
+                                     $wh .= " <= '".$fldata."'";
+                             }
+                             break;
+                         case "gt":
+                             if(is_numeric($fldata)) {
+                                     $wh .= " > ".$fldata;
+                             } else {
+                                     $wh .= " > '".$fldata."'";
+                             }
+                             break;
+                         case "ge":
+                             if(is_numeric($fldata)) {
+                                     $wh .= " >= ".$fldata;
+                             } else {
+                                     $wh .= " >= '".$fldata."'";
+                             }
+                             break;
+                         case "ew":
+                             $wh .= " LIKE '%".$fldata."'";
+                             break;
+                         case "ew":
+                             $wh .= " LIKE '%".$fldata."%'";
+                             break;
+                         default :
+                             $wh = "";
+                     }
+                 }
+             }
             // get total data
             $kecamatan_id = $_GET['kecamatan_id'];
             if(!isset($_GET['kecamatan_id']))
@@ -153,9 +131,9 @@ elseif(isset($_GET['q']))
             {
                $sql = "select count(*) as count from kelurahan where kecamatan_id = ".$_GET['kecamatan_id'];
             }
-            $result = $mysqli_connection->query($sql);// mysqli_query($link, $sql);
-			check_error($mysqli_connection);
-            $row = $result->fetch_object();// mysqli_fetch_array($result);
+            $result = $connection->query($sql);
+			check_error($connection);
+            $row = $result->fetch_object();
             $count = $row->count;// $row['count'];  
             
             if($count > 0){
@@ -187,8 +165,8 @@ elseif(isset($_GET['q']))
                     $sql = "select kk.id, kk.lurah, kk.nama_kelurahan from kelurahan kk, kecamatan kec where kk.kecamatan_id = kec.id and kk.kecamatan_id = ".$kecamatan_id." order by ".$sidx." ".$sord." limit ".$start.", ".$limit;
             }
            
-           $result = $mysqli_connection->query($sql);// mysqli_query($link, $sql);
-           check_error($mysqli_connection);
+           $result = $connection->query($sql);// mysqli_query($link, $sql);
+           check_error($connection);
            $resp->page =$page;
            $resp->total = $total_pages;
            $resp->records = $count;
@@ -199,8 +177,7 @@ elseif(isset($_GET['q']))
                $resp->rows[$i]['cell'] = array($row->id, $row->lurah, $row->nama_kelurahan); //array($row[id], $row[lurah], $row[nama_kelurahan]);
                $i++;            
            }
-           //mysqli_close($link);
-           $mysqli_connection->close();
+           
            echo json_encode($resp);
            break;
         case 2:            
@@ -210,16 +187,16 @@ elseif(isset($_GET['q']))
                 echo "error, authorized failure. you should login first...";
                 exit();
             }
-            $kecamatan_id = $_SESSION['kecamatan_id'];        
+            $kecamatan_id = $_SESSION['kecamatan_id'];
             $add = array();
-            $add[] = array("key"=>"-5", "value"=>"Capil");
-            $add[] = array("key"=>"-6", "value"=>"KUA");
+            if($kecamatan_id <=0 ){
+                $add = get_capil_kua_key();
+            }          
+           
             echo select("kelurahan", "id", "nama_kelurahan","kecamatan_id",
                 "class='select ui-widget-content ui-corner-all'", "kecamatan_id=$kecamatan_id",1, $add);
         break;
      }
-     
-    
-    exit();
+    MysqlManager::close_connection($connection);
 }
 ?>

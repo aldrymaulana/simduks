@@ -84,6 +84,14 @@ div.title h2{
 	top: 23px;
 	left: 60px;
 }
+
+#upload_output{
+	position: absolute;
+	z-index: 1000;
+	top: 150px;
+	left: 780px;
+}
+
 /** for datepicker display on top **/
 .ui-datepicker {z-index:1200;}
 

@@ -1,26 +1,26 @@
 <?php
+include "../includes/helpers.inc.php";
 if(isset($_GET['q']))
 {
-	include "../includes/helpers.inc.php";
-    include "../includes/mysqli.inc.php";
-	$resp = "";
-	$page = $_GET['page'];
-	$limit = $_GET['rows'];
-	$sord = $_GET['sord'];
-	$sidx = $_GET['sidx'];
-	$total_pages = '';
-	if(!$sidx)
-	{
-	    $sidx = 1;
-	}
-
-    $request = $_GET['q'];
+	$request = $_GET['q'];
+	$connection = MysqlManager::get_connection();
     switch($request)
     {
         case "1":
+			$resp = "";
+			$page = $_GET['page'];
+			$limit = $_GET['rows'];
+			$sord = $_GET['sord'];
+			$sidx = $_GET['sidx'];
+			$total_page = 0;
+			if(!$sidx)
+			{
+				$sidx = 1;
+			}
+	
             $sql = "select count(*) as count from access_groups";
-			$result = $mysqli_connection->query($sql);
-			check_error($mysqli_connection);
+			$result = $connection->query($sql);
+			check_error($connection);
 			$row = $result->fetch_object();
 			$count = $row->count;
 			if($count and $count > 0)
@@ -43,8 +43,8 @@ if(isset($_GET['q']))
 			    $start = 0;
 			}
 			$sql = "select a.id as id, a.name as name, k.nama_kecamatan as nama_kecamatan from access_groups as a, kecamatan as k where a.kecamatan_id = k.id order by ".$sidx." ".$sord." limit ".$start.", ".$limit;
-			$result = $mysqli_connection->query($sql);
-			check_error($mysqli_connection);
+			$result = $connection->query($sql);
+			check_error($connection);
 			$resp->page = $page;
 			$resp->total = $total_pages;
 			$resp->records = $count;
@@ -55,7 +55,7 @@ if(isset($_GET['q']))
 				$resp->rows[$i]['cell'] = array($row->id, $row->name, $row->nama_kecamatan);
 				$i++;
 			}
-			$mysqli_connection->close();
+			MysqlManager::close_connection($connection);
 			echo json_encode($resp);
             break;
         case "2":
@@ -65,19 +65,17 @@ if(isset($_GET['q']))
 }
 
 if(isset($_POST['oper']))
-{
-	include "../includes/helpers.inc.php";
-	include "../includes/mysqli.inc.php";
+{	
     $operation = $_POST['oper'];
+	$connection = MysqlManager::get_connection();
 	switch($operation)
 	{
         case "add":
 			$kecamatan_id = $_POST['kecamatan'];
 			$name = $_POST['name'];
 			$sql = "insert into access_groups set name = '$name', kecamatan_id = $kecamatan_id";
-			$mysqli_connection->query($sql);
-			check_error($mysqli_connection);
-			$mysqli_connection->close();
+			$connection->query($sql);
+			check_error($connection);			
 			echo "ok";
 		    break;
 		case "edit":
@@ -85,23 +83,22 @@ if(isset($_POST['oper']))
 			$kecamatan = $_POST['kecamatan'];
 			$name = $_POST['name'];
 			$sql = "update access_groups set name = '$name', kecamatan_id = $kecamatan where id = $id";
-			$mysqli_connection->query($sql);
-			check_error($mysqli_connection);
-			$mysqli_connection->close();
+			$connection->query($sql);
+			check_error($connection);			
 			echo "ok";
 		    break;
 		case "del";
 			// delete groups automatically delete users too..
 			$id = $_POST['id'];
 			$sql = "delete from users where group_id = $id ";
-			$mysqli_connection->query($sql);
-			check_error($mysqli_connection);
+			$connection->query($sql);
+			check_error($connection);
 			$sql = "delete from access_groups where id = $id";
-			$mysqli_connection->query($sql);
-			check_error($mysqli_connection);
-			$mysqli_connection->close();
+			$connection->query($sql);
+			check_error($connection);			
 			echo "ok";
 		    break;
 	}
+	MysqlManager::close_connection($connection);
 }
 ?>

@@ -1,7 +1,7 @@
 var groupGrid = jQuery("#groups").jqGrid({
    url: "admin/groups.php?q=1",
    datatype: "json",
-   colNames: ["Id", "Nama Group", "Kecamatan"],
+   colNames: ["Id", "Nama Group", "Kecamatan/Dinas"],
    colModel: [
       {name: "id", index: "id", width: 50},
       {name: "name", index : "name", width: 100, editable: true},

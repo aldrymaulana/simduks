@@ -43,6 +43,7 @@ if(isset($_REQUEST['q']))
                 p.wni as wni FROM penduduk p, agama a, pendidikan pen, pekerjaan pek where p.keluarga_id = $kk_id
                 AND p.agama_id = a.id AND p.pendidikan_id = pen.id AND p.pekerjaan_id = pek.id
                 order by $order_column $order limit $start, $rows";
+            
             // XXX - sementara abaikan filter data
             $resp = "";
             $resp->page = $page;
@@ -52,12 +53,12 @@ if(isset($_REQUEST['q']))
             $result = $connection->query($sql);
             check_error($connection);
             $i = 0;
-            while($row = $result->fetch_array()){
+            while($row = $result->fetch_array()){               
                 $resp->rows[$i]['id'] = $row['id'];
-                $resp->rows[$i]['cell'] = array($row[id], $row[nik], $row[nama],
-                    $row[jenis_kelamin], $row[status_nikah], $row[status_hub_kel],
-                    $row[gol_darah], $row[tmp_lahir], $row[tgl_lahir], $row[agama],
-                    $row[pendidikan], $row[pekerjaan], $row[wni]);
+                $resp->rows[$i]['cell'] = array($row['id'], $row['nik'], $row['nama'],
+                    $row['jenis_kelamin'], $row['status_nikah'], $row['status_hub_kel'],
+                    $row['gol_darah'], $row['tmp_lahir'], $row['tgl_lahir'], $row['agama'],
+                    $row['pendidikan'], $row['pekerjaan'], $row['wni']);
                 $i++;    
             }
             MysqlManager::close_connection($connection);
@@ -102,6 +103,9 @@ if(isset($_REQUEST['q']))
                         echo select_enum_without_default_value("penduduk", "wni",
                             "class='ui-widget-content ui-corner-all'");
                         break;
+                    case "kecamatan":
+                        echo select("kecamatan", "id", "nama_kecamatan","kecamatan_id","class='ui-widget-content ui-corner-all'");
+                        break;
                 }
             }
             break;
@@ -115,7 +119,52 @@ if(isset($_REQUEST['q']))
             break;
         case 4: // cari data penduduk
             $nik = $_GET['nik'];
-            echo json_encode("success");
+            $connection = MysqlManager::get_connection();
+            $sql = "SELECT p.id as id, p.nik as nik, p.nama as nama, p.jenis_kelamin as jenis_kelamin,
+                p.status_nikah as status_nikah, p.gol_darah as gol_darah, p.tmp_lahir as tmp_lahir, p.tgl_lahir as tgl_lahir,
+                a.agama as agama, pen.pendidikan as pendidikan, pek.pekerjaan as pekerjaan, p.keluarga_id as keluarga_id,
+                p.wni as wni FROM penduduk p, agama a, pendidikan pen, pekerjaan pek where p.nik = '$nik' 
+                AND p.agama_id = a.id AND p.pendidikan_id = pen.id AND p.pekerjaan_id = pek.id";
+            $result = $connection->query($sql);
+            check_error($connection);
+            $row = $result->fetch_object();
+            $resp = "";
+            $resp->id = $row->id;
+            $resp->nik = $row->nik;
+            $resp->nama = $row->nama;
+            $resp->jenis_kelamin  = $row->jenis_kelamin;
+            $resp->status_nikah = $row->status_nikah;            
+            $resp->gol_darah = $row->gol_darah;
+            $resp->tempat_lahir = $row->tmp_lahir;
+            $resp->tgl_lahir = $row->tgl_lahir;
+            $resp->agama = $row->agama;
+            $resp->pendidikan = $row->pendidikan;
+            $resp->pekerjaan = $row->pekerjaan;
+            $resp->wni = $row->wni;
+            $keluarga_id = $row->keluarga_id;
+            // find alamat
+            $sql = "select alamat_id from keluarga where id = $keluarga_id";
+            $result = $connection->query($sql);
+            check_error($connection);
+            $alamat_id = $result->fetch_object()->alamat_id;
+            $sql = "select a.alamat as alamat, a.rukun_tetangga as rt, a.rukun_warga as rw,
+                kel.nama_kelurahan as kelurahan, kec.nama_kecamatan as kecamatan, kec.kodepos as kodepos 
+                from alamat a, kelurahan kel, kecamatan kec where a.id = $alamat_id and a.kelurahan_id = kel.id and
+                kel.kecamatan_id = kec.id ";
+            $result = $connection->query($sql);
+            check_error($connection);
+            $row = $result->fetch_object();
+            $alamat = "";
+            $alamat->alamat = $row->alamat;
+            $alamat->rt = $row->rt;
+            $alamat->rw = $row->rw;
+            $alamat->kelurahan = $row->kelurahan;
+            $alamat->kecamatan = $row->kecamatan;
+            $alamat->kodepos = $row->kodepos;
+            
+            $resp->alamat = $alamat;
+            echo json_encode($resp);
+            MysqlManager::close_connection($connection);
         default:
             echo "";
             break;
@@ -145,6 +194,7 @@ if(isset($_POST['oper']))
             // calculate nik first.
             $laki = $jenis_kelamin == 'Perempuan' ? false : true;
             $nik = nik($kecamatan_id, $tgl_lahir, $laki);
+            echo $nik;
             $sql = "insert into penduduk set nik = '$nik', nama = '$nama', status_hub_kel = '$status_hub_kel',
                 tmp_lahir = '$tempat_lahir', tgl_lahir = '$tgl_lahir', pendidikan_id = $pendidikan,
                 pekerjaan_id = $pekerjaan, gol_darah = '$gol_darah', agama_id = $agama,
@@ -190,6 +240,30 @@ if(isset($_POST['oper']))
             check_error($conn);
             MysqlManager::close_connection($conn);
             echo "ok";
+            break;
+        case "upload":
+            $penduduk_id = $_POST['penduduk_id'];
+            $userfile_tmp = $_FILES['photo']['tmp_name'];
+            $resp = "";            
+            if(is_uploaded_file($userfile_tmp)){
+                $filename = basename($_FILES['photo']['name']);
+                $file_ext = strtolower(substr($filename, strrpos($filename, '.') + 1));
+                $resp->filename = $filename;
+                $resp->file_ext = $file_ext;
+                $filename  = $penduduk_id.".".$file_ext;
+                $image_path = "../statics/images/foto/".$filename;
+                if(file_exists($image_path)){
+                    unlink($image_path);
+                }
+                move_uploaded_file($userfile_tmp, $image_path);
+                $image_path = "statics/images/foto/$filename";
+                $connection = MysqlManager::get_connection();
+                $sql = "update penduduk set photo = '$image_path' where id=$penduduk_id";
+                $result = $connection->query($sql);
+                check_error($connection);
+                MysqlManager::close_connection($connection);
+                echo "<img src='$image_path'/>";
+            }           
             break;
     }
 }
