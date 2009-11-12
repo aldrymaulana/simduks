@@ -40,7 +40,7 @@ jQuery(document).ready(function(){
                 $("#photo").val("");
                 if(data.umur < 17){
                     $("#save").attr("disabled", "disabled");
-                    $("#error").html("<p style='color:red;'>Umur belum mencukupi untuk membuat KTP</p>");
+                    $("#flash").html("<p style='color:red;'>Umur belum mencukupi untuk membuat KTP</p>");
                 }
                 
                 if(data.photo.length > 0){
@@ -86,17 +86,21 @@ jQuery(document).ready(function(){
                 onChange: updateCoords
             });
             var id = $("#penduduk_id").val();
-            var pdf = "&nbsp;&nbsp;<a href=\"reports/pdf/lap3.php?penduduk_id=" + id + "\" target=\"_blank\" id=\"pdf\">pdf</a>";
+            var pdf = "&nbsp;&nbsp;<a href=\"reports/pdf/lap3.php?penduduk_id=" + id + "\" target=\"_blank\" id=\"pdf\">Klik Pdf</a>";
             $("#cancel").after(
                 pdf
             );
+            
+            $("#flash").html(
+                "<p style='color: green;'>Foto berhasil disimpan</p>"
+            )
         }
     });
     
     $("#cancel").click(function(event){
         event.preventDefault();
         $("#form_ktp").resetForm();
-        $("#error").html("");
+        $("#flash").html("");
         $("#nik").attr("onfocus","this.value='';this.onfocus=null;");
     });
     
