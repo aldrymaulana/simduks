@@ -2,7 +2,9 @@
 	<div id="flash">
 		
 	</div>
-    <form class="form" id="form_pecahkk">                
+    <form class="form" id="form_pecahkk">
+        <fieldset>
+            <legend>Pecah Kartu Keluarga</legend>
         <ol>
             <fieldset>
                 <legend>Informasi KK Baru</legend>
@@ -98,24 +100,15 @@
                 <ul>
                     <li>
                     <label for="alamat_baru">Alamat Baru</label>
-                    <input type="text" readonly="readonly" name="alamat_baru" id="alamat_baru" class="text ui-widget-content ui-corner-all"/>
+                    <input type="text"  name="alamat_baru" id="alamat_baru" class="text ui-widget-content ui-corner-all"/>
                     </li>
-                    <li><label for="rt_baru">R.T/R.W</label>
-                        <input type="text" readonly="readonly" name="rt_baru" size="4" maxlength="4" id="rt_baru" class="text ui-widget-content ui-corner-all"/>
-                        <input type="text" readonly="readonly" name="rw_baru" size="4" maxlength="4" id="rw_baru" class="text ui-widget-content ui-corner-all"/>
-                    </li>
-                    <li>
-                        <label for="desa_baru">Desa</label>
-                        <input type="text" readonly="readonly" name="desa_baru" id="desa_baru" class="text ui-widget-content ui-corner-all"/>
-                        
-                    </li>
-                    <li>
-                        <label for="kecamatan_baru">Kecamatan</label>
-                        <input type="text" readonly="readonly" name="kecamatan_baru" id="kecamatan_baru" class="text ui-widget-content ui-corner-all"/>
-                    </li>
+                    <li id="rtrw"><label for="rt_baru">R.T/R.W</label>
+                        <input type="text" name="rt_baru" size="4" maxlength="4" id="rt_baru" class="text ui-widget-content ui-corner-all"/>
+                        <input type="text" name="rw_baru" size="4" maxlength="4" id="rw_baru" class="text ui-widget-content ui-corner-all"/>
+                    </li>                    
                     <li>
                         <label for="kodepos_baru">Kodepos</label>
-                        <input type="text" readonly="readonly" name="kodepos_baru" id="kodepos_baru" class="text ui-widget-content ui-corner-all"/>
+                        <input type="text" name="kodepos_baru" readonly="readonly" id="kodepos_baru" class="text ui-widget-content ui-corner-all"/>
                     </li>
                 </ul>
             </li>
@@ -125,7 +118,7 @@
         <input type="hidden" name="kk_id_lama" id="kk_id_lama"/>        
         <button name="save" id="save" class="ui-button ui-state-default ui-corner-all">Simpan</button>
         <button id="cancel" name="cancel" class="ui-button ui-state-default ui-corner-all">Batal</button>
-        
+        </fieldset>
     </form>
 </div>
 
