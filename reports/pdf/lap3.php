@@ -1,8 +1,9 @@
 <?php
-include "../../fpdf.php";
+require_once "../../tcpdf/config/lang/eng.php";
+require_once "../../tcpdf/tcpdf.php";
 include_once "../../includes/helpers.inc.php";
 
-class PDF extends FPDF
+class PDF 
 {
     private $sql;
     private $nik;
@@ -24,14 +25,16 @@ class PDF extends FPDF
     private $kelurahan;
     private $kecamatan;
     private $kodepos;
+    private $penduduk_id;
     
     function __construct($penduduk_id){
-        $this->FPDF('p','mm','A5');
+        $this->FPDF('p','mm','A4');
         $this->AddFont("Calligrapher", '', 'calligra.php');
+        $this->penduduk_id = $penduduk_id;
         $this->sql = "SELECT p.id as id, p.nik as nik, p.nama as nama, p.jenis_kelamin as jenis_kelamin, p.photo as photo,
         p.status_nikah as status_nikah, p.gol_darah as gol_darah, p.tmp_lahir as tmp_lahir, p.tgl_lahir as tgl_lahir,
         a.agama as agama, pen.pendidikan as pendidikan, pek.pekerjaan as pekerjaan, p.keluarga_id as keluarga_id,
-        p.wni as wni FROM penduduk p, agama a, pendidikan pen, pekerjaan pek where p.id = $penduduk_id 
+        p.wni as wni FROM penduduk p, agama a, pendidikan pen, pekerjaan pek where p.id = $this->penduduk_id  
         AND p.agama_id = a.id AND p.pendidikan_id = pen.id AND p.pekerjaan_id = pek.id";
     }
     
@@ -41,16 +44,15 @@ class PDF extends FPDF
         $this->Ln(5);
         $this->SetFont("Calligrapher",'', 10);
         $this->Cell(0, 8, "KABUPATEN TULUNGAGUNG", 0, 0, 'C');
-        $this->Ln(5);
+        
     }
     
     function add_image($image){
-        $this->Image("../../statics/images/foto/$image", 80, 25,0,0,'jpg');
-       
+        $this->Image("../../statics/images/foto/$image", 80, 25,0,0,'jpg');       
     }
     
     function add_text(){
-        $this->ln(4);
+        //$this->ln(4);
         $this->SetFont("Helvetica",'', 6);
         $this->Cell(0, 7, "N.I.K ",1);
         $this->Cell(0, 7, ":$this->nik", 1);
@@ -86,6 +88,7 @@ class PDF extends FPDF
         $this->Cell(0, 7, " ", 1);
         $this->Cell(0, 0," ",1);
         $this->Cell(0, 0," ",1);
+        $this->MultiCell(0, 7, "hello world of php reporting pdf yang buuruk");
     }
     
     function add_table(){
@@ -161,13 +164,35 @@ class PDF extends FPDF
 
 if(isset($_GET['penduduk_id'])){
     $penduduk_id = $_GET['penduduk_id'];
-    $pdf = new PDF($penduduk_id);
-    /*
-    $pdf->AddPage();
-    $pdf->add_image();
-    $pdf->add_text();
-    */
-    $pdf->build();
-    $pdf->Output();
+    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+	// header data
+	$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+	// set margin
+	$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+	// remove default header/footer
+	$pdf->setPrintHeader(false);
+	$pdf->setPrintFooter(false);
+	// setting title
+	$pdf->SetTitle('ktp');
+	// auto page breaks
+	$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+	// image scale factor
+	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+	// language-dependent strings
+	$pdf->setLanguageArray($l);
+	// -------------------------------
+	// set font
+	$pdf->SetFont('times', '', 10);
+	// add a page
+	$pdf->AddPage();
+	$pdf->Cell(40, 5, 'hello world', 1,1, 'C');
+	$pdf->SetFillColor(0,0,0);
+	$pdf->MultiCell(40,5, 'testing multi cell\n', 0,'C', 0,2, '','',true);
+	$pdf->MultiCell(40, 5, 'B test multicell line 1 test multicell line 2 test multicell line 3', 0, 'R', 0, 1, '', '', true);
+	$pdf->MultiCell(40, 5, 'C test multicell line 1 test multicell line 2 test multicell line 3', 0, 'C', 0, 0, '', '', true);
+	$pdf->MultiCell(40, 5, 'D test multicell line 1 test multicell line 2 test multicell line 3'."\n", 0, 'J', 0, 2, '' ,'', true);
+	$pdf->MultiCell(40, 5, 'E test multicell line 1 test multicell line 2 test multicell line 3', 0, 'L', 0, 2, '', '', true);
+    $pdf->lastPage();
+	$pdf->Output('lap3.pdf', 'I');
 }
 ?>
