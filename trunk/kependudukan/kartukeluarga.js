@@ -71,7 +71,18 @@ var kk = jQuery("#kk").jqGrid({
     {height: 210, width: 500, jqModal: false, closeOnEscape: true} //view
 ).navButtonAdd("#kknav",{caption:"Lap. KK",title:"Laporan Kartu keluarga",buttonimg:gridimgpath+'/find.gif',
     onClickButton:function(){
-        alert("Laporan Keluarga Ditampilkan");
+        $.ajax({
+			url : "reports/pdf/lap2.php",
+			type: "get",
+			dataType: "html",
+			data: {
+				kk_id : kk.getGridParam("selrow")
+			},
+			cache : false,
+			success: function(data, status){
+				
+			}
+		});
     }
 }); 
 

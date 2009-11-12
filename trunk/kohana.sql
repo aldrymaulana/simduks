@@ -1,8 +1,8 @@
 -- MySQL dump 10.11
 --
--- Host: localhost    Database: kohana2
+-- Host: localhost    Database: kohana
 -- ------------------------------------------------------
--- Server version	5.0.75-0ubuntu10.2
+-- Server version	5.0.45-community-nt
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -22,15 +22,12 @@ USE `kohana`;
 --
 
 DROP TABLE IF EXISTS `access_groups`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `access_groups` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
   `kecamatan_id` int(11) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Dumping data for table `access_groups`
@@ -47,14 +44,11 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `agama`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `agama` (
   `id` int(11) NOT NULL auto_increment,
   `agama` varchar(20) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `agama`
@@ -62,7 +56,7 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `agama` WRITE;
 /*!40000 ALTER TABLE `agama` DISABLE KEYS */;
-INSERT INTO `agama` VALUES (1,'Islam'),(2,'Katholik'),(3,'Protestan'),(4,'Hindu'),(5,'Budha'),(6,'Konghucu'),(7,'resrsr');
+INSERT INTO `agama` VALUES (0,'-'),(1,'Islam'),(2,'Katholik'),(3,'Protestan'),(4,'Hindu'),(5,'Budha'),(6,'Konghucu'),(7,'resrsr');
 /*!40000 ALTER TABLE `agama` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -71,8 +65,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `akta_kelahiran`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `akta_kelahiran` (
   `id` int(11) NOT NULL auto_increment,
   `penduduk_id` int(11) default NULL,
@@ -84,7 +76,6 @@ CREATE TABLE `akta_kelahiran` (
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Dumping data for table `akta_kelahiran`
@@ -101,8 +92,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `alamat`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `alamat` (
   `id` int(11) NOT NULL auto_increment,
   `alamat` varchar(255) default NULL,
@@ -113,7 +102,6 @@ CREATE TABLE `alamat` (
   KEY `FK_alamat_kelurahan` (`kelurahan_id`),
   CONSTRAINT `FK_alamat_kelurahan` FOREIGN KEY (`kelurahan_id`) REFERENCES `kelurahan` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Dumping data for table `alamat`
@@ -130,8 +118,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `group_details`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `group_details` (
   `id` int(11) NOT NULL auto_increment,
   `group_id` int(11) NOT NULL,
@@ -144,7 +130,6 @@ CREATE TABLE `group_details` (
   KEY `FK_group_details_access` (`group_id`),
   CONSTRAINT `FK_group_details_access` FOREIGN KEY (`group_id`) REFERENCES `access_groups` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Dumping data for table `group_details`
@@ -160,14 +145,11 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `kb`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `kb` (
   `id` int(11) NOT NULL auto_increment,
   `kb` varchar(40) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `kb`
@@ -175,7 +157,7 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `kb` WRITE;
 /*!40000 ALTER TABLE `kb` DISABLE KEYS */;
-INSERT INTO `kb` VALUES (1,'IUD'),(2,'Spiral'),(3,'Pil');
+INSERT INTO `kb` VALUES (0,'-'),(1,'IUD'),(2,'Spiral'),(3,'Pil');
 /*!40000 ALTER TABLE `kb` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -184,8 +166,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `kecamatan`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `kecamatan` (
   `id` int(11) NOT NULL auto_increment,
   `kd_wilayah` varchar(7) NOT NULL,
@@ -194,7 +174,6 @@ CREATE TABLE `kecamatan` (
   `kodepos` varchar(5) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Dumping data for table `kecamatan`
@@ -211,8 +190,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `keluarga`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `keluarga` (
   `id` int(11) NOT NULL auto_increment,
   `kode_keluarga` varchar(16) NOT NULL,
@@ -222,7 +199,6 @@ CREATE TABLE `keluarga` (
   KEY `FK_keluarga_alamat` (`alamat_id`),
   CONSTRAINT `FK_keluarga_alamat` FOREIGN KEY (`alamat_id`) REFERENCES `alamat` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Dumping data for table `keluarga`
@@ -239,8 +215,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `kelurahan`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `kelurahan` (
   `id` int(11) NOT NULL auto_increment,
   `lurah` varchar(255) NOT NULL default '',
@@ -250,7 +224,6 @@ CREATE TABLE `kelurahan` (
   KEY `FK_kelurahan_kecamatan` (`kecamatan_id`),
   CONSTRAINT `FK_kelurahan_kecamatan` FOREIGN KEY (`kecamatan_id`) REFERENCES `kecamatan` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=279 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Dumping data for table `kelurahan`
@@ -267,16 +240,13 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `nikcounter`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `nikcounter` (
   `id` int(11) NOT NULL auto_increment,
   `kecamatan_id` int(11) NOT NULL,
   `tanggal` datetime default NULL,
   `counter` int(11) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
-SET character_set_client = @saved_cs_client;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `nikcounter`
@@ -284,7 +254,7 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `nikcounter` WRITE;
 /*!40000 ALTER TABLE `nikcounter` DISABLE KEYS */;
-INSERT INTO `nikcounter` VALUES (3,4,'1982-10-11 00:00:00',1),(4,4,'1979-10-11 00:00:00',1),(5,5,'2009-11-01 00:00:00',1),(6,10,'2009-11-15 00:00:00',1);
+INSERT INTO `nikcounter` VALUES (3,4,'1982-10-11 00:00:00',1),(4,4,'1979-10-11 00:00:00',1),(5,5,'2009-11-01 00:00:00',1),(6,10,'2009-11-15 00:00:00',1),(7,4,'2009-11-01 00:00:00',1);
 /*!40000 ALTER TABLE `nikcounter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -293,8 +263,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `orang_tua`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `orang_tua` (
   `id` int(11) NOT NULL auto_increment,
   `bapak_id` int(11) default NULL,
@@ -305,7 +273,6 @@ CREATE TABLE `orang_tua` (
   CONSTRAINT `FK_orang_tua_ayah` FOREIGN KEY (`bapak_id`) REFERENCES `penduduk` (`id`),
   CONSTRAINT `FK_orang_tua_ibu` FOREIGN KEY (`ibu_id`) REFERENCES `penduduk` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Dumping data for table `orang_tua`
@@ -322,14 +289,11 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `pekerjaan`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `pekerjaan` (
   `id` int(11) NOT NULL auto_increment,
   `pekerjaan` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `pekerjaan`
@@ -337,7 +301,7 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `pekerjaan` WRITE;
 /*!40000 ALTER TABLE `pekerjaan` DISABLE KEYS */;
-INSERT INTO `pekerjaan` VALUES (1,'Tani'),(2,'Guru'),(3,'Dagang'),(4,'Nelayan'),(5,'Wiraswasta'),(6,'PNS'),(7,'Lainnya');
+INSERT INTO `pekerjaan` VALUES (0,'-'),(1,'Tani'),(2,'Guru'),(3,'Dagang'),(4,'Nelayan'),(5,'Wiraswasta'),(6,'PNS'),(7,'Lainnya');
 /*!40000 ALTER TABLE `pekerjaan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -346,14 +310,11 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `pendidikan`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `pendidikan` (
   `id` int(11) NOT NULL auto_increment,
   `pendidikan` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `pendidikan`
@@ -361,7 +322,7 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `pendidikan` WRITE;
 /*!40000 ALTER TABLE `pendidikan` DISABLE KEYS */;
-INSERT INTO `pendidikan` VALUES (1,'SD'),(2,'Tidak Tamat SD'),(3,'SLTP'),(4,'SLTA'),(5,'D1'),(6,'D2'),(7,'D3'),(8,'Sarjana'),(9,'Lainnya');
+INSERT INTO `pendidikan` VALUES (0,'-'),(1,'SD'),(2,'Tidak Tamat SD'),(3,'SLTP'),(4,'SLTA'),(5,'D1'),(6,'D2'),(7,'D3'),(8,'Sarjana'),(9,'Lainnya');
 /*!40000 ALTER TABLE `pendidikan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -370,8 +331,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `penduduk`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `penduduk` (
   `id` int(11) NOT NULL auto_increment,
   `nik` varchar(16) NOT NULL,
@@ -379,37 +338,24 @@ CREATE TABLE `penduduk` (
   `status_hub_kel` enum('Nenek','Kakek','Mertua','Menantu','Anak','Istri','Kepala Keluarga') default NULL,
   `tmp_lahir` varchar(255) default '',
   `tgl_lahir` date default NULL,
-  `pendidikan_id` int(11) default NULL,
-  `pekerjaan_id` int(11) default NULL,
+  `pendidikan_id` int(11) default '0',
+  `pekerjaan_id` int(11) default '0',
   `gol_darah` enum('AB','O','B','-','A') default NULL,
-  `agama_id` int(11) default NULL,
+  `agama_id` int(11) default '0',
   `orangtua_id` int(11) default NULL,
   `wni` enum('WNA','WNI') default NULL,
   `status_nikah` enum('Duda','Janda','Tidak kawin','Kawin') NOT NULL default 'Tidak kawin',
   `jenis_kelamin` enum('Perempuan','Laki-laki') NOT NULL default 'Perempuan',
   `keluarga_id` int(11) default NULL,
-  `kb_id` int(11) default NULL,
+  `kb_id` int(11) default '0',
   `keterangan` text,
   `photo` varchar(255) default '',
   `wafat` date default NULL,
   `no_formulir` varchar(255) default NULL,
   `masa_berlaku` date default NULL,
   `no_surat_kematian` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `FK_penduduk` (`pekerjaan_id`),
-  KEY `FK_penduduk_agama` (`agama_id`),
-  KEY `FK_penduduk_kb` (`kb_id`),
-  KEY `FK_penduduk_pendidikan` (`pendidikan_id`),
-  KEY `FK_penduduk_keluarga` (`keluarga_id`),
-  KEY `FK_penduduk_ortu` (`orangtua_id`),
-  CONSTRAINT `FK_penduduk` FOREIGN KEY (`pekerjaan_id`) REFERENCES `pekerjaan` (`id`),
-  CONSTRAINT `FK_penduduk_agama` FOREIGN KEY (`agama_id`) REFERENCES `agama` (`id`),
-  CONSTRAINT `FK_penduduk_kb` FOREIGN KEY (`kb_id`) REFERENCES `kb` (`id`),
-  CONSTRAINT `FK_penduduk_keluarga` FOREIGN KEY (`keluarga_id`) REFERENCES `keluarga` (`id`),
-  CONSTRAINT `FK_penduduk_ortu` FOREIGN KEY (`orangtua_id`) REFERENCES `orang_tua` (`id`),
-  CONSTRAINT `FK_penduduk_pendidikan` FOREIGN KEY (`pendidikan_id`) REFERENCES `pendidikan` (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Dumping data for table `penduduk`
@@ -417,7 +363,7 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `penduduk` WRITE;
 /*!40000 ALTER TABLE `penduduk` DISABLE KEYS */;
-INSERT INTO `penduduk` VALUES (3,'3504045110820001','mariska','Istri','Tulungagung','1982-10-11',1,1,'O',1,NULL,'WNI','Kawin','Perempuan',1,NULL,NULL,'3.jpg',NULL,NULL,NULL,NULL),(4,'3504041110790001','joni','Kepala Keluarga','Tulungagung','1979-10-11',1,1,'B',1,NULL,'WNI','Kawin','Laki-laki',1,NULL,NULL,'',NULL,NULL,NULL,NULL),(6,'3504054111090001','Dyah Samudra','Anak','Tulungagung','2009-11-01',NULL,NULL,'AB',NULL,NULL,NULL,'Tidak kawin','Perempuan',1,NULL,NULL,'',NULL,NULL,NULL,NULL),(7,'3504101511090001','kalalahan','Anak','Tulungagung','2009-11-15',NULL,NULL,'B',NULL,NULL,NULL,'Tidak kawin','Laki-laki',1,NULL,NULL,'',NULL,NULL,NULL,NULL);
+INSERT INTO `penduduk` VALUES (3,'3504045110820001','mariska','Istri','Tulungagung','1982-10-11',1,1,'O',1,NULL,'WNI','Kawin','Perempuan',1,NULL,NULL,'3.jpg',NULL,NULL,NULL,NULL),(4,'3504041110790001','joni','Kepala Keluarga','Tulungagung','1979-10-11',1,1,'B',1,NULL,'WNI','Kawin','Laki-laki',1,NULL,NULL,'',NULL,NULL,NULL,NULL),(6,'3504044111090001','Dyah Samudra','Anak','Tulungagung','2009-11-01',0,0,'AB',1,NULL,'WNI','Tidak kawin','Perempuan',1,0,NULL,'',NULL,NULL,NULL,NULL),(7,'3504101511090001','kalalahan','Anak','Tulungagung','2009-11-15',0,0,'B',0,NULL,'WNI','Tidak kawin','Laki-laki',1,0,NULL,'',NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `penduduk` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -426,24 +372,17 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `pindah_alamat`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `pindah_alamat` (
   `id` int(11) NOT NULL,
   `penduduk_id` int(11) NOT NULL,
   `tgl_pindah` date NOT NULL,
-  `alamat_id_lama` int(11) default NULL,
-  `alamat_id_baru` int(11) default NULL,
+  `kk_id_lama` int(11) default NULL,
+  `kk_id_baru` int(11) default NULL,
   `keterangan` varchar(255) default NULL,
   PRIMARY KEY  (`id`),
   KEY `FK_pindah_alamat_penduduk` (`penduduk_id`),
-  KEY `FK_pindah_alamat_lama` (`alamat_id_lama`),
-  KEY `FK_pindah_alamat_baru` (`alamat_id_baru`),
-  CONSTRAINT `FK_pindah_alamat_baru` FOREIGN KEY (`alamat_id_baru`) REFERENCES `alamat` (`id`),
-  CONSTRAINT `FK_pindah_alamat_lama` FOREIGN KEY (`alamat_id_lama`) REFERENCES `alamat` (`id`),
   CONSTRAINT `FK_pindah_alamat_penduduk` FOREIGN KEY (`penduduk_id`) REFERENCES `penduduk` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Dumping data for table `pindah_alamat`
@@ -459,8 +398,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `users`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL auto_increment,
   `username` varchar(255) NOT NULL,
@@ -470,7 +407,6 @@ CREATE TABLE `users` (
   KEY `FK_users` (`group_id`),
   CONSTRAINT `FK_users` FOREIGN KEY (`group_id`) REFERENCES `access_groups` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Dumping data for table `users`
@@ -491,4 +427,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2009-11-11 23:59:01
+-- Dump completed on 2009-11-12  5:44:56

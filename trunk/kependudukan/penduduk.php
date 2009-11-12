@@ -132,6 +132,7 @@ if(isset($_REQUEST['q']))
             $resp->id = $row->id;
             $resp->nik = $row->nik;
             $resp->nama = $row->nama;
+            $resp->keluarga_id = $row->keluarga_id;
             $resp->jenis_kelamin  = $row->jenis_kelamin;
             $resp->status_nikah = $row->status_nikah;            
             $resp->gol_darah = $row->gol_darah;
@@ -169,6 +170,32 @@ if(isset($_REQUEST['q']))
             $resp->alamat = $alamat;
             echo json_encode($resp);
             MysqlManager::close_connection($connection);
+            break;
+        case 5: // get alamat
+            $connection = MysqlManager::get_connection();
+            $keluarga_id = $_POST['kk_id'];
+            $sql = "select alamat_id from keluarga where id = $keluarga_id";
+            $result = $connection->query($sql);
+            check_error($connection);
+            $alamat_id = $result->fetch_object()->alamat_id;
+            $sql = "select a.alamat as alamat, a.rukun_tetangga as rt, a.rukun_warga as rw,
+                kel.nama_kelurahan as kelurahan, kec.nama_kecamatan as kecamatan, kec.kodepos as kodepos 
+                from alamat a, kelurahan kel, kecamatan kec where a.id = $alamat_id and a.kelurahan_id = kel.id and
+                kel.kecamatan_id = kec.id ";
+            $result = $connection->query($sql);
+            check_error($connection);
+            $row = $result->fetch_object();
+            $alamat = "";
+            $alamat->keluarga_id = $keluarga_id;
+            $alamat->alamat = $row->alamat;
+            $alamat->rt = $row->rt;
+            $alamat->rw = $row->rw;
+            $alamat->kelurahan = $row->kelurahan;
+            $alamat->kecamatan = $row->kecamatan;
+            $alamat->kodepos = $row->kodepos;
+            echo json_encode($alamat);
+            MysqlManager::close_connection($connection);
+            break;
         default:
             echo "";
             break;
@@ -278,6 +305,26 @@ if(isset($_POST['oper']))
                 //echo '</div>';
                 echo '</div>';
             }           
+            break;
+        case "pindahalamat":
+            $penduduk_id = $_POST["penduduk_id"];
+            $tgl_pindah = $_POST["tgl_pindah"];
+            $kk_id_lama = $_POST["kk_id_lama"];
+            $kk_id_baru = $_POST["kk_id_baru"];
+            $keterangan = $_POST["keterangan"];
+            // insert pindah alamat
+            $connection = MysqlManager::get_connection();
+            $sql = "insert into pindah_alamat set penduduk_id = $penduduk_id,
+                tgl_pindah = '$tgl_pindah', kk_id_lama = $kk_id_lama, kk_id_baru =
+                $kk_id_baru, keterangan = '$keterangan'";
+            $result = $connection->query($sql);
+            check_error($connection);
+            // update penduduk id
+            $sql = "update penduduk set keluarga_id = $kk_id_baru where id = $penduduk_id";
+            $result = $connection->query($sql);
+            check_error($connection);
+            MysqlManager::close_connection($connection);
+            echo "<p style=\"color: green;\">Pindah Alamat success</p>";
             break;
     }
 }
