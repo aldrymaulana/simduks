@@ -41,8 +41,8 @@ class PDF extends FPDF
     }
 }
 
-if(isset($_GET['id'])){
-    $penduduk_id = $_GET['id'];
+if(isset($_GET['kk_id'])){
+    $penduduk_id = $_GET['kk_id'];
     
     $pdf = new PDF();
     $pdf->AddPage();
