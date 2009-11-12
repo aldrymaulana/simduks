@@ -36,7 +36,7 @@ if(isset($_POST['mode']))
                 tmp_lahir = '$tempat_lahir', tgl_lahir = '$tanggal_lahir', 
                 gol_darah = '$golongan_darah', 
                 status_nikah = 'Tidak kawin', jenis_kelamin = '$jenis_kelamin',
-                keluarga_id = $kartukeluarga_id";				
+                keluarga_id = $kartukeluarga_id, orangtua_id = $orangtua_id";				
 			$connection->query($sql);
 			check_error($connection);
 			//insert akte penduduk
