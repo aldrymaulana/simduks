@@ -196,6 +196,27 @@ if(isset($_REQUEST['q']))
             echo json_encode($alamat);
             MysqlManager::close_connection($connection);
             break;
+        case "6":
+            echo "<li><label for='desa_baru' id='lbl_desa'>Desa/Kelurahan</label></li>";
+            echo "<li><label for='kecamatan_baru'>Kecamatan</label>";
+            echo select("kecamatan", "id", "nama_kecamatan","kecamatan_baru",'class="ui-widget-content ui-corner-all"');
+            echo "</li>";		       
+            break;
+        case "7":            
+            $kec_id = $_GET['kecamatan_id'];
+            echo select("kelurahan", "id", "nama_kelurahan", "desa_baru",
+                'class="wui-widget-content ui-corner-all"',
+                "kecamatan_id = $kec_id");
+            break;
+        case "8":
+            $kecamatan_id = $_GET['kecamatan_id'];
+            $sql = "select kodepos from kecamatan where id = $kecamatan_id";
+            $connection = MysqlManager::get_connection();
+            $result = $connection->query($sql);
+            check_error($connection);
+            echo $result->fetch_object()->kodepos;
+            MysqlManager::close_connection($connection);
+            break;
         default:
             echo "";
             break;
