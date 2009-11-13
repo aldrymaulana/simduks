@@ -34,7 +34,7 @@ jQuery(document).ready(function(){
                     $("#kk_id_lama").val(data.keluarga_id);
                 } else {
                     $("#flash").html(
-                        "<p style=\"color: red;\">" + data.nama + " adalah seorang Perempuan, untuk pecah kk harus penduduk laki-laki</p>"
+                        "<p style=\"color: red;\">" + data.nama + " adalah seorang Perempuan, untuk pecah kk harus penduduk laki-laki yang sudah menikah</p>"
                     );
                 }
             }    
@@ -47,6 +47,32 @@ jQuery(document).ready(function(){
         } else {
             $("#fieldset_alamat_baru").attr("style", "display:none");
         }
+    });
+    
+    $("#save").click(function(event){
+        event.preventDefault();
+        var alamatBaru = $("#chk_alamat_baru").attr("checked");
+        $.ajax({
+            url : "kependudukan/kartukeluarga.php",
+            type: "post",
+            dataType : "html",
+            cache : false,
+            data : {
+                oper : "pecahkartukeluarga",
+                penduduk_id : $("#penduduk_id").val(),                
+                gunakan_alamat_baru : alamatBaru,
+                no_formulir : $("#no_formulir").val(),
+                kode_kk : $("#kk_baru").val(),
+                alamat_baru : $("#alamat_baru").val(),
+                rt_baru : $("#rt_baru").val(),
+                rw_baru : $("#rw_baru").val(),
+                desa_baru : $("#desa_baru").val()
+            },
+            success: function(data, status){
+                $("#flash").html("");
+                $("#flash").html("<p style=\"color:green;\">pecah kartu keluarga " + data + "</p>");
+            }
+        });
     });
     
     function show_desa(kecamatan_id)
