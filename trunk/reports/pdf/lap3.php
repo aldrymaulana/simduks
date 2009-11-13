@@ -164,34 +164,61 @@ class PDF
 
 if(isset($_GET['penduduk_id'])){
     $penduduk_id = $_GET['penduduk_id'];
-    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+    $pdf = new TCPDF("L", PDF_UNIT, "A7", true, 'UTF-8', false);
 	// header data
 	$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 	// set margin
-	$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    // left, top, right
+	$pdf->SetMargins(2, 5, 2);
 	// remove default header/footer
 	$pdf->setPrintHeader(false);
 	$pdf->setPrintFooter(false);
 	// setting title
 	$pdf->SetTitle('ktp');
 	// auto page breaks
-	$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+    // auto page, margin bottom
+	$pdf->SetAutoPageBreak(TRUE, 4);
 	// image scale factor
 	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 	// language-dependent strings
 	$pdf->setLanguageArray($l);
 	// -------------------------------
 	// set font
-	$pdf->SetFont('times', '', 10);
+	$pdf->SetFont('times', '', 8);
 	// add a page
 	$pdf->AddPage();
-	$pdf->Cell(40, 5, 'hello world', 1,1, 'C');
-	$pdf->SetFillColor(0,0,0);
-	$pdf->MultiCell(40,5, 'testing multi cell\n', 0,'C', 0,2, '','',true);
-	$pdf->MultiCell(40, 5, 'B test multicell line 1 test multicell line 2 test multicell line 3', 0, 'R', 0, 1, '', '', true);
-	$pdf->MultiCell(40, 5, 'C test multicell line 1 test multicell line 2 test multicell line 3', 0, 'C', 0, 0, '', '', true);
-	$pdf->MultiCell(40, 5, 'D test multicell line 1 test multicell line 2 test multicell line 3'."\n", 0, 'J', 0, 2, '' ,'', true);
-	$pdf->MultiCell(40, 5, 'E test multicell line 1 test multicell line 2 test multicell line 3', 0, 'L', 0, 2, '', '', true);
+    $pdf->Cell(30);
+    $pdf->Cell(40, 4, "KABUPATEN TULUNGAGUNG", 0,1,'C');    
+    $pdf->Cell(30);
+    $pdf->Cell(40, 4, "PROPINSI JAWA TIMUR", 0, 1, 'C');
+    $pdf->SetFont("times",'',5);	
+	$pdf->MultiCell(20,1, 'Nama', 0,'L', 0,0, '','',true);
+    $pdf->MultiCell(20, 1, ': Heru Eko Susanto, ST',0, 'L',0, 1,'','', true);
+    $pdf->MultiCell(20, 1,'Tempat/Tgl. Lahir', 0, 'L',0, 0,'','', true);
+    $pdf->MultiCell(40, 1, ": Tulungagung, 19 November 1980", 0, 'L', 0, 1,'','', true);
+    $pdf->MultiCell(20,1, 'Jenis Kelamin', 0,'L', 0,0, '','',true);
+    $pdf->MultiCell(10, 1, ': Laki-Laki',0, 'L',0, 0,'','', true);
+    $pdf->MultiCell(15,1, 'Gol. Darah', 0,'L', 0,0, '','',true);
+    $pdf->MultiCell(8, 1, ": AB", 0, 'L', 0, 1,'','', true);
+    $pdf->MultiCell(20,1, 'Alamat', 0,'L', 0,0, '','',true);
+    $pdf->MultiCell(20, 1, ': Jl. Nangka',0, 'L',0, 1,'','', true);
+    $pdf->Cell(5);
+    $pdf->MultiCell(10,1, "R.T/R.W", 0,'L',0, 0,'','', true);
+    $pdf->MultiCell(10,1,"005/001",0,'L',0,0,'','', true);
+    $pdf->MultiCell(10,1,"Desa",0,'L',0,0,'','',true);
+    $pdf->MultiCell(15,1,"Gedangan",0,'L',0,1,'','', true);
+    $pdf->Cell(5);
+    $pdf->MultiCell(10,1, "Kec.", 0,'L',0, 0,'','', true);
+    $pdf->MultiCell(15,1,"Campurdarat",0,'L',0,0,'','', true);
+    $pdf->MultiCell(10,1,"Kodepos",0,'L',0,0,'','',true);
+    $pdf->MultiCell(10,1,"66272",0,'L',0,1,'','', true);
+    
+	$pdf->MultiCell(40, 5, 'B test multicell line 1 test multicell line 2 test multicell line 3', 0, 'R', 0, 1);
+	$pdf->MultiCell(40, 5, 'C test multicell line 1 test multicell line 2 test multicell line 3', 0, 'C', 0, 0);
+	$pdf->MultiCell(40, 5, 'D test multicell line 1 test multicell line 2 test multicell line 3'."\n", 0, 'J', 0, 2);
+	$pdf->MultiCell(40, 5, 'E test multicell line 1 test multicell line 2 test multicell line 3', 0, 'L', 0, 2);
+    // add foto image
+    $pdf->Image("../../statics/images/foto/3.jpg",70,15,20,25,'','','C',true);
     $pdf->lastPage();
 	$pdf->Output('lap3.pdf', 'I');
 }

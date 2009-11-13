@@ -95,6 +95,54 @@ if(isset($_POST['oper']))
         check_error($connection);
         MysqlManager::close_connection($connection);
         echo "success";
+    } elseif($_POST['oper'] == 'pecahkartukeluarga'){
+        $connection = MysqlManager::get_connection();
+        $pindah_alamat = $_POST['gunakan_alamat_baru'];
+        $penduduk_id = $_POST['penduduk_id'];
+        $kode_keluarga = $_POST["kode_kk"];
+        $no_formulir = $_POST['no_formulir'];
+        $alamat_id = "";
+        if($pindah_alamat == true){
+            // insert new alamat
+            // find alamat first if exist use it
+            $alamat = $_POST['alamat_baru'];
+            $rt = $_POST["rt_baru"];
+            $rw = $_POST["rw_baru"];
+            $kelurahan_id = $_POST["desa_baru"];
+            $sql = "select count(*) as count from alamat where alamat='$alamat'
+                and rukun_tetangga = $rt and rukun_warga = $rw and kelurahan_id = $kelurahan_id";
+            $result = $connection->query($sql);
+            check_error($connection);
+            $row = $result->fetch_object();
+            if($row->count <= 0){
+                // insert new alamat
+                $sql = "insert into alamat set alamat = '$alamat', rukun_tetangga = $rt, rukun_warga = $rw,
+                    keluarga_id = $keluarga_id";
+                $result = $connection->query($sql);
+            }
+            $sql = "select id from alamat where alamat='$alamat'
+            and rukun_tetangga = $rt and rukun_warga = $rw and kelurahan_id = $kelurahan_id";
+            $alamat_id = get_alamat_id($sql);
+        } else {
+            $sql = "select al.id as id from alamat al, penduduk p, keluarga k where
+                p.keluarga_id = k.id and k.alamat_id = al.id and p.id = $penduduk_id";
+            $alamat_id = get_alamat_id($sql);
+        }
+        // 
+        $sql = "insert into keluarga set kode_keluarga = '$kode_keluarga', alamat_id = $alamat_id, no_formulir = '$no_formulir'";
+        $result = $connection->query($sql);
+        check_error();
+        //update penduduk (kepala keluarga)
+        $sql = "select id from keluarga where kode_keluarga = '$kode_keluarga' and alamat_id = $alamat_id and no_formulir = '$no_formulir'";
+        $result = $connection->query($sql);
+        check_error();
+        $row = $result->fetch_object();        
+        $new_kode_keluarga = $row->id;
+        $sql = "update penduduk set keluarga_id = $new_kode_keluarga where id = $penduduk_id";
+        $result = $connection->query($sql);
+        check_error($connection);
+        MysqlManager::close_connection($connection);
+        echo json_encode("success");
     }
 }
 elseif(isset($_GET['q']))
