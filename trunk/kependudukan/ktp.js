@@ -7,6 +7,7 @@ jQuery(document).ready(function(){
     });
     
     $("#load_data").click(function(event){
+        $("#flash").html("");
         event.preventDefault();
         $.ajax({
             url: "kependudukan/penduduk.php",
@@ -41,6 +42,8 @@ jQuery(document).ready(function(){
                 if(data.umur < 17){
                     $("#save").attr("disabled", "disabled");
                     $("#flash").html("<p style='color:red;'>Umur belum mencukupi untuk membuat KTP</p>");
+                } else{
+                    $("#save").removeAttr("disabled");
                 }
                 
                 if(data.photo.length > 0){
@@ -75,18 +78,15 @@ jQuery(document).ready(function(){
     
     var form_ktp = $("#form_ktp").ajaxForm({
         beforeSubmit : function(a, f, o){
+            $("#pdf").remove();
             o.dataType = "html";
         },
         success : function(data){
             $("#pdf").remove();
             $("#upload_output").html(data);
-            $('#cropbox').Jcrop({
-                aspectRatio: 1,
-                onSelect: updateCoords,
-                onChange: updateCoords
-            });
+           
             var id = $("#penduduk_id").val();
-            var pdf = "&nbsp;&nbsp;<a href=\"reports/pdf/lap3.php?penduduk_id=" + id + "\" target=\"_blank\" id=\"pdf\">Klik Pdf</a>";
+            var pdf = "<button id=\"pdf\" class=\"ui-button ui-state-default ui-corner-all\">PDF</button>";
             $("#cancel").after(
                 pdf
             );
@@ -104,4 +104,19 @@ jQuery(document).ready(function(){
         $("#nik").attr("onfocus","this.value='';this.onfocus=null;");
     });
     
+    $("#pdf").click(function(event){
+        event.preventDefault();
+        $.ajax({
+            url : "reports/pdf/lap3.php",
+            type: "post",
+            dataType : "html",
+            cache : false,
+            data: {
+                penduduk_id : $("#penduduk_id").val()
+            },
+            success: function(data, status){
+                
+            }
+        })
+    });
 })

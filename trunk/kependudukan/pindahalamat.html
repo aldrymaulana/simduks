@@ -2,7 +2,9 @@
 	<div id="flash">
 		
 	</div>
-    <form class="form" id="form_pindah_alamat">                
+    <form class="form" id="form_pindah_alamat">       
+        <fieldset>
+        <legend>Pindah Alamat</legend>         
         <ol>
             <fieldset>
                 <legend>Personal</legend>
@@ -52,9 +54,10 @@
                 <input type="text" readonly="readonly" name="kewarganegaraan" id="kewarganegaraan" class="text ui-widget-content ui-corner-all"/>
             </li>
             </fieldset>
-            <li>
-            <fieldset>
+			<fieldset>
                 <legend>KK Lama</legend>
+            <li>
+            
                 <label for="alamat">Alamat Lama</label>
                 <input type="text" readonly="readonly" name="alamat" id="alamat" class="text ui-widget-content ui-corner-all"/>
                 <ul>
@@ -81,7 +84,7 @@
             <li>
             <fieldset>
                 <legend>KK Baru</legend>
-                <label for="kk_baru">Kode Keluarga Baru</label>
+                <label for="kk_baru">Kode KK Baru</label>
                 <input type="text" id="kk_baru" name="kk_baru" class="text ui-widget-content ui-corner-all"/>
                 <button id="loadkk_baru" name="loadkk_baru" class="ui-widget-content ui-corner-all">Load KK</button>
                 <ul>
@@ -108,7 +111,7 @@
                     </li>
                 </ul>
             </li>
-            </fieldset>
+            
             <fieldset>
                 <legend>Tanggal & Keterangan Pindah</legend>
                 <li>
@@ -121,12 +124,13 @@
                 </li>
             </fieldset>
         </ol>
+        
         <input type="hidden" name="penduduk_id" id="penduduk_id"/>
         <input type="hidden" name="kk_id_lama" id="kk_id_lama"/>
         <input type="hidden" name="kk_id_baru" id="kk_id_baru"/>
         <button name="save" id="save" class="ui-button ui-state-default ui-corner-all">Pindah</button>
         <button id="cancel" name="cancel" class="ui-button ui-state-default ui-corner-all">Batal</button>
-        
+        </fieldset>
     </form>
 </div>
 
