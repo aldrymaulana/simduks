@@ -173,15 +173,17 @@ if(isset($_REQUEST['q']))
             break;
         case 5: // get alamat
             $connection = MysqlManager::get_connection();
-            $keluarga_id = $_POST['kk_id'];
+            $keluarga_id = $_GET['kk_id'];
             $sql = "select alamat_id from keluarga where id = $keluarga_id";
             $result = $connection->query($sql);
+            
             check_error($connection);
             $alamat_id = $result->fetch_object()->alamat_id;
             $sql = "select a.alamat as alamat, a.rukun_tetangga as rt, a.rukun_warga as rw,
                 kel.nama_kelurahan as kelurahan, kec.nama_kecamatan as kecamatan, kec.kodepos as kodepos 
                 from alamat a, kelurahan kel, kecamatan kec where a.id = $alamat_id and a.kelurahan_id = kel.id and
                 kel.kecamatan_id = kec.id ";
+          
             $result = $connection->query($sql);
             check_error($connection);
             $row = $result->fetch_object();
@@ -316,14 +318,7 @@ if(isset($_POST['oper']))
                 MysqlManager::close_connection($connection);
                 
                 echo '<div id="outer">';
-                //echo '<div class="jcExample">';
-                //echo '<div class="article">';
-                echo '<img src="'.$image_path.'" id="cropbox" />';
-                echo '<div style="width:100px;height:100px;overflow:hidden;">';
-                echo '    <img src="'.$image_path.'" id="preview" />';
-                echo '</div>';
-                //echo '</div>';
-                //echo '</div>';
+                echo '  <img src="'.$image_path.'" id="preview" />';                   
                 echo '</div>';
             }           
             break;

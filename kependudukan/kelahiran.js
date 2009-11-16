@@ -37,82 +37,44 @@ jQuery(document).ready(function(){
 		}
 	});
 	
-	$("#lookup_ayah").click(function(event){
+	$("#load_ayah").click(function(event){
 		event.preventDefault();
-		$("#search_ayah").dialog("open");
-	});
-	
-	$("#search_ayah").dialog({
-		bgiframe: true,
-		autoOpen: false,
-		modal: true,
-		buttons:{
-			"Cari": function() {
-				var search_name = $("#name_ayah").val();				
-				$.ajax({
-					url: "kependudukan/penduduk.php",
-					type: "get",
-					data: {
-						q : 3,
-						ortu: "ayah",
-						nama: search_name						
-					},
-					dataType : 'json',
-					cache: false,
-					success: function(data, status) {
-						$("#hasil_search_ayah").html(data.nama);		
-						$("#nik_ayah").val(data.nik);												
-					}
-				});
-								
+		$.ajax({
+			url : "kependudukan/penduduk.php",
+			type: "get",
+			dataType : "json",
+			data: {
+				q : 4,
+				nik : $("#nik_ayah").val()
 			},
-			"Tutup" : function() {
-				$(this).dialog("close");
+			success : function(data, status){
+				var html = "<li>";
+				html += "<label for=\"nama_ayah\">Nama Ayah</label>";
+				html += "<input type=\"text\" class=\"text ui-widget-content ui-corner-all\" name=\"nama_ayah\" id=\"nama_ayah\"  readonly=\"readonly\" value=\"" + data.nama + "\"/>";
+				html += "</li>";
+				$("#li_ayah").after(html);
 			}
-		},
-		close: function() {
-			$("#hasil_search_ayah").html("");
-			$("#name_ayah").val("");
-		}
+		})
 	});
 	
-	$("#lookup_ibu").click(function(event){
+	$("#load_ibu").click(function(event){
 		event.preventDefault();
-		$("#search_ibu").dialog("open");
-	});
-	
-	$("#search_ibu").dialog({
-		bgiframe: true,
-		autoOpen: false,
-		modal: true,
-		buttons:{
-			"Cari": function() {
-				var search_name = $("#name_ibu").val();				
-				$.ajax({
-					url: "kependudukan/penduduk.php",
-					type: "get",
-					data: {
-						q : 3,
-						ortu: "ibu",
-						nama: search_name						
-					},
-					dataType : 'json',
-					cache: false,
-					success: function(data, status) {
-						$("#hasil_search_ibu").html(data.nama);		
-						$("#nik_ibu").val(data.nik);												
-					}
-				});
-								
+		$.ajax({
+			url : "kependudukan/penduduk.php",
+			type: "get",
+			dataType : "json",
+			data: {
+				q : 4,
+				nik : $("#nik_ibu").val()
 			},
-			"Tutup" : function() {
-				$(this).dialog("close");
+			success : function(data, status){
+				var html = "<li>";
+				html += "<label for=\"nama_ibu\">Nama Ibu</label>";
+				html += "<input type=\"text\" class=\"text ui-widget-content ui-corner-all\" name=\"nama_ibu\" id=\"nama_ibu\" readonly=\"readonly\" value=\"" + data.nama + "\"/>";
+				html += "</li>";
+				$("#li_ibu").after(html);
 			}
-		},
-		close: function() {
-			$("#hasil_search_ibu").html("");
-			$("#name_ibu").val("");
-		}
+		})
 	});
 	
 	

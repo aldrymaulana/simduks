@@ -88,7 +88,10 @@ div.title h2{
 #upload_output{
 	position: absolute;
 	z-index: 50;
-	top: 150px;
+	top: 250px;
+	overflow: hidden;
+	width: 100px;
+	height: 110px;
 	left: 780px;
 }
 
