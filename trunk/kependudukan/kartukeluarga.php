@@ -98,11 +98,14 @@ if(isset($_POST['oper']))
     } elseif($_POST['oper'] == 'pecahkartukeluarga'){
         $connection = MysqlManager::get_connection();
         $pindah_alamat = $_POST['gunakan_alamat_baru'];
+       
         $penduduk_id = $_POST['penduduk_id'];
         $kode_keluarga = $_POST["kode_kk"];
         $no_formulir = $_POST['no_formulir'];
         $alamat_id = "";
-        if($pindah_alamat == true){
+        $status_hub_kel = $_POST['status_hub_kel_baru'];
+        
+        if($pindah_alamat == "true"){
             // insert new alamat
             // find alamat first if exist use it
             $alamat = $_POST['alamat_baru'];
@@ -131,18 +134,18 @@ if(isset($_POST['oper']))
         // 
         $sql = "insert into keluarga set kode_keluarga = '$kode_keluarga', alamat_id = $alamat_id, no_formulir = '$no_formulir'";
         $result = $connection->query($sql);
-        check_error();
+        check_error($connection);
         //update penduduk (kepala keluarga)
         $sql = "select id from keluarga where kode_keluarga = '$kode_keluarga' and alamat_id = $alamat_id and no_formulir = '$no_formulir'";
         $result = $connection->query($sql);
-        check_error();
+        check_error($connection);
         $row = $result->fetch_object();        
         $new_kode_keluarga = $row->id;
-        $sql = "update penduduk set keluarga_id = $new_kode_keluarga where id = $penduduk_id";
+        $sql = "update penduduk set keluarga_id = $new_kode_keluarga, status_hub_kel = '$status_hub_kel' where id = $penduduk_id";
         $result = $connection->query($sql);
         check_error($connection);
         MysqlManager::close_connection($connection);
-        echo json_encode("success");
+        echo json_encode("sukses");
     }
 }
 elseif(isset($_GET['q']))

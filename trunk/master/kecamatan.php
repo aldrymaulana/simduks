@@ -1,9 +1,9 @@
 <?php
+include_once "../includes/helpers.inc.php";
 if(isset($_POST['oper']))
 {
     if($_POST['oper'] == 'edit')
-    {
-        include '../includes/db.inc.php';
+    {        
         $kd_wilayah = $_POST['kd_wilayah'];
         $camat = $_POST['camat'];
         $kecamatan  = $_POST['nama_kecamatan'];
@@ -11,51 +11,35 @@ if(isset($_POST['oper']))
         $id = $_POST['id'];
         $sql = "update kecamatan set kd_wilayah = '$kd_wilayah', camat = '$camat',
             nama_kecamatan = '$kecamatan', kodepos = '$kodepos' where id=$id";
-        $result = mysqli_query($link, $sql);
-        if(!$result)
-        {
-            $error = "Error, cannot update kecamatan ";
-            include '../includes/error.html.php';
-            exit();
-        }
-        mysqli_close($link);
+        $conn = MysqlManager::get_connection();
+        $result = $conn->query($sql);
+        check_error($conn);
+        MysqlManager::close_connection($conn);
     } elseif($_POST['oper'] == 'del')
-    {
-        include '../includes/db.inc.php';
+    {        
         $id = $_POST['id'];
         $sql = "delete from kecamatan where id = $id";
-        $result = mysqli_query($link, $sql);
-        if(!$result)
-        {
-            $error = "tidak dapat menghapus data kecamatan ";
-            include '../includes/error.html.php';
-            exit();
-        }
-        mysqli_close($link);
+        $conn = MysqlManager::get_connection();
+        $result = $conn->query($sql);
+        check_error($conn);
+        MysqlManager::close_connection($conn);
     } elseif($_POST['oper'] == 'add')
-    {
-        include '../includes/db.inc.php';
+    {        
         $kd_wilayah = $_POST['kd_wilayah'];
         $camat = $_POST['camat'];
         $kecamatan  = $_POST['nama_kecamatan'];
         $kodepos = $_POST['kodepos'];
         $sql = "insert into kecamatan set kd_wilayah = '$kd_wilayah', camat = '$camat',
             nama_kecamatan = '$kecamatan', kodepos = '$kodepos'";
-        
-        $result = mysqli_query($link, $sql);
-        if(!$result)
-        {
-            $error = "tidak dapat menghapus data kecamatan ";
-            include '../includes/error.html.php';
-            exit();
-        }
-        mysqli_close($link);
+        $conn = MysqlManager::get_connection();
+        $result = $conn->query($conn);
+        check_error($conn);
+        MysqlManager::close_connection($conn);        
     }
 }
 elseif(isset($_GET['q']))
 {
-    include '../includes/helpers.inc.php';
-    include '../includes/db.inc.php';
+    
     $resp = "";
     $req = $_GET['q'];
     $page = $_GET['page'];
@@ -136,9 +120,10 @@ elseif(isset($_GET['q']))
     {
         case 1:// request data agama
             // get total data
-           
-            $result = mysqli_query($link, "select count(*) as count from kecamatan");
-            $row = mysqli_fetch_array($result);
+            $conn = MysqlManager::get_connection();
+            $result = $conn->query("select count(*) as count from kecamatan");
+            check_error($conn);
+            $row = $result->fetch_array();
             $count = $row['count'];  
             
             if($count > 0){
@@ -157,42 +142,46 @@ elseif(isset($_GET['q']))
             else
                 $sql = "select id, kd_wilayah, camat, nama_kecamatan, kodepos from kecamatan order by ".$sidx." ".$sord." limit ".$start.", ".$limit;
             
-            $result = mysqli_query($link, $sql);
+            $result = $conn->query($sql);
+            check_error($conn);
             
             $resp->page =$page;
             $resp->total = $total_pages;
             $resp->records = $count;
             $i = 0;
-            while($row = mysqli_fetch_array($result))
+            while($row = $result->fetch_object())
             {
-                $resp->rows[$i]['id'] = $row[id];
-                $resp->rows[$i]['cell'] = array($row[id], $row[kd_wilayah], $row[camat], $row[nama_kecamatan],$row[kodepos]);
+                $resp->rows[$i]['id'] = $row->id;
+                $resp->rows[$i]['cell'] = array($row->id, $row->kd_wilayah, $row->camat, $row->nama_kecamatan,$row->kodepos);
                 $i++;
             }
-            mysqli_close($link);
+            echo json_encode($resp);
+            MysqlManager::close_connection($conn);
         break;
         case 2:
             $sql = "select id, nama_kecamatan from kecamatan";
-            $result = mysqli_query($link, $sql);
+            $conn = MysqlManager::get_connection();
+            $result = $conn->query($sql);
             $ret = "<select>";
-            while($row = mysqli_fetch_array($result))
+            while($row = $result->fetch_object())
             {
-                $ret .= '<option value="'.$row[id].'">'.$row[nama_kecamatan].'</option>';
+                $ret .= '<option value="'.$row->id.'">'.$row->nama_kecamatan.'</option>';
             }
             $ret .= '</select>';
             echo $ret;
-            mysqli_close($link);
+            MysqlManager::close_connection($conn);
         break;
         case 3:
             $kec_id = $_REQUEST['id'];
-            $result = mysqli_query($link, "select nama_kecamatan from kecamatan where id=$kec_id");
-            $row = mysqli_fetch_array($result);
-            echo $row[nama_kecamatan];
-            mysqli_close($link);
+            $conn = MysqlManager::get_connection();
+            
+            $result = $conn->query("select nama_kecamatan from kecamatan where id=$kec_id");
+            $row = $result->fetch_object($result);
+            echo $row->nama_kecamatan;
+            MysqlManager::close_connection($conn);
             exit();
         break;
     }
-    echo json_encode($resp);
-    exit();
+    
 }
 ?>

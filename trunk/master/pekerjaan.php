@@ -1,49 +1,36 @@
 <?php
+include_once '../includes/helpers.inc.php';
 if(isset($_POST['oper']))
 {
     if($_POST['oper'] == 'edit')
     {
-        include '../includes/db.inc.php';
+        $conn = MysqlManager::get_connection();
         $pekerjaan = $_POST['pekerjaan'];
         $id = $_POST['id'];
         $sql = "update pekerjaan set pekerjaan = '$pekerjaan' where id=$id";
-        $result = mysqli_query($link, $sql);
-        if(!$result)
-        {
-            $error = "Error, cannot update pekerjaan ";
-            include '../includes/error.html.php';
-            exit();
-        }        
+        $result = $conn->query($sql);
+        check_error($conn);
+        MysqlManager::close_connection($conn);
     } elseif($_POST['oper'] == 'del')
     {
-        include '../includes/db.inc.php';
+        $conn = MysqlManager::get_connection();
         $id = $_POST['id'];
         $sql = "delete from pekerjaan where id = $id";
-        $result = mysqli_query($link, $sql);
-        if(!$result)
-        {
-            $error = "tidak dapat menghapus data pekerjaan ";
-            include '../includes/error.html.php';
-            exit();
-        }
+        $result = $conn->query($sql);
+        check_error($conn);
+        MysqlManager::close_connection($conn);
     } elseif($_POST['oper'] == 'add')
     {
-        include '../includes/db.inc.php';
+        $conn = MysqlManager::get_connection();
         $pekerjaan = $_POST['pekerjaan'];
         $sql = "insert into pekerjaan (pekerjaan) values ('$pekerjaan')";
-        $result = mysqli_query($link, $sql);
-        if(!$result)
-        {
-            $error = "tidak dapat menghapus data pekerjaan ";
-            include '../includes/error.html.php';
-            exit();
-        }
+        $result = $conn->query($sql);
+        check_error($conn);
+        MysqlManager::close_connection($conn);
     }
 }
 elseif(isset($_GET['q']))
-{
-    include '../includes/helpers.inc.php';
-    include '../includes/db.inc.php';
+{    
     $resp = "";
     $req = $_GET['q'];
     $page = $_GET['page'];
@@ -123,47 +110,47 @@ elseif(isset($_GET['q']))
     switch($req)
     {
         case 1:// request data agama
-        // get total data
-       
-        $result = mysqli_query($link, "select count(*) as count from pekerjaan");
-        $row = mysqli_fetch_array($result);
-        $count = $row['count'];  
-        
-        if($count > 0){
-            $total_pages = ceil($count/$limit);
-        }else{
-            $total_pages = 0;
-        }
-        if($page > $total_pages)
-            $page = $total_pages;
-        $start = $limit * $page - $limit;
-        if($start < 0)
-            $start = 0;
-        $sql = "";
-        if(sizeof($wh) > 2)
-            $sql = "select id, pekerjaan from pekerjaan where ".$wh." order by ".$sidx." ".$sord." limit ".$start.", ".$limit;
-        else
-            $sql = "select id, pekerjaan from pekerjaan order by ".$sidx." ".$sord." limit ".$start.", ".$limit;
-        
-        $result = mysqli_query($link, $sql);
-        
-        $resp->page =$page;
-        $resp->total = $total_pages;
-        $resp->records = $count;
-        $i = 0;
-        while($row = mysqli_fetch_array($result))
-        {
-            $resp->rows[$i]['id'] = $row[id];
-            $resp->rows[$i]['cell'] = array($row[id], $row[pekerjaan]);
-            $i++;
-        }
-        mysqli_close($link);
+            // get total data
+            $conn = MysqlManager::get_connection();
+            $result = $conn->query("select count(*) as count from pekerjaan");
+            $row =$result->fetch_array();
+            $count = $row['count'];  
+            
+            if($count > 0){
+                $total_pages = ceil($count/$limit);
+            }else{
+                $total_pages = 0;
+            }
+            if($page > $total_pages)
+                $page = $total_pages;
+            $start = $limit * $page - $limit;
+            if($start < 0)
+                $start = 0;
+            $sql = "";
+            if(sizeof($wh) > 2)
+                $sql = "select id, pekerjaan from pekerjaan where ".$wh." order by ".$sidx." ".$sord." limit ".$start.", ".$limit;
+            else
+                $sql = "select id, pekerjaan from pekerjaan order by ".$sidx." ".$sord." limit ".$start.", ".$limit;
+            
+            $result = $conn->query($sql);
+            check_error($conn);
+            
+            $resp->page =$page;
+            $resp->total = $total_pages;
+            $resp->records = $count;
+            $i = 0;
+            while($row = $result->fetch_object())
+            {
+                $resp->rows[$i]['id'] = $row->id;
+                $resp->rows[$i]['cell'] = array($row->id, $row->pekerjaan);
+                $i++;
+            }
+            MysqlManager::close_connection($conn);
+            echo json_encode($resp);
         break;
         case 2:
     
         break;
-    }
-    echo json_encode($resp);
-    exit();
+    }    
 }
 ?>
