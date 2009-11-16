@@ -4,7 +4,7 @@
 	</div>
     <form class="form" id="form_pindah_alamat">       
         <fieldset>
-        <legend>Pindah Alamat</legend>         
+        <legend>Pindah KK</legend>         
         <ol>
             <fieldset>
                 <legend>Personal</legend>
@@ -84,10 +84,14 @@
             <li>
             <fieldset>
                 <legend>KK Baru</legend>
-                <label for="kk_baru">Kode KK Baru</label>
-                <input type="text" id="kk_baru" name="kk_baru" class="text ui-widget-content ui-corner-all"/>
+                <label for="no_kk_baru">Kode KK Baru</label>
+                <input type="text" id="no_kk_baru" name="no_kk_baru" class="text ui-widget-content ui-corner-all"/>
                 <button id="loadkk_baru" name="loadkk_baru" class="ui-widget-content ui-corner-all">Load KK</button>
                 <ul>
+                    <li>
+                        <label for="status_hub_keluarga" id="lbl_status_hub_keluarga">Status Hub. Kel</label>
+                        
+                    </li>
                     <li>
                     <label for="alamat_baru">Alamat Baru</label>
                     <input type="text" readonly="readonly" name="alamat_baru" id="alamat_baru" class="text ui-widget-content ui-corner-all"/>
@@ -126,8 +130,8 @@
         </ol>
         
         <input type="hidden" name="penduduk_id" id="penduduk_id"/>
-        <input type="hidden" name="kk_id_lama" id="kk_id_lama"/>
-        <input type="hidden" name="kk_id_baru" id="kk_id_baru"/>
+        <input type="hidden" name="kk_lama" id="kk_lama"/>
+        <input type="hidden" name="kk_baru" id="kk_baru"/>
         <button name="save" id="save" class="ui-button ui-state-default ui-corner-all">Pindah</button>
         <button id="cancel" name="cancel" class="ui-button ui-state-default ui-corner-all">Batal</button>
         </fieldset>

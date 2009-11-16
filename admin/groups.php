@@ -42,7 +42,7 @@ if(isset($_GET['q']))
 			{
 			    $start = 0;
 			}
-			$sql = "select a.id as id, a.name as name, k.nama_kecamatan as nama_kecamatan from access_groups as a, kecamatan as k where a.kecamatan_id = k.id order by ".$sidx." ".$sord." limit ".$start.", ".$limit;
+			$sql = "select a.id as id, a.name as name, k.nama_kecamatan as nama_kecamatan from access_groups as a left join kecamatan as k on a.kecamatan_id = k.id order by ".$sidx." ".$sord." limit ".$start.", ".$limit;
 			$result = $connection->query($sql);
 			check_error($connection);
 			$resp->page = $page;

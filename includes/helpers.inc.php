@@ -264,6 +264,36 @@ function select($table, $key, $value, $select_name, $attributes='', $where = "",
     return __select_input($select_name, $list, $selected_key, $attributes, $interceps);
 }
 
+function get_setting_value($key){
+    $conn = MysqlManager::get_connection();
+    $sql = "select * from settings where name = '$key'";
+    
+    $result = $conn->query($sql);
+    check_error($conn);
+    $row = $result->fetch_object();
+    $dataType = $row->type_value;
+    $val = "";
+    switch($dataType){
+        case "varchar":
+            $val = $row->varchar_value;
+            break;
+        case "int":
+            $val = $row->int_value;
+            break;
+        case "datetime":
+            $val = $row->datetime_value;
+            break;
+        case "date":
+            $val = $row->date;
+            break;
+        case "double":
+            $val = $row->double;
+            break;
+    }
+    MysqlManager::close_connection($conn);
+    return $val;
+}
+
 function get_capil_kua_key(){
     $add = array();
     $add[] = array("key"=>CAPIL_KEY, "value"=>"Capil");

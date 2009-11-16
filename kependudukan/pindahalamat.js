@@ -7,6 +7,7 @@ jQuery(document).ready(function(){
 	});
     
     $("#load_data").click(function(event){
+		$("#flash").html("");
         event.preventDefault();
         $.ajax({
             url: "kependudukan/penduduk.php",
@@ -36,7 +37,7 @@ jQuery(document).ready(function(){
                 
                 // penduduk id
                 $("#penduduk_id").val(data.id);
-                $("#kk_id_lama").val(data.keluarga_id);
+                $("#kk_lama").val(data.kode_keluarga);
             }    
         });
     });
@@ -48,7 +49,7 @@ jQuery(document).ready(function(){
             type: "get",
             data : {
                 q : 5,
-                kk_id : $("#kk_baru").val() 
+                kk_id : $("#no_kk_baru").val() 
             },
             dataType: "json",
             cache: false,
@@ -59,12 +60,13 @@ jQuery(document).ready(function(){
                 $("#desa_baru").val(data.kelurahan);
                 $("#kecamatan_baru").val(data.kecamatan);
                 $("#kodepos_baru").val(data.kodepos);
-                $("#kk_id_baru").val(data.keluarga_id);
+                $("#kk_baru").val(data.kode_keluarga);
             }
         });
     });
     
     $("#save").click(function(event){
+		$("#flash").html("");
         event.preventDefault();
         $.ajax({
             url : "kependudukan/penduduk.php",
@@ -73,16 +75,30 @@ jQuery(document).ready(function(){
                 oper : "pindahalamat",
                 penduduk_id : $("#penduduk_id").val(),
                 tgl_pindah : $("#tanggal_pindah").val(),
-                kk_id_lama : $("#kk_id_lama").val(),
-                kk_id_baru : $("#kk_id_baru").val(),
-                keterangan : $("#keterangan_pindah").val()
+                kk_id_lama : $("#kk_lama").val(),
+                kk_id_baru : $("#kk_baru").val(),
+                keterangan : $("#keterangan_pindah").val(),
+				status_hub_kel_baru : $("#status_hub_keluarga").val()
             },
             dataType: "html",
             cache : false,
             success : function(data, status){
-                $("#flash").html("");
+                
                 $("#flash").html(data);
             }
         });
     });
+	
+	$.ajax({
+		url: "kependudukan/penduduk.php",
+		type: "get",
+		dataType : "html",
+		data : {
+			q : 2,
+			id : "status_hub_kel"
+		},
+		success : function(data, status){
+			$("#lbl_status_hub_keluarga").after(data);
+		}
+	});
 });

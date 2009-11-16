@@ -66,7 +66,8 @@ jQuery(document).ready(function(){
                 alamat_baru : $("#alamat_baru").val(),
                 rt_baru : $("#rt_baru").val(),
                 rw_baru : $("#rw_baru").val(),
-                desa_baru : $("#desa_baru").val()
+                desa_baru : $("#desa_baru").val(),
+                status_hub_kel_baru : $("#status_hub_keluarga").val()
             },
             success: function(data, status){
                 $("#flash").html("");
@@ -119,5 +120,18 @@ jQuery(document).ready(function(){
                 });
             }).trigger('change');
         }
-    });	
+    });
+    
+    $.ajax({
+		url: "kependudukan/penduduk.php",
+		type: "get",
+		dataType : "html",
+		data : {
+			q : 2,
+			id : "status_hub_kel"
+		},
+		success : function(data, status){
+			$("#lbl_status_hub_keluarga").after(data);
+		}
+	});
 });

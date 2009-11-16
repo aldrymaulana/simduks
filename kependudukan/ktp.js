@@ -86,7 +86,7 @@ jQuery(document).ready(function(){
             $("#upload_output").html(data);
            
             var id = $("#penduduk_id").val();
-            var pdf = "<button id=\"pdf\" class=\"ui-button ui-state-default ui-corner-all\">PDF</button>";
+            var pdf = "<a id=\"pdf\" href=\"reports/pdf/lap3.php?penduduk_id=" +id + "\">PDF</a>";
             $("#cancel").after(
                 pdf
             );
@@ -102,21 +102,6 @@ jQuery(document).ready(function(){
         $("#form_ktp").resetForm();
         $("#flash").html("");
         $("#nik").attr("onfocus","this.value='';this.onfocus=null;");
-    });
+    });   
     
-    $("#pdf").click(function(event){
-        event.preventDefault();
-        $.ajax({
-            url : "reports/pdf/lap3.php",
-            type: "post",
-            dataType : "html",
-            cache : false,
-            data: {
-                penduduk_id : $("#penduduk_id").val()
-            },
-            success: function(data, status){
-                
-            }
-        })
-    });
 })

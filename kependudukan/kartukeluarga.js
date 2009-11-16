@@ -94,7 +94,7 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
     url:'kependudukan/penduduk.php?q=1&keluarga_id=0',
     datatype: "json",
     colNames:['id','NIK', 'Nama', 'Jenis Kelamin', 'Status Pernikahan', 'Status Hub. Keluarga',
-              'Gol. Darah', 'Tempat Lahir','Tanggal Lahir','Agama', 'Pendidikan', 'Pekerjaan','Warga Negara'
+              'Gol. Darah', 'Tempat Lahir','Tanggal Lahir','Agama', 'Pendidikan', 'Pekerjaan', 'Penghasilan','Warga Negara'
     ],
     colModel:[
             {name:'id',index:'id', width:2},
@@ -201,6 +201,13 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
                     dataUrl : "kependudukan/penduduk.php?q=2&id=pekerjaan"
                 }
             },
+			{name: "penghasilan", index: "penghasilan", width: 30, editable: true,
+				editoptions: {
+					defaultValue : function(){
+						return "0";
+					}
+				}			
+			},
             {name: "warga", index: "warga", width: 10, editable: true,
                 edittype: "select",
                 editoptions: {

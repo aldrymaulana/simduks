@@ -158,23 +158,32 @@ if(isset($_POST['data'])) {
 }
 
 function retrieve_menus() {
-    $menus = array();
-   
-    
-	if(isset($_SESSION['kecamatan_id']) and $_SESSION['kecamatan_id'] == ADMIN_KEY){
-		array_push($menus, '<li><a href="master/agama.html" class="ui-widget-content ui-state-default">Agama</a></li>');
-		array_push($menus, '<li><a href="master/kb.html" class="ui-widget-content ui-state-default">Kb</a></li>');
-		array_push($menus, '<li><a href="master/pekerjaan.html" class="ui-widget-content ui-state-default">Pekerjaan</a></li>');
-		array_push($menus, '<li><a href="master/pendidikan.html" class="ui-widget-content ui-state-default">Pendidikan</a></li>');
-		array_push($menus, '<li><a href="master/kecamatan.html" class="ui-widget-content ui-state-default">Kecamatan</a></li>');
-		array_push($menus, '<li><a href="admin/users.html" class="ui-widget-content ui-state-default">Users</a></li>');
-	} else {
-		array_push($menus, '<li><a href="kependudukan/kartukeluarga.html" class="ui-widget-content ui-state-default">KK</a></li>');
-		array_push($menus, '<li><a href="kependudukan/kelahiran.html" class="ui-widget-content ui-state-default">Kelahiran</a></li>');
-		array_push($menus, '<li><a href="kependudukan/ktp.html" class="ui-widget-content ui-state-default">KTP</a></li>');
-		array_push($menus, '<li><a href="kependudukan/pindahalamat.html" class="ui-widget-content ui-state-default">Pindah Alamat</a></li>');
-		array_push($menus, '<li><a href="kependudukan/pecahkartukeluarga.html" class="ui-widget-content ui-state-default">Pecah KK</a></li>');
+    $menus = array();  
+    if(isset($_SESSION['kecamatan_id'])){
+		$kec_id = $_SESSION['kecamatan_id'];
+		switch($kec_id){
+			case ADMIN_KEY:
+				array_push($menus, '<li><a href="master/agama.html" class="ui-widget-content ui-state-default">Agama</a></li>');
+				array_push($menus, '<li><a href="master/kb.html" class="ui-widget-content ui-state-default">Kb</a></li>');
+				array_push($menus, '<li><a href="master/pekerjaan.html" class="ui-widget-content ui-state-default">Pekerjaan</a></li>');
+				array_push($menus, '<li><a href="master/pendidikan.html" class="ui-widget-content ui-state-default">Pendidikan</a></li>');
+				array_push($menus, '<li><a href="master/kecamatan.html" class="ui-widget-content ui-state-default">Kecamatan</a></li>');
+				array_push($menus, '<li><a href="admin/users.html" class="ui-widget-content ui-state-default">Users</a></li>');
+				break;
+			case CAPIL_KEY:
+				array_push($menus, '<li><a href="kependudukan/kelahiran.html" class="ui-widget-content ui-state-default">Kelahiran</a></li>');
+				break;
+			case KUA_KEY:
+				break;
+			default:
+				array_push($menus, '<li><a href="kependudukan/kartukeluarga.html" class="ui-widget-content ui-state-default">KK</a></li>');				
+				array_push($menus, '<li><a href="kependudukan/ktp.html" class="ui-widget-content ui-state-default">KTP</a></li>');
+				array_push($menus, '<li><a href="kependudukan/pindahalamat.html" class="ui-widget-content ui-state-default">Pindah KK</a></li>');
+				array_push($menus, '<li><a href="kependudukan/pecahkartukeluarga.html" class="ui-widget-content ui-state-default">Pecah KK</a></li>');
+				break;
+		}
 	}
+	
     return $menus;
 }
 

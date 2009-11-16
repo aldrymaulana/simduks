@@ -1,49 +1,36 @@
 <?php
+include_once '../includes/helpers.inc.php';
 if(isset($_POST['oper']))
 {
     if($_POST['oper'] == 'edit')
     {
-        include '../includes/db.inc.php';
+        $conn = MysqlManager::get_connection();
         $agama = $_POST['agama'];
         $id = $_POST['id'];
         $sql = "update agama set agama = '$agama' where id=$id";
-        $result = mysqli_query($link, $sql);
-        if(!$result)
-        {
-            $error = "Error, cannot update agama ";
-            include '../includes/error.html.php';
-            exit();
-        }        
+        $result = $conn->query($sql);
+        check_error($conn);
+        MysqlManager::close_connection($conn);
     } elseif($_POST['oper'] == 'del')
     {
-        include '../includes/db.inc.php';
+        $conn = MysqlManager::get_connection();
         $id = $_POST['id'];
         $sql = "delete from agama where id = $id";
-        $result = mysqli_query($link, $sql);
-        if(!$result)
-        {
-            $error = "tidak dapat menghapus data agama ";
-            include '../includes/error.html.php';
-            exit();
-        }
+        $result = $conn->query($sql);
+        check_error($conn);
+        MysqlManager::close_connection($conn);
     } elseif($_POST['oper'] == 'add')
     {
-        include '../includes/db.inc.php';
+        $conn = MysqlManager::get_connection();
         $agama = $_POST['agama'];
         $sql = "insert into agama (agama) values ('$agama')";
-        $result = mysqli_query($link, $sql);
-        if(!$result)
-        {
-            $error = "tidak dapat menghapus data agama ";
-            include '../includes/error.html.php';
-            exit();
-        }
+        $result = $conn->query($sql);
+        check_error($conn);
+        MysqlManager::close_connection($conn);
     }
 }
 elseif(isset($_GET['q']))
-{
-    include '../includes/helpers.inc.php';
-    include '../includes/db.inc.php';
+{    
     $resp = "";
     $req = $_GET['q'];
     $page = $_GET['page'];
@@ -124,9 +111,9 @@ elseif(isset($_GET['q']))
     {
         case 1:// request data agama
         // get total data
-       
-        $result = mysqli_query($link, "select count(*) as count from agama");
-        $row = mysqli_fetch_array($result);
+        $conn = MysqlManager::get_connection();
+        $result = $conn->query("select count(*) as count from agama");
+        $row = $result->fetch_array();
         $count = $row['count'];  
         
         if($count > 0){
@@ -145,25 +132,24 @@ elseif(isset($_GET['q']))
         else
             $sql = "select id, agama from agama order by ".$sidx." ".$sord." limit ".$start.", ".$limit;
         
-        $result = mysqli_query($link, $sql);
+        $result = $conn->query($sql);
         
         $resp->page =$page;
         $resp->total = $total_pages;
         $resp->records = $count;
         $i = 0;
-        while($row = mysqli_fetch_array($result))
+        while($row =  $result->fetch_array())
         {
-            $resp->rows[$i]['id'] = $row[id];
-            $resp->rows[$i]['cell'] = array($row[id], $row[agama]);
+            $resp->rows[$i]['id'] = $row['id'];
+            $resp->rows[$i]['cell'] = array($row['id'], $row['agama']);
             $i++;
         }
-        mysqli_close($link);
+        MysqlManager::close_connection($conn);
+        echo json_encode($resp);
         break;
         case 2:
     
         break;
     }
-    echo json_encode($resp);
-    exit();
 }
 ?>

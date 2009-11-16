@@ -39,7 +39,7 @@ if(isset($_REQUEST['q']))
             $sql = "SELECT p.id as id, p.nik as nik, p.nama as nama, p.jenis_kelamin as jenis_kelamin,
                 p.status_nikah as status_nikah, p.status_hub_kel as status_hub_kel,
                 p.gol_darah as gol_darah, p.tmp_lahir as tmp_lahir, p.tgl_lahir as tgl_lahir,
-                a.agama as agama, pen.pendidikan as pendidikan, pek.pekerjaan as pekerjaan,
+                a.agama as agama, pen.pendidikan as pendidikan, pek.pekerjaan as pekerjaan, p.penghasilan as penghasilan, 
                 p.wni as wni FROM penduduk p, agama a, pendidikan pen, pekerjaan pek where p.keluarga_id = $kk_id
                 AND p.agama_id = a.id AND p.pendidikan_id = pen.id AND p.pekerjaan_id = pek.id
                 order by $order_column $order limit $start, $rows";
@@ -58,7 +58,7 @@ if(isset($_REQUEST['q']))
                 $resp->rows[$i]['cell'] = array($row['id'], $row['nik'], $row['nama'],
                     $row['jenis_kelamin'], $row['status_nikah'], $row['status_hub_kel'],
                     $row['gol_darah'], $row['tmp_lahir'], $row['tgl_lahir'], $row['agama'],
-                    $row['pendidikan'], $row['pekerjaan'], $row['wni']);
+                    $row['pendidikan'], $row['pekerjaan'], $row['penghasilan'], $row['wni']);
                 $i++;    
             }
             MysqlManager::close_connection($connection);
@@ -122,10 +122,10 @@ if(isset($_REQUEST['q']))
             $connection = MysqlManager::get_connection();
             $sql = "SELECT p.id as id, p.nik as nik, p.nama as nama, p.jenis_kelamin as jenis_kelamin, p.photo as photo,
                 p.status_nikah as status_nikah, p.gol_darah as gol_darah, p.tmp_lahir as tmp_lahir, p.tgl_lahir as tgl_lahir,
-                a.agama as agama, pen.pendidikan as pendidikan, pek.pekerjaan as pekerjaan, p.keluarga_id as keluarga_id,
+                a.agama as agama, pen.pendidikan as pendidikan, pek.pekerjaan as pekerjaan, p.penghasilan as penghasilan, p.keluarga_id as keluarga_id,
                 p.wni as wni FROM penduduk p, agama a, pendidikan pen, pekerjaan pek where p.nik = '$nik' 
                 AND p.agama_id = a.id AND p.pendidikan_id = pen.id AND p.pekerjaan_id = pek.id";
-            $result = $connection->query($sql);
+            $result = $connection->query($sql);           
             check_error($connection);
             $row = $result->fetch_object();
             $resp = "";
@@ -141,6 +141,7 @@ if(isset($_REQUEST['q']))
             $resp->agama = $row->agama;
             $resp->pendidikan = $row->pendidikan;
             $resp->pekerjaan = $row->pekerjaan;
+            $resp->penghasilan = $row->penghasilan;
             $resp->wni = $row->wni;
             $resp->photo = $row->photo;
             $keluarga_id = $row->keluarga_id;
@@ -148,10 +149,13 @@ if(isset($_REQUEST['q']))
             $umur = CalculateAge($row->tgl_lahir);
             $resp->umur = $umur;
             // find alamat
-            $sql = "select alamat_id from keluarga where id = $keluarga_id";
+            $sql = "select alamat_id, kode_keluarga from keluarga where id = $keluarga_id";
             $result = $connection->query($sql);
             check_error($connection);
-            $alamat_id = $result->fetch_object()->alamat_id;
+            $row = $result->fetch_object();
+            $alamat_id = $row->alamat_id;
+            $resp->kode_keluarga = $row->kode_keluarga;
+            
             $sql = "select a.alamat as alamat, a.rukun_tetangga as rt, a.rukun_warga as rw,
                 kel.nama_kelurahan as kelurahan, kec.nama_kecamatan as kecamatan, kec.kodepos as kodepos 
                 from alamat a, kelurahan kel, kecamatan kec where a.id = $alamat_id and a.kelurahan_id = kel.id and
@@ -174,7 +178,7 @@ if(isset($_REQUEST['q']))
         case 5: // get alamat
             $connection = MysqlManager::get_connection();
             $keluarga_id = $_GET['kk_id'];
-            $sql = "select alamat_id from keluarga where id = $keluarga_id";
+            $sql = "select alamat_id from keluarga where kode_keluarga = '$keluarga_id'";
             $result = $connection->query($sql);
             
             check_error($connection);
@@ -188,7 +192,7 @@ if(isset($_REQUEST['q']))
             check_error($connection);
             $row = $result->fetch_object();
             $alamat = "";
-            $alamat->keluarga_id = $keluarga_id;
+            $alamat->kode_keluarga = $keluarga_id;
             $alamat->alamat = $row->alamat;
             $alamat->rt = $row->rt;
             $alamat->rw = $row->rw;
@@ -219,6 +223,24 @@ if(isset($_REQUEST['q']))
             echo $result->fetch_object()->kodepos;
             MysqlManager::close_connection($connection);
             break;
+        case "9":
+            // reverse is not null
+            $sql = "select count(*) as count from penduduk where no_surat_kematian IS NULL";
+            $conn = MysqlManager::get_connection();
+            $resp = "";
+            $result = $conn->query($sql);
+            $resp->total_penduduk = $result->fetch_object()->count;
+            $sql = "select count(*) as count from penduduk where jenis_kelamin = 'Laki-laki' AND no_surat_kematian IS NULL";
+            $result = $conn->query($sql);
+            $resp->pria = $result->fetch_object()->count;
+            $sql = "select count(*) as count from penduduk where jenis_kelamin = 'Perempuan' AND no_surat_kematian IS NULL";
+            $result = $conn->query($sql);
+            $resp->perempuan = $result->fetch_object()->count;
+            
+            
+            MysqlManager::close_connection($conn);
+            echo json_encode($resp);
+            break;
         default:
             echo "";
             break;
@@ -238,6 +260,7 @@ if(isset($_POST['oper']))
             $kk_id = $_POST['kk_id'];
             $nama = $_POST['nama'];
             $pekerjaan = $_POST['pekerjaan'];
+            $penghasilan = $_POST['penghasilan'];
             $pendidikan = $_POST['pendidikan'];
             $status_hub_kel = $_POST['status_hub_kel'];
             $status_nikah = $_POST['status_nikah'];
@@ -251,7 +274,7 @@ if(isset($_POST['oper']))
             echo $nik;
             $sql = "insert into penduduk set nik = '$nik', nama = '$nama', status_hub_kel = '$status_hub_kel',
                 tmp_lahir = '$tempat_lahir', tgl_lahir = '$tgl_lahir', pendidikan_id = $pendidikan,
-                pekerjaan_id = $pekerjaan, gol_darah = '$gol_darah', agama_id = $agama,
+                pekerjaan_id = $pekerjaan, penghasilan = $penghasilan, gol_darah = '$gol_darah', agama_id = $agama,
                 wni = '$kewarganegaraan', status_nikah = '$status_nikah', jenis_kelamin = '$jenis_kelamin',
                 keluarga_id = $kk_id";
             $conn->query($sql);
@@ -267,6 +290,7 @@ if(isset($_POST['oper']))
             $kk_id = $_POST['kk_id'];
             $nama = $_POST['nama'];
             $pekerjaan = $_POST['pekerjaan'];
+            $penghasilan = $_POST['penghasilan'];
             $pendidikan = $_POST['pendidikan'];
             $status_hub_kel = $_POST['status_hub_kel'];
             $status_nikah = $_POST['status_nikah'];
@@ -279,7 +303,7 @@ if(isset($_POST['oper']))
             $nik = nik($kecamatan_id, $tgl_lahir, $laki);
             $sql = "update penduduk set nik = '$nik', nama = '$nama', status_hub_kel = '$status_hub_kel',
                 tmp_lahir = '$tempat_lahir', tgl_lahir = '$tgl_lahir', pendidikan_id = $pendidikan,
-                pekerjaan_id = $pekerjaan, gol_darah = '$gol_darah', agama_id = $agama,
+                pekerjaan_id = $pekerjaan, penghasilan = $penghasilan, gol_darah = '$gol_darah', agama_id = $agama,
                 wni = '$kewarganegaraan', status_nikah = '$status_nikah', jenis_kelamin = '$jenis_kelamin',
                 keluarga_id = $kk_id where id = $id";
             $conn->query($sql);
@@ -328,6 +352,7 @@ if(isset($_POST['oper']))
             $kk_id_lama = $_POST["kk_id_lama"];
             $kk_id_baru = $_POST["kk_id_baru"];
             $keterangan = $_POST["keterangan"];
+            $status_hub_kel = $_POST['status_hub_kel_baru'];
             // insert pindah alamat
             $connection = MysqlManager::get_connection();
             $sql = "insert into pindah_alamat set penduduk_id = $penduduk_id,
@@ -336,7 +361,12 @@ if(isset($_POST['oper']))
             $result = $connection->query($sql);
             check_error($connection);
             // update penduduk id
-            $sql = "update penduduk set keluarga_id = $kk_id_baru where id = $penduduk_id";
+            //get keluarga_id
+            $sql = "select id from keluarga where kode_keluarga = '$kk_id_baru'";
+            $result = $connection->query($sql);
+            check_error($connection);
+            $kk_id = $result->fetch_object()->id;
+            $sql = "update penduduk set keluarga_id = $kk_id ,  status_hub_kel = '$status_hub_kel' where id = $penduduk_id";
             $result = $connection->query($sql);
             check_error($connection);
             MysqlManager::close_connection($connection);

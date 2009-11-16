@@ -1,8 +1,7 @@
 <?php
-require_once "../../tcpdf/config/lang/eng.php";
-require_once "../../tcpdf/tcpdf.php";
+require_once "../../tcpdf/config/lang/eng.php";
+require_once "../../tcpdf/tcpdf.php";
 include_once "../../includes/helpers.inc.php";
-
 class KTP
 {
     public $sql;
@@ -83,8 +82,8 @@ class KTP
     }
 }
 
-if(isset($_POST['penduduk_id'])){
-    $penduduk_id = $_POST['penduduk_id'];
+if(isset($_GET['penduduk_id'])){
+    $penduduk_id = $_GET['penduduk_id'];
     $ktp = new KTP($penduduk_id);    $ktp->retrieve_data();
     
     $pdf = new TCPDF("L", PDF_UNIT, "A7", true, 'UTF-8', false);
@@ -155,13 +154,21 @@ if(isset($_POST['penduduk_id'])){
 
 	$pdf->MultiCell(20,1,"Berlaku Hingga",0,'L',0,0,'','',true);
     $pdf->MultiCell(15,1,": $dm-$year",0,'L',0,0,'','', true);
-    $pdf->Cell(0, 1, "TULUNGAGUNG, ".strftime(date('m-F-Y')),0, 1, 'R', 0,'',0);
-    $pdf->Cell(0,1, 'an. BUPATI TULUNGAGUNG', 0,1,'R',0,'',0);
-    $pdf->Cell(0,1, 'KEPALA DINAS',0,1,'R',0,'',0);
-    $pdf->Cell(0,1, 'KEPENDUDUKAN DAN CATATAN SIPIL',0,1,'R',0,'',0);
-    // add foto image
+    $pdf->Cell(20);
+    $pdf->Cell(0, 1, "TULUNGAGUNG, ".strftime(date('m-F-Y')),0, 1, 'C', 0,'',0);
+    $pdf->Cell(55);
+    $pdf->Cell(0,1, 'an. BUPATI TULUNGAGUNG', 0,1,'C',0,'',0);
+    $pdf->Cell(55);
+    $pdf->Cell(0,1, 'KEPALA DINAS',0,1,'C',0,'',0);
+    $pdf->Cell(55);
+    $pdf->Cell(0,3, 'KEPENDUDUKAN DAN CATATAN SIPIL',0,1,'C',0,'',0);
+    // add foto image    $pdf->Ln(5);
+    $pdf->Cell(55);
+    $pdf->Cell(0,1, get_setting_value("kepala_capil"), 0,1, 'C', 0, '', 0);
     $pdf->Image("../../statics/images/foto/$ktp->photo",70,15,20,25,'','','C',true);
     $pdf->lastPage();
 	$pdf->Output('ktp.pdf', 'I');
 }
+
+
 ?>
