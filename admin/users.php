@@ -140,6 +140,7 @@ if(isset($_POST['data'])) {
         case 3: // processing log out information
             session_unregister('user');
 			session_unregister('kecamatan_id');
+			session_destroy();
             break;
         case 4: // getting menus after user already login
             if(isset($_SESSION['user'])) {
