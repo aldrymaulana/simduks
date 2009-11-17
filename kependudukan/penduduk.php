@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once "../includes/helpers.inc.php";
+include_once "../dbaccess/orangtua_controller.php";
 
 if(isset($_REQUEST['q']))
 {
@@ -37,11 +37,11 @@ if(isset($_REQUEST['q']))
                     $start = 0;
 
             $sql = "SELECT p.id as id, p.nik as nik, p.nama as nama, p.jenis_kelamin as jenis_kelamin,
-                p.status_nikah as status_nikah, p.status_hub_kel as status_hub_kel,
+                p.status_nikah as status_nikah, p.status_hub_kel as status_hub_kel, p.orangtua_id, 
                 p.gol_darah as gol_darah, p.tmp_lahir as tmp_lahir, p.tgl_lahir as tgl_lahir,
                 a.agama as agama, pen.pendidikan as pendidikan, pek.pekerjaan as pekerjaan, p.penghasilan as penghasilan, 
-                p.wni as wni FROM penduduk p, agama a, pendidikan pen, pekerjaan pek where p.keluarga_id = $kk_id
-                AND p.agama_id = a.id AND p.pendidikan_id = pen.id AND p.pekerjaan_id = pek.id
+                p.wni as wni FROM penduduk p, agama a,  pendidikan pen, pekerjaan pek where p.keluarga_id = $kk_id
+                AND p.agama_id = a.id AND p.pendidikan_id = pen.id AND p.pekerjaan_id = pek.id 
                 order by $order_column $order limit $start, $rows";
             
             // XXX - sementara abaikan filter data
@@ -55,13 +55,17 @@ if(isset($_REQUEST['q']))
             $i = 0;
             while($row = $result->fetch_array()){               
                 $resp->rows[$i]['id'] = $row['id'];
+                $orangtua = get_orang_tua($row['orangtua_id']);
                 $resp->rows[$i]['cell'] = array($row['id'], $row['nik'], $row['nama'],
                     $row['jenis_kelamin'], $row['status_nikah'], $row['status_hub_kel'],
+                    $orangtua['ayah'], $orangtua['ibu'],
                     $row['gol_darah'], $row['tmp_lahir'], $row['tgl_lahir'], $row['agama'],
                     $row['pendidikan'], $row['pekerjaan'], $row['penghasilan'], $row['wni']);
                 $i++;    
             }
             MysqlManager::close_connection($connection);
+                       
+            
             echo json_encode($resp);
             break;
         case 2:
@@ -106,6 +110,14 @@ if(isset($_REQUEST['q']))
                     case "kecamatan":
                         echo select("kecamatan", "id", "nama_kecamatan","kecamatan_id","class='ui-widget-content ui-corner-all'");
                         break;
+                    case "ayah":
+                        $keluarga_id = $_GET["kel_id"];
+                        echo select("penduduk", "id", "nama", "ayah","class='ui-widget-content ui-corner-all'"," keluarga_id=$keluarga_id ");
+                        break;
+                    case "ibu":
+                        $keluarga_id = $_GET["kel_id"];
+                        echo select("penduduk", "id", "nama", "ibu","class='ui-widget-content ui-corner-all'"," keluarga_id=$keluarga_id ");
+                        break;
                 }
             }
             break;
@@ -121,7 +133,7 @@ if(isset($_REQUEST['q']))
             $nik = $_GET['nik'];
             $connection = MysqlManager::get_connection();
             $sql = "SELECT p.id as id, p.nik as nik, p.nama as nama, p.jenis_kelamin as jenis_kelamin, p.photo as photo,
-                p.status_nikah as status_nikah, p.gol_darah as gol_darah, p.tmp_lahir as tmp_lahir, p.tgl_lahir as tgl_lahir,
+                p.status_nikah as status_nikah, p.gol_darah as gol_darah, p.tmp_lahir as tmp_lahir, p.tgl_lahir as tgl_lahir, p.orangtua_id as orangtua, 
                 a.agama as agama, pen.pendidikan as pendidikan, pek.pekerjaan as pekerjaan, p.penghasilan as penghasilan, p.keluarga_id as keluarga_id,
                 p.wni as wni FROM penduduk p, agama a, pendidikan pen, pekerjaan pek where p.nik = '$nik' 
                 AND p.agama_id = a.id AND p.pendidikan_id = pen.id AND p.pekerjaan_id = pek.id";
@@ -144,7 +156,13 @@ if(isset($_REQUEST['q']))
             $resp->penghasilan = $row->penghasilan;
             $resp->wni = $row->wni;
             $resp->photo = $row->photo;
-            $keluarga_id = $row->keluarga_id;
+            // --- orangtua
+            $orangtua_id = $row->orangtua;
+            $orangtua = get_orang_tua($orangtua_id);
+            $resp->ayah = $orangtua["ayah"];
+            $resp->ibu = $orangtua["ibu"];
+            
+            $keluarga_id = $row->keluarga_id;          
             // check umur
             $umur = CalculateAge($row->tgl_lahir);
             $resp->umur = $umur;
@@ -249,6 +267,7 @@ if(isset($_REQUEST['q']))
 
 if(isset($_POST['oper']))
 {
+    $ortu_controller = new OrangTuaController();
     $conn = MysqlManager::get_connection();
     $operation = $_POST['oper'];
     switch($operation)
@@ -271,7 +290,14 @@ if(isset($_POST['oper']))
             // calculate nik first.
             $laki = $jenis_kelamin == 'Perempuan' ? false : true;
             $nik = nik($kecamatan_id, $tgl_lahir, $laki);
-            echo $nik;
+            
+            if($ortu_controller->check_orangtua($nik_ayah, $nik_ibu) <= 0){
+                // insert new data
+  			    $ortu_controller->insert($nik_ayah, $nik_ibu);
+			} 
+			// get orang_tua id 
+			$orangtua_id = $ortu_controller->get_id($nik_ayah, $nik_ibu);
+            
             $sql = "insert into penduduk set nik = '$nik', nama = '$nama', status_hub_kel = '$status_hub_kel',
                 tmp_lahir = '$tempat_lahir', tgl_lahir = '$tgl_lahir', pendidikan_id = $pendidikan,
                 pekerjaan_id = $pekerjaan, penghasilan = $penghasilan, gol_darah = '$gol_darah', agama_id = $agama,
@@ -372,7 +398,30 @@ if(isset($_POST['oper']))
             MysqlManager::close_connection($connection);
             echo "<p style=\"color: green;\">Pindah Alamat success</p>";
             break;
+        case "pernikahan":
+            // TODO processing pernikahan, alter status_pernikahan for the couple
+            break;
     }
 }
 
+
+function get_orang_tua($orangtua_id){
+    $resp = array();        
+    if(strlen($orangtua_id) > 0){
+        $sql = "select p.nama as ayah, pp.nama as ibu from penduduk p, penduduk pp,
+        orang_tua o where p.id = o.bapak_id and pp.id = o.ibu_id and o.id = $orangtua_id";
+        
+        $conn = MysqlManager::get_connection();
+        $result = $conn->query($sql);
+        check_error($conn);
+        $row = $result->fetch_object();            
+        $resp["ayah"] = $row->ayah;
+        $resp["ibu"] = $row->ibu;
+        MysqlManager::close_connection($conn);
+    } else {
+        $resp["ayah"] = "-";
+        $resp["ibu"] = "-";
+    }
+    return $resp;
+}
 ?>

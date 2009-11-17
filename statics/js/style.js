@@ -107,7 +107,7 @@ jQuery(document).ready(function(){
 					},
 					success: function(data, status) {
 						$("#main").text("");
-						$("#login").text("Test");
+						$("#login").text("Login");
 						$("#main-menu ul li").each(function(index){							
 							if(index > 1) {
 								$(this).remove();

@@ -75,7 +75,8 @@ jQuery(document).ready(function(){
             });
         }
     };
-    
+    var url = "reports/pdf/lap3.php?penduduk_id=";
+    var id = "";
     var form_ktp = $("#form_ktp").ajaxForm({
         beforeSubmit : function(a, f, o){
             $("#pdf").remove();
@@ -85,8 +86,8 @@ jQuery(document).ready(function(){
             $("#pdf").remove();
             $("#upload_output").html(data);
            
-            var id = $("#penduduk_id").val();
-            var pdf = "<a id=\"pdf\" href=\"reports/pdf/lap3.php?penduduk_id=" +id + "\">PDF</a>";
+            id = $("#penduduk_id").val();
+            var pdf = "<a id=\"pdf\" href=\"#\" name=\"pdf\">PDF</a>";
             $("#cancel").after(
                 pdf
             );
@@ -104,4 +105,9 @@ jQuery(document).ready(function(){
         $("#nik").attr("onfocus","this.value='';this.onfocus=null;");
     });   
     
+    
+    $("#pdf").click(function(event){
+        $("#pdf").attr("href", url + id);
+        $("#pdf").attr("target", "_blank");
+    });
 })
