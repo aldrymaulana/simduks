@@ -3,9 +3,7 @@
 -- Host: localhost    Database: kohana
 -- ------------------------------------------------------
 -- Server version	5.0.45-community-nt
-DROP DATABASE IF EXISTS `kohana`;
-CREATE DATABASE `kohana`;
-USE `kohana`;
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -16,6 +14,10 @@ USE `kohana`;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+DROP DATABASE IF EXISTS `kohana`;
+CREATE DATABASE `kohana`;
+USE `kohana`;
 
 --
 -- Table structure for table `access_groups`
@@ -83,7 +85,7 @@ CREATE TABLE `akta_kelahiran` (
 
 LOCK TABLES `akta_kelahiran` WRITE;
 /*!40000 ALTER TABLE `akta_kelahiran` DISABLE KEYS */;
-INSERT INTO `akta_kelahiran` VALUES (2,6,'1000000','16:23:00','saksi I ...','saksi II ...',NULL,NULL),(3,7,'200000','02:30:00','budi','samad','2009-11-11 11:18:29',NULL);
+INSERT INTO `akta_kelahiran` VALUES (1,11,'10000','13:00:00','Budi','Sukri','2009-11-17 13:36:42',NULL),(2,12,'10001','13:00:00','Budi','Sukri','2009-11-17 13:37:39',NULL),(3,13,'100002','12:00:00','samad','chandra','2009-11-17 13:40:17',NULL);
 /*!40000 ALTER TABLE `akta_kelahiran` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +156,7 @@ CREATE TABLE `kecamatan` (
 
 LOCK TABLES `kecamatan` WRITE;
 /*!40000 ALTER TABLE `kecamatan` DISABLE KEYS */;
-INSERT INTO `kecamatan` VALUES (1,'3504010','SUDARMAJI, S.Sos','Besuki','66275'),(2,'350402','Drs. SUKADHI, M.Si','Bandung','66274'),(3,'350403','Drs. TRANGGONO DIBYOHARSONO','Pakel','66273'),(4,'350404','ISWAHYUDI','Campurdarat','66272'),(5,'350405','DJANOE SOEKITO','Tanggunggunung','66283'),(6,'350406','H. SYAMSUL LAILY, SH','Kalidawir','66281'),(7,'350407','TRI WANTORO S.Sos','Pucanglaban','66284'),(8,'350408','Drs. ARIEF BOEDIONO, MSi','Rejotangan','66293'),(9,'350409','Drs. MOHAMAD ACHWAN','Ngunut','66292'),(10,'350410','H. MUDAWAM, SH.','Sumbergempol','66291'),(11,'350411','SOEROTO, S.Sos','Boyolangu','66271'),(12,'350412','Dra. SUHARMIYATI ,M.Si','Tulungagung','66211'),(13,'350413','Drs. SUGIANTO, MM','Kedungwaru','66226'),(14,'350414','Drs. TRI HARIADI','Ngantru','66252'),(15,'350415','Drs. BUDI FATAHILLAH','Karangrejo','66253'),(16,'350416','Drs. HERU SANTOSA','Kauman','66261'),(17,'350417','Drs. YASID BASTOMI','Gondang','66263'),(18,'350418','Drs. SUGITO,M.Si','Pagerwojo','66262'),(19,'350419','Drs. MOCH. HANAFI','Sendang','66254');
+INSERT INTO `kecamatan` VALUES (1,'350401','SUDARMAJI, S.Sos','Besuki','66275'),(2,'350402','Drs. SUKADHI, M.Si','Bandung','66274'),(3,'350403','Drs. TRANGGONO DIBYOHARSONO','Pakel','66273'),(4,'350404','ISWAHYUDI','Campurdarat','66272'),(5,'350405','DJANOE SOEKITO','Tanggunggunung','66283'),(6,'350406','H. SYAMSUL LAILY, SH','Kalidawir','66281'),(7,'350407','TRI WANTORO S.Sos','Pucanglaban','66284'),(8,'350408','Drs. ARIEF BOEDIONO, MSi','Rejotangan','66293'),(9,'350409','Drs. MOHAMAD ACHWAN','Ngunut','66292'),(10,'350410','H. MUDAWAM, SH.','Sumbergempol','66291'),(11,'350411','SOEROTO, S.Sos','Boyolangu','66271'),(12,'350412','Dra. SUHARMIYATI ,M.Si','Tulungagung','66211'),(13,'350413','Drs. SUGIANTO, MM','Kedungwaru','66226'),(14,'350414','Drs. TRI HARIADI','Ngantru','66252'),(15,'350415','Drs. BUDI FATAHILLAH','Karangrejo','66253'),(16,'350416','Drs. HERU SANTOSA','Kauman','66261'),(17,'350417','Drs. YASID BASTOMI','Gondang','66263'),(18,'350418','Drs. SUGITO,M.Si','Pagerwojo','66262'),(19,'350419','Drs. MOCH. HANAFI','Sendang','66254');
 /*!40000 ALTER TABLE `kecamatan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -171,7 +173,7 @@ CREATE TABLE `keluarga` (
   PRIMARY KEY  (`id`),
   KEY `FK_keluarga_alamat` (`alamat_id`),
   CONSTRAINT `FK_keluarga_alamat` FOREIGN KEY (`alamat_id`) REFERENCES `alamat` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `keluarga`
@@ -179,7 +181,7 @@ CREATE TABLE `keluarga` (
 
 LOCK TABLES `keluarga` WRITE;
 /*!40000 ALTER TABLE `keluarga` DISABLE KEYS */;
-INSERT INTO `keluarga` VALUES (1,'100000',1,'100000'),(4,'200000',1,'200000'),(7,'3000000',1,'3000000');
+INSERT INTO `keluarga` VALUES (1,'100000',1,'100000'),(2,'200000',1,'100000');
 /*!40000 ALTER TABLE `keluarga` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,7 +221,7 @@ CREATE TABLE `nikcounter` (
   `tanggal` datetime default NULL,
   `counter` int(11) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `nikcounter`
@@ -227,7 +229,7 @@ CREATE TABLE `nikcounter` (
 
 LOCK TABLES `nikcounter` WRITE;
 /*!40000 ALTER TABLE `nikcounter` DISABLE KEYS */;
-INSERT INTO `nikcounter` VALUES (3,4,'1982-10-11 00:00:00',1),(4,4,'1979-10-11 00:00:00',1),(5,5,'2009-11-01 00:00:00',1),(6,10,'2009-11-15 00:00:00',1),(7,4,'2009-11-01 00:00:00',1),(8,4,'1977-10-16 00:00:00',2),(9,4,'1983-10-16 00:00:00',2),(10,4,'1980-10-16 00:00:00',1);
+INSERT INTO `nikcounter` VALUES (3,4,'1982-10-11 00:00:00',1),(4,4,'1979-10-11 00:00:00',1),(5,5,'2009-11-01 00:00:00',1),(6,10,'2009-11-15 00:00:00',1),(7,4,'2009-11-01 00:00:00',1),(8,4,'1977-10-16 00:00:00',2),(9,4,'1983-10-16 00:00:00',2),(10,4,'1980-10-16 00:00:00',1),(11,1,'1983-11-15 00:00:00',2),(12,1,'1981-11-15 00:00:00',1),(13,4,'1985-11-15 00:00:00',1),(14,4,'1981-11-15 00:00:00',1);
 /*!40000 ALTER TABLE `nikcounter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -329,7 +331,7 @@ CREATE TABLE `penduduk` (
   `masa_berlaku` date default NULL,
   `no_surat_kematian` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `penduduk`
@@ -337,8 +339,35 @@ CREATE TABLE `penduduk` (
 
 LOCK TABLES `penduduk` WRITE;
 /*!40000 ALTER TABLE `penduduk` DISABLE KEYS */;
-INSERT INTO `penduduk` VALUES (3,'3504045110820001','mariska','Istri','Tulungagung','1982-10-11',1,1,0,'O',1,NULL,'WNI','Kawin','Perempuan',1,NULL,NULL,'3.jpg',NULL,NULL,NULL,NULL),(4,'3504041110790001','joni','Kepala Keluarga','Tulungagung','1979-10-11',1,1,0,'B',1,NULL,'WNI','Kawin','Laki-laki',1,NULL,NULL,'',NULL,NULL,NULL,NULL),(6,'3504044111090001','Dyah Samudra','Anak','Tulungagung','2009-11-01',0,0,0,'AB',1,NULL,'WNI','Tidak kawin','Perempuan',1,0,NULL,'',NULL,NULL,NULL,NULL),(7,'3504101511090001','kalalahan','Anak','Tulungagung','2009-11-15',0,0,0,'B',0,NULL,'WNI','Tidak kawin','Laki-laki',1,0,NULL,'',NULL,NULL,NULL,NULL),(8,'3504041610770002','iskandar','Kepala Keluarga','Tulungagung','1977-10-16',1,1,0,'O',1,NULL,'WNI','Kawin','Laki-laki',4,0,NULL,'',NULL,NULL,NULL,NULL),(9,'3504045610830002','farida','Istri','Tulungagung','1983-10-16',1,1,0,'B',1,NULL,'WNI','Kawin','Perempuan',4,0,NULL,'',NULL,NULL,NULL,NULL),(10,'3504041610800001','sams','Kepala Keluarga','Tulungagung','1980-10-16',1,1,0,'O',1,NULL,'WNI','Kawin','Laki-laki',7,0,NULL,'10.bmp',NULL,NULL,NULL,NULL);
+INSERT INTO `penduduk` VALUES (3,'3504045110820001','mariska','Istri','Tulungagung','1982-10-11',1,1,0,'O',1,NULL,'WNI','Kawin','Perempuan',1,NULL,NULL,'3.jpg',NULL,NULL,NULL,NULL),(4,'3504041110790001','joni','Kepala Keluarga','Tulungagung','1979-10-11',1,1,0,'B',1,NULL,'WNI','Kawin','Laki-laki',1,NULL,NULL,'',NULL,NULL,NULL,NULL),(11,'3504015511830002','Nana','Anak','Tulungagung','1983-11-15',0,0,0,'AB',0,1,NULL,'Tidak kawin','Perempuan',1,0,NULL,'',NULL,NULL,NULL,NULL),(12,'3504041511810001','Fuad','Kepala Keluarga','Tulungagung','1981-11-15',0,0,0,'AB',0,1,'WNA','Kawin','Laki-laki',2,0,NULL,'',NULL,NULL,NULL,NULL),(13,'3504041511850001','Joko','Anak','Tulungagung','1985-11-15',0,0,0,'B',0,1,NULL,'Tidak kawin','Laki-laki',1,0,NULL,'',NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `penduduk` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pernikahan`
+--
+
+DROP TABLE IF EXISTS `pernikahan`;
+CREATE TABLE `pernikahan` (
+  `id` int(11) NOT NULL auto_increment,
+  `pria` int(11) default NULL,
+  `wanita` int(11) default NULL,
+  `saksi1` int(11) default NULL,
+  `saksi2` int(11) default NULL,
+  `penghulu` varchar(80) default NULL,
+  `tanggal` date default NULL,
+  `wali` varchar(80) default NULL,
+  `kecamatan_id` int(11) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pernikahan`
+--
+
+LOCK TABLES `pernikahan` WRITE;
+/*!40000 ALTER TABLE `pernikahan` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pernikahan` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -356,7 +385,7 @@ CREATE TABLE `pindah_alamat` (
   PRIMARY KEY  (`id`),
   KEY `FK_pindah_alamat_penduduk` (`penduduk_id`),
   CONSTRAINT `FK_pindah_alamat_penduduk` FOREIGN KEY (`penduduk_id`) REFERENCES `penduduk` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `pindah_alamat`
@@ -364,7 +393,6 @@ CREATE TABLE `pindah_alamat` (
 
 LOCK TABLES `pindah_alamat` WRITE;
 /*!40000 ALTER TABLE `pindah_alamat` DISABLE KEYS */;
-INSERT INTO `pindah_alamat` VALUES (1,9,'2009-11-02','100000','200000','ikut2an'),(2,9,'2009-11-01','100000','200000','ikut2an');
 /*!40000 ALTER TABLE `pindah_alamat` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -429,4 +457,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2009-11-16 10:19:26
+-- Dump completed on 2009-11-17  9:29:37

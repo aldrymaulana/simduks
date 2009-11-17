@@ -1,3 +1,4 @@
+var keluarga_id = "0";
 var kk = jQuery("#kk").jqGrid({ 
     url:'kependudukan/kartukeluarga.php?q=1&kec_id=0',
     datatype: "json",
@@ -50,6 +51,7 @@ var kk = jQuery("#kk").jqGrid({
         if(null == ids)
         {
             ids = 0;
+			keluarga_id = ids;
             if(kkdetail.getGridParam("records") > 0)
             {
                 kkdetail.setGridParam({url: "kependudukan/penduduk.php?q=1&keluarga_id=" + ids, page: 1})
@@ -58,6 +60,7 @@ var kk = jQuery("#kk").jqGrid({
         }
         else
         {
+			keluarga_id = ids;
             kkdetail.setGridParam({url: "kependudukan/penduduk.php?q=1&keluarga_id=" + ids, page: 1})
                 .trigger("reloadGrid");
         }
@@ -86,6 +89,29 @@ var kk = jQuery("#kk").jqGrid({
     }
 }); 
 
+$("#report").click(function(event){
+	$("#flash").html("");
+	var id = kk.getGridParam("selrow");
+	if(null == id){
+		$("#flash").html("<p style=\"color: red;\">Pilih keluarga dulu </p>");
+		event.preventDefault();
+	} else {		
+		$("#report").attr("href", "reports/pdf/lap2.php?kode=" + id);
+		$("#report").attr("target", "_blank");
+	}
+});
+
+$("#akta").click(function(event){
+	$("#flash").html("");
+	var id = kkdetail.getGridParam("selrow");
+	if(null == id){
+		$("#flash").html("<p style=\"color: red;\">Pilih Penduduk dulu </p>");
+		event.preventDefault();
+	} else {
+		$("#akta").attr("href", "reports/pdf/lap3.php?penduduk_id=" + id);
+		$("#akta").attr("target", "_blank");
+	}
+});
 
 jQuery("#vcol").click(function (){ jQuery("#kk").setColumns(); }); 
 // kartu keluarga details ....
@@ -93,7 +119,7 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
     master : kk,
     url:'kependudukan/penduduk.php?q=1&keluarga_id=0',
     datatype: "json",
-    colNames:['id','NIK', 'Nama', 'Jenis Kelamin', 'Status Pernikahan', 'Status Hub. Keluarga',
+    colNames:['id','NIK', 'Nama', 'Jenis Kelamin', 'Status Pernikahan', 'Status Hub. Keluarga','Ayah','Ibu',
               'Gol. Darah', 'Tempat Lahir','Tanggal Lahir','Agama', 'Pendidikan', 'Pekerjaan', 'Penghasilan','Warga Negara'
     ],
     colModel:[
@@ -130,6 +156,12 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
                 
                 editrules: {required: true}
             },
+			{
+				name: 'ayah', index: 'ayah', width: 20, editable: false
+			},
+			{
+				name: 'ibu', index: 'ibu', width: 20, editable: false
+			},
             {name:'gol_darah', index: 'gol_darah', width:10, editable:true,
                 edittype: "select",
                 editoptions:{
@@ -229,9 +261,10 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
     viewrecords: true,
     sortorder: "desc",
     caption:"Daftar Keluarga Detail",
-    editurl: "kependudukan/penduduk.php"    
+    editurl: "kependudukan/penduduk.php"
+	
 }).navGrid("#kkdetailnav",
-    {view: true, edit: true, add: true},
+    {view: true, edit: true, add: false},
     {
         onclickSubmit :  function(re, data) {
             return {"kk_id" : kk.getGridParam('selrow') };

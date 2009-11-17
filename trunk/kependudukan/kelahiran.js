@@ -79,6 +79,7 @@ jQuery(document).ready(function(){
 	
 	
 	$("#save").click(function(event){
+		$("#report_link").remove();
 		event.preventDefault();
 		$.ajax({
 			url: "kependudukan/kelahiran.php",

@@ -174,6 +174,7 @@ function retrieve_menus() {
 				array_push($menus, '<li><a href="kependudukan/kelahiran.html" class="ui-widget-content ui-state-default">Kelahiran</a></li>');
 				break;
 			case KUA_KEY:
+				array_push($menus, '<li><a href="kependudukan/pernikahan.html" class="ui-widget-content ui-state-default">Pernikahan</a></li>');
 				break;
 			default:
 				array_push($menus, '<li><a href="kependudukan/kartukeluarga.html" class="ui-widget-content ui-state-default">KK</a></li>');				
