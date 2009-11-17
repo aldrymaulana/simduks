@@ -87,9 +87,9 @@ jQuery(document).ready(function(){
             $("#upload_output").html(data);
            
             id = $("#penduduk_id").val();
-            var pdf = "<a id=\"pdf\" href=\"#\" name=\"pdf\">PDF</a>";
+            var url = "reports/pdf/lap3.php?penduduk_id=" + id;
             $("#cancel").after(
-                pdf
+               "<a id=\"pdf\" href=\"" + url + "\" name=\"pdf\">PDF</a>"
             );
             
             $("#flash").html(
@@ -107,6 +107,7 @@ jQuery(document).ready(function(){
     
     
     $("#pdf").click(function(event){
+        alert(url + id);
         $("#pdf").attr("href", url + id);
         $("#pdf").attr("target", "_blank");
     });
