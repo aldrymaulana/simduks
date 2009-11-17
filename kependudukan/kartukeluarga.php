@@ -262,9 +262,15 @@ elseif(isset($_GET['q']))
             // TODO: 
             // perbaiki query .. optimize it.  
             if(sizeof($wh) > 2)
-                $sql = "select k.id, k.kode_keluarga, k.no_formulir, a.alamat, a.rukun_tetangga, a.rukun_warga, kel.nama_kelurahan from keluarga k, alamat a, kelurahan kel where k.alamat_id = a.id and a.kelurahan_id = kel.id and kel.kecamatan_id = $kec_id and $wh order by $sidx $sord limit $start, $limit";
+                $sql = "select k.id, k.kode_keluarga, k.no_formulir, a.alamat,
+                a.rukun_tetangga, a.rukun_warga, kel.nama_kelurahan from keluarga k,
+                alamat a, kelurahan kel where k.alamat_id = a.id and
+                a.kelurahan_id = kel.id and kel.kecamatan_id = $kec_id and $wh order by $sidx $sord limit $start, $limit";
             else
-                $sql = "select k.id, k.kode_keluarga, k.no_formulir, a.alamat, a.rukun_tetangga, a.rukun_warga, kel.nama_kelurahan from keluarga k, alamat a, kelurahan kel where k.alamat_id = a.id and a.kelurahan_id = kel.id and kel.kecamatan_id = $kec_id  order by $sidx $sord limit $start, $limit";
+                $sql = "select k.id, k.kode_keluarga, k.no_formulir, a.alamat, a.rukun_tetangga,
+                a.rukun_warga, kel.nama_kelurahan from keluarga k, alamat a,
+                kelurahan kel where k.alamat_id = a.id and a.kelurahan_id = kel.id
+                and kel.kecamatan_id = $kec_id  order by $sidx $sord limit $start, $limit";
             
            //
           
@@ -278,7 +284,9 @@ elseif(isset($_GET['q']))
            while($row = $result->fetch_object())
            {
                $resp->rows[$i]['id'] = $row->id;
-               $resp->rows[$i]['cell'] = array($row->id, $row->kode_keluarga, $row->no_formulir, $row->alamat, $row->rukun_tetangga, $row->rukun_warga, $row->nama_kelurahan);
+               $resp->rows[$i]['cell'] = array($row->id, $row->kode_keluarga,
+                    $row->no_formulir, $row->alamat, $row->rukun_tetangga,
+                    $row->rukun_warga, $row->nama_kelurahan);
                $i++;            
            }
            

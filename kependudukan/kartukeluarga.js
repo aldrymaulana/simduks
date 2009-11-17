@@ -1,6 +1,6 @@
 var keluarga_id = "0";
 var kk = jQuery("#kk").jqGrid({ 
-    url:'kependudukan/kartukeluarga.php?q=1&kec_id=0',
+    url:'kependudukan/kartukeluarga.php?q=1',
     datatype: "json",
     colNames:['id','No. Kartu Keluarga', 'No. Formulir', 'Alamat', 'RT', 'RW', 'Kelurahan'],
     colModel:[
