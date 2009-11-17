@@ -105,9 +105,11 @@ jQuery(document).ready(function(){
     }
     
     $.ajax({
-        url: "kependudukan/penduduk.php?q=6",
+        url: "kependudukan/penduduk.php",
         type: "get",
-        data: {},
+        data: {
+			q : 6
+		},
         dataType: "html",
         success: function(data, status) {           
             $("#rtrw").after(data);            
