@@ -239,7 +239,7 @@ elseif(isset($_GET['q']))
          case 1:// request data penduduk
             // get total data
             
-            $kec_id = $_SESSION['kecamatan_id']; // The value kecamatan_id is set when user process login 
+            $kec_id = $_SESSION['region']; // The value kecamatan_id is set when user process login 
             //echo "session $kec_id";
             $sql = "SELECT count(*) as count FROM keluarga k WHERE k.alamat_id IN (SELECT id FROM alamat a WHERE a.kelurahan_id IN (SELECT id FROM kelurahan kel WHERE kel.kecamatan_id = $kec_id ))";
             

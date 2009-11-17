@@ -123,7 +123,7 @@ if(isset($_POST['data'])) {
                 if(true == do_login($user, $pass)) {
                     $_SESSION['user'] = $user;
                     // adding session var with current user' kecamatan rights
-					$_SESSION['kecamatan_id'] = get_kecamatan($user);
+					$_SESSION['region'] = get_kecamatan($user);
                     $resp = array('result'=>1, 'menu' => retrieve_menus(), 'user'=> $user);
                     echo json_encode($resp);
                 }
@@ -160,8 +160,8 @@ if(isset($_POST['data'])) {
 
 function retrieve_menus() {
     $menus = array();  
-    if(isset($_SESSION['kecamatan_id'])){
-		$kec_id = $_SESSION['kecamatan_id'];
+    if(isset($_SESSION['region'])){
+		$kec_id = $_SESSION['region'];
 		switch($kec_id){
 			case ADMIN_KEY:
 				array_push($menus, '<li><a href="master/agama.html" class="ui-widget-content ui-state-default">Agama</a></li>');
