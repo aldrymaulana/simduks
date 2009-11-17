@@ -286,7 +286,7 @@ if(isset($_POST['oper']))
             $tgl_lahir = $_POST['tgl_lahir'];
             $tempat_lahir = $_POST['tmp_lahir'];
             $kewarganegaraan = $_POST['warga'];
-            $kecamatan_id = $_SESSION['kecamatan_id'];
+            $kecamatan_id = $_SESSION['region'];
             // calculate nik first.
             $laki = $jenis_kelamin == 'Perempuan' ? false : true;
             $nik = nik($kecamatan_id, $tgl_lahir, $laki);
@@ -323,7 +323,7 @@ if(isset($_POST['oper']))
             $tgl_lahir = $_POST['tgl_lahir'];
             $tempat_lahir = $_POST['tmp_lahir'];
             $kewarganegaraan = $_POST['warga'];
-            $kecamatan_id = $_SESSION['kecamatan_id'];
+            $kecamatan_id = $_SESSION['region'];
             // calculate nik first.
             $laki = $jenis_kelamin == 'Perempuan' ? false : true;
             $nik = nik($kecamatan_id, $tgl_lahir, $laki);

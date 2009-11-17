@@ -182,12 +182,12 @@ elseif(isset($_GET['q']))
            break;
         case 2:            
             // getting kelurahan id based on kecamatan
-            if(!isset($_SESSION['kecamatan_id']))
+            if(!isset($_SESSION['region']))
             {
                 echo "error, authorized failure. you should login first...";
                 exit();
             }
-            $kecamatan_id = $_SESSION['kecamatan_id'];
+            $kecamatan_id = $_SESSION['region'];
             $add = array();
             if($kecamatan_id <=0 ){
                 $add = get_capil_kua_key();
