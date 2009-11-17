@@ -161,7 +161,7 @@ function get_kecamatan_from_username($username)
  * @param $selected_index default select input selected index
  * @param $attributes additional attributes;
  */
-function __select_input($name, $values, $selected_id = 1, $attributes= '', $interceps = array())
+function __select_input($name, $values, $selected_id = -1, $attributes= '', $interceps = array())
 {
     if(!is_array($values))
     {
@@ -244,7 +244,7 @@ function select_enum_without_default_value($table, $column, $attributes='')
     return $result;
 }
 
-function select($table, $key, $value, $select_name, $attributes='', $where = "", $selected_key = 1, $interceps = array())
+function select($table, $key, $value, $select_name, $attributes='', $where = "", $selected_key = -1, $interceps = array())
 {    
     $conn = MysqlManager::get_connection();
     $sql = "select $key as k , $value as val from $table";
