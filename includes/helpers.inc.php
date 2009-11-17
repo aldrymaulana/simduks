@@ -250,9 +250,7 @@ function select($table, $key, $value, $select_name, $attributes='', $where = "",
     $sql = "select $key as k , $value as val from $table";
     if(strlen($where) > 1)
     {
-        $sql = "select $key as k, $value as val from $table where $where";
-        
-        echo $sql;
+        $sql = "select $key as k, $value as val from $table where $where";        
     }
    
     $list = array();
