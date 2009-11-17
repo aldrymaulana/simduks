@@ -240,12 +240,12 @@ elseif(isset($_GET['q']))
             // get total data
             
             $kec_id = $_SESSION['kecamatan_id']; // The value kecamatan_id is set when user process login 
-            
+            //echo "session $kec_id";
             $sql = "SELECT count(*) as count FROM keluarga k WHERE k.alamat_id IN (SELECT id FROM alamat a WHERE a.kelurahan_id IN (SELECT id FROM kelurahan kel WHERE kel.kecamatan_id = $kec_id ))";
             
             $result = $connection->query($sql);
             check_error($connection);
-            $row = $result->fetch_object();
+            $row = $result->fetch_object();  
             $count = $row->count;
             
             if($count > 0){

@@ -121,7 +121,7 @@ if(isset($_GET['penduduk_id'])){
     $pdf->MultiCell(20, 1,'Tempat/Tgl. Lahir', 0, 'L',0, 0,'','', true);
     $pdf->MultiCell(40, 1, ": ".$ktp->tempat_lahir.", ".$dob_str, 0, 'L', 0, 1,'','', true);
     $pdf->MultiCell(20,1, 'Jenis Kelamin', 0,'L', 0,0, '','',true);
-    $pdf->MultiCell(10, 1, ': '.$ktp->jenis_kelamin,0, 'L',0, 0,'','', true);
+    $pdf->MultiCell(15, 1, ': '.$ktp->jenis_kelamin,0, 'L',0, 0,'','', true);
     $pdf->MultiCell(15,1, 'Gol. Darah', 0,'L', 0,0, '','',true);
     $pdf->MultiCell(8, 1, ": $ktp->gol_darah", 0, 'L', 0, 1,'','', true);
     $pdf->MultiCell(20,1, 'Alamat', 0,'L', 0,0, '','',true);

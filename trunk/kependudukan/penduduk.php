@@ -227,10 +227,10 @@ if(isset($_REQUEST['q']))
             echo "</li>";		       
             break;
         case "7":            
-            $kec_id = $_GET['kecamatan_id'];
+            $kecamatan_id = $_GET['kecamatan_id'];
             echo select("kelurahan", "id", "nama_kelurahan", "desa_baru",
                 'class="wui-widget-content ui-corner-all"',
-                "kecamatan_id = $kec_id");
+                "kecamatan_id = $kecamatan_id");
             break;
         case "8":
             $kecamatan_id = $_GET['kecamatan_id'];
