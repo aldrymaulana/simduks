@@ -399,7 +399,42 @@ if(isset($_POST['oper']))
             echo "<p style=\"color: green;\">Pindah Alamat success</p>";
             break;
         case "pernikahan":
-            // TODO processing pernikahan, alter status_pernikahan for the couple
+            $no_pernikahan = $_POST['nomor_pernikahan'];
+            $pria = $_POST['pria'];
+            $wanita = $_POST['wanita'];
+            $tgl_pernikahan = $_POST['tanggal_pernikahan'];
+            $penghulu = $_POST['penghulu'];
+            $kelurahan = $_POST['kelurahan'];
+            $kecamatan = $_POST['kecamatan'];
+            $wali = $_POST['wali'];
+            $saksi1 = $_POST['saksi1'];
+            $saksi2 = $_POST['saksi2'];
+            $sql = "insert into pernikahan set no_pernikahan = '$no_pernikahan',
+            pria = $pria, wanita = $wanita,
+            saksi1 = '$saksi1', saksi2 = '$saksi2', penghulu = '$penghulu',
+            tanggal = '$tgl_pernikahan', wali = '$wali', kelurahan_id = $kelurahan,
+            kecamatan_id = $kecamatan";          
+            $conn = MysqlManager::get_connection();
+            $conn->query($sql);
+            check_error($conn);
+            
+            $sql_update = "update penduduk set status_nikah = 'Kawin' where
+            id=";
+            $conn->query($sql_update."".$pria);
+            check_error($conn);
+            $conn->query($sql_update."".$wanita);
+            check_error($conn);
+            
+            $sql = "select id from pernikahan where no_pernikahan='$no_pernikahan' and 
+            pria = $pria and wanita = $wanita and 
+            saksi1 = '$saksi1' and saksi2 = '$saksi2' and penghulu = '$penghulu' and 
+            tanggal = '$tgl_pernikahan' and wali = '$wali' and kelurahan_id = $kelurahan and  
+            kecamatan_id = $kecamatan";
+            $result = $conn->query($sql);
+            check_error($conn);
+            $id = $result->fetch_object()->id;
+            MysqlManager::close_connection($conn);
+            echo json_encode($id);
             break;
     }
 }

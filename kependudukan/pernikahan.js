@@ -94,7 +94,7 @@ jQuery(document).ready(function(){
             dataType : "json",
             cache : false,
             success : function(data, status){
-                $("#saksi1_id").val(data.id);
+                $("#saksi2_id").val(data.id);
                 $("#nama_saksi2").val(data.nama);               
             }
         })
@@ -102,16 +102,29 @@ jQuery(document).ready(function(){
     
     $("#save").click(function(event){
         event.preventDefault();
+		$("#report").remove();
         $.ajax({
             url : "kependudukan/penduduk.php",
             type: "post",
             data : {
-                oper : "pernikahan"
+                oper : "pernikahan",
+				no_pernikahan : $("#nomor_pernikahan").val(),
+				pria : $("#pria_id").val(),
+				wanita : $("#wanita_id").val(),
+				tanggal_pernikahan : $("#tanggal_pernikahan").val(),
+				penghulu : $("#penghulu").val(),
+				kelurahan : $("#desa_baru").val(),
+				kecamatan : $("#kecamatan_baru").val(),
+				wali : $("#wali").val(),
+				saksi1 : $("#saksi1").val(),
+				saksi2 : $("#saksi2").val()
             },
             dataType: "json",
             cache : false,
             success : function(data, status){
-                
+                $("#id").val(data);
+				var url = "<a href=\"#\" id=\"report\">Laporan</a>";
+				$("#cancel").after(url);
             }
         });
     });
@@ -121,13 +134,40 @@ jQuery(document).ready(function(){
         /// TODO reset all data form
     })
     
+	$("#report").click(function(event){
+		var id = $("#id").val();
+		$("#report").attr("href", "reports/pdf/lap4.php?id=" + id );
+		$("#report").attr("target", "_blank");
+	});
+	
+	function show_desa(kecamatan_id)
+    {
+        $.ajax({
+            url : "kependudukan/penduduk.php?q=7&kecamatan_id=" + kecamatan_id,
+            type: "get",
+            data: {},
+            dataType: "html",
+            success : function(data, status){
+				$("#desa_baru").remove();
+                $("#lbl_desa").after(data);
+            }
+        });
+    }
+	
     $.ajax({
         url: "kependudukan/penduduk.php?q=6",
         type: "get",
         data: {},
         dataType: "html",
         success: function(data, status) {           
-            $("#li_penghulu").after(data);    
+            $("#li_penghulu").after(data);
+			$("#kecamatan_baru").change(function(){                
+                $("#kecamatan_baru option:selected").each(function(){
+                    var id = $(this).val();
+                    show_desa(id);                    
+                });
+            }).trigger('change');
         }
     });
+	
 })

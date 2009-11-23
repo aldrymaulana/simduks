@@ -175,11 +175,13 @@ function retrieve_menus() {
 				array_push($menus, '<li><a href="kependudukan/kelahiran.html" class="ui-widget-content ui-state-default">Kelahiran</a></li>');
 				break;
 			case KUA_KEY:
+				array_push($menus, '<li><a href="kependudukan/pernikahantable.html" class="ui-widget-content ui-state-default">Daftar Pernikahan</a></li>');
 				array_push($menus, '<li><a href="kependudukan/pernikahan.html" class="ui-widget-content ui-state-default">Pernikahan</a></li>');
 				break;
 			default:
-				array_push($menus, '<li><a href="kependudukan/kartukeluarga.html" class="ui-widget-content ui-state-default">KK</a></li>');				
-				array_push($menus, '<li><a href="kependudukan/ktp.html" class="ui-widget-content ui-state-default">KTP</a></li>');
+				array_push($menus, '<li><a href="kependudukan/kartukeluarga.html" class="ui-widget-content ui-state-default">KK</a></li>');
+				array_push($menus, '<li><a href="kependudukan/ktptable.html" class="ui-widget-content ui-state-default">Daftar KTP</a></li>');
+				array_push($menus, '<li><a href="kependudukan/ktp.html" class="ui-widget-content ui-state-default">Pengajuan KTP</a></li>');
 				array_push($menus, '<li><a href="kependudukan/pindahalamat.html" class="ui-widget-content ui-state-default">Pindah KK</a></li>');
 				array_push($menus, '<li><a href="kependudukan/pecahkartukeluarga.html" class="ui-widget-content ui-state-default">Pecah KK</a></li>');
 				break;
