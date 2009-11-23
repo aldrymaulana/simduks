@@ -33,7 +33,7 @@ if(isset($_POST['mode']))
 			$laki = $jenis_kelamin == 'Perempuan' ? false : true;
 			$nik = nik($kecamatan_id, $tanggal_lahir, $laki);
 			$sql = "insert into penduduk set nik = '$nik', nama = '$nama', status_hub_kel = 'Anak',
-                tmp_lahir = '$tempat_lahir', tgl_lahir = '$tanggal_lahir', 
+                tmp_lahir = '$tempat_lahir', tgl_lahir = '$tanggal_lahir', wni = 'WNI',
                 gol_darah = '$golongan_darah', 
                 status_nikah = 'Tidak kawin', jenis_kelamin = '$jenis_kelamin',
                 keluarga_id = $kartukeluarga_id, orangtua_id = $orangtua_id";				

@@ -2,12 +2,16 @@
     <div id="flash">
 		
 	</div>
-    <form>
+    <form class="form">
         <fieldset>
             <legend>Register Data Pernikahan</legend>
             <ol>
                 <fieldset>
                     <legend>Detail Pernikahan</legend>
+					<li>
+                        <label for="nomor_pernikahan">No. Pernikahan</label>
+                        <input id="nomor_pernikahan" name="nomor_pernikahan" class="text ui-widget-content ui-corner-all"/>
+                    </li>
                     <li>
                         <label for="tanggal_pernikahan">Tgl. Pernikahan</label>
                         <input id="tanggal_pernikahan" name="tanggal_pernikahan" class="text ui-widget-content ui-corner-all"/>
@@ -18,7 +22,7 @@
                     </li>
                 </fieldset>
                 <fieldset>
-                    <legend>Mempelai Pria</legend>>
+                    <legend>Mempelai Pria</legend>
                     <li id="li_nik_pria">
                         <label for="nik_pria">NIK</label>
                         <input id="nik_pria" name="nik_pria" class="text ui-widget-content ui-corner-all" value="Nik Mempelai Pria" onfocus="this.value=''; this.onfocus=null;"/>
@@ -29,16 +33,16 @@
                         <input id="nama_pria" name="nama_pria" class="text ui-widget-content ui-corner-all"/>
                     </li>
                     <li>
-                        <label for="nama_ayah_pria">Nama</label>
+                        <label for="nama_ayah_pria">Ayah</label>
                         <input id="nama_ayah_pria" name="nama_ayah_pria" class="text ui-widget-content ui-corner-all"/>
                     </li>
                     <li>
-                        <label for="nama_ibu_pria">Nama</label>
+                        <label for="nama_ibu_pria">Ibu</label>
                         <input id="nama_ibu_pria" name="nama_ibu_pria" class="text ui-widget-content ui-corner-all"/>
                     </li>
                 </fieldset>
                 <fieldset>
-                    <legend>Mempelai Wanita</legend>>
+                    <legend>Mempelai Wanita</legend>
                     <li id="li_nik_wanita">
                         <label for="nik_wanita">NIK</label>
                         <input id="nik_wanita" name="nik_wanita" value="Nik Mempelai Wanita" onfocus="this.value='';this.onfocus = null;" class="text ui-widget-content ui-corner-all"/>
@@ -49,46 +53,33 @@
                         <input id="nama_wanita" name="nama_wanita" class="text ui-widget-content ui-corner-all"/>
                     </li>
                     <li>
-                        <label for="nama_ayah_wanita">Nama</label>
+                        <label for="nama_ayah_wanita">Ayah</label>
                         <input id="nama_ayah_wanita" name="nama_ayah_wanita" class="text ui-widget-content ui-corner-all"/>
                     </li>
                     <li>
-                        <label for="nama_ibu_wanita">Nama</label>
+                        <label for="nama_ibu_wanita">Ibu</label>
                         <input id="nama_ibu_wanita" name="nama_ibu_wanita" class="text ui-widget-content ui-corner-all"/>
                     </li>
                 </fieldset>
                 <fieldset>
-                    <legend>Saksi/Wali</legend>>
-                    <li id="li_wali">
+                    <legend>Saksi/Wali</legend>                   
+                    <li>
                         <label for="wali">Wali</label>
-                        <input id="wali" name="wali" value="NIK Wali" onfocus="this.value='';this.onfocus = null;" class="text ui-widget-content ui-corner-all"/>
-                        <button id="load_wali" name="load_wali" class="ui-button ui-state-default ui-corner-all">Load</button>
+                        <input id="wali" name="wali" class="text ui-widget-content ui-corner-all"/>
+                    </li>
+                    
+                    <li>
+                        <label for="saksi1">Saksi 1</label>
+                        <input id="saksi1" name="saksi1" class="text ui-widget-content ui-corner-all"/>
                     </li>
                     <li>
-                        <label for="nama_wali">Nama</label>
-                        <input id="nama_wali" name="nama_wali" class="text ui-widget-content ui-corner-all"/>
-                    </li>
-                    <li id="li_saksi1">
-                        <label for="saksi1">Saksi I</label>
-                        <input id="saksi1" name="saksi1"  value="NIK Saksi I" onfocus="this.value='';this.onfocus = null;" class="text ui-widget-content ui-corner-all"/>
-                        <button id="load_saksi1" name="load_saksi1" class="ui-button ui-state-default ui-corner-all">Load</button>
-                    </li>
-                    <li>
-                        <label for="nama_saksi1">Nama</label>
-                        <input id="nama_saksi1" name="nama_saksi1" class="text ui-widget-content ui-corner-all"/>
-                    </li>
-                    <li id="li_saksi2">
-                        <label for="saksi2">Saksi II</label>
-                        <input id="saksi2" name="saksi2"  value="NIK Saksi II" onfocus="this.value='';this.onfocus = null;" class="text ui-widget-content ui-corner-all"/>
-                        <button id="load_saksi2" name="load_saksi2" class="ui-button ui-state-default ui-corner-all">Load</button>
-                    </li>
-                    <li>
-                        <label for="nama_saksi2">Nama</label>
-                        <input id="nama_saksi2" name="nama_saksi2" class="text ui-widget-content ui-corner-all"/>
+                        <label for="saksi2">Saksi 2</label>
+                        <input id="saksi2" name="saksi2" class="text ui-widget-content ui-corner-all"/>
                     </li>
                 </fieldset>
             </ol>
         </fieldset>
+		<input type="hidden" id="id" name="id"/>
         <input type="hidden" id="pria_id" name="pria_id"/>
         <input type="hidden" id="wanita_id" name="wanita_id"/>
         <input type="hidden" id="wali_id" name="wali_id"/>

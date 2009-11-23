@@ -43,7 +43,7 @@ var kelGrid = jQuery("#kelurahan").jqGrid({
 		{name: "nama_kelurahan", index: "nama_kelurahan", width: 200, editable: true}
 	],
     rowNum : 10,
-	rowLis : [10, 20, 30],
+	rowList : [10, 20, 30],
 	imgpath: gridimgpath,
 	pager: jQuery("#kelurahannav"),
 	sortname: "id",

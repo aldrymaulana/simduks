@@ -102,12 +102,17 @@ switch($request)
        
         $x_axis = new x_axis();
         $x_axis->set_colour('#909090');
-        $x_axis->set_labels(array("Gedangan", "Sawo","3","4","5","6","7","8","9","10"));
+       
+        $x_axis->set_labels_from_array(array("Gedangan", "Sawo","3","4","5","6","7","8","9","10"));
+       
+        $y_axis = new y_axis();
+        $y_axis->set_label_text(array( "Make garden look sexy","Paint house","Move into house" ));
         
         $chart = new open_flash_chart();
         $chart->set_title( $title );
         $chart->add_element( $bar );
         $chart->set_x_axis($x_axis );
+        $chart->add_y_axis($y_axis);
         
         echo $chart->toPrettyString();
         break;
@@ -121,7 +126,7 @@ switch($request)
         include "../includes/helpers.inc.php";
         $kec_id = $_GET['kecamatan_id'];
         echo select("kelurahan", "id", "nama_kelurahan", "kelurahan",
-            'class="wui-widget-content ui-corner-all"',
+            'class="ui-widget-content ui-corner-all"',
             "kecamatan_id = $kec_id");
         break;
 }

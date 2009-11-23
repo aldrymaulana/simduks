@@ -106,8 +106,7 @@ jQuery(document).ready(function(){
     });   
     
     
-    $("#pdf").click(function(event){
-        alert(url + id);
+    $("#pdf").click(function(event){        
         $("#pdf").attr("href", url + id);
         $("#pdf").attr("target", "_blank");
     });
