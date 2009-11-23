@@ -49,3 +49,15 @@ var nikahGrid = jQuery("#pernikahangrid").jqGrid({
     multiselect : false,
     caption: "Daftar Pernikahan"
 }).navGrid("#pernikahannav",{add:false, edit:false, del:false, search:false});
+
+$("#report").click(function(event){
+    $("#flash").html("");
+    var selrow = nikahGrid.getGridParam('selrow');
+    if( selrow == null){
+        event.preventDefault();
+        $("#flash").html("<p style=\"color: red\">Silahkan Pilih daftar pernikahan dulu</p>");
+    } else {
+        $("#report").attr("href", "reports/pdf/lap4.php?pernikahan_id=" + selrow);
+        $("#report").attr("target", "_blank");
+    }
+});

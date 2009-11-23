@@ -16,12 +16,13 @@
 $(document).ready(function() {
     $("#show").click(function(event){
         event.preventDefault();
-        $("#chart").html("");
+        var kec = $("#kecamatan").val();
+        $("#chart").html("");    
         $("#chart").flash({
             swf : "open-flash-chart.swf",
             width: 500,
             height: 200,
-            flashvars: { "data-file": "reports/report_generator.php?q=3"}
+            flashvars: { "data-file": "reports/report_generator.php?q=3&kecamatan_id=" + kec}
         },
         {version: 9});
     });
@@ -49,11 +50,16 @@ $(document).ready(function() {
            
             $("#field").html(data);            
             $("#kecamatan").change(function(){
-                $("#kelurahan").remove();
-                $("#kecamatan option:selected").each(function(){
-                    var id = $(this).val();
-                    show_desa(id);
-                });
+                if($("#kecamatan").val() == "all"){
+                    $("#kecamatan").attr("disabled", "disabled");
+                }else {
+                    $("#kelurahan").remove();
+                    $("#kecamatan option:selected").each(function(){
+                        var id = $(this).val();
+                        show_desa(id);
+                    });
+                }
+                
             }).trigger('change');
         }
     });	
