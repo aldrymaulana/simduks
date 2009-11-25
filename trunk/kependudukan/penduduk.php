@@ -290,19 +290,20 @@ if(isset($_POST['oper']))
             // calculate nik first.
             $laki = $jenis_kelamin == 'Perempuan' ? false : true;
             $nik = nik($kecamatan_id, $tgl_lahir, $laki);
-            
-            if($ortu_controller->check_orangtua($nik_ayah, $nik_ibu) <= 0){
-                // insert new data
-  			    $ortu_controller->insert($nik_ayah, $nik_ibu);
-			} 
-			// get orang_tua id 
-			$orangtua_id = $ortu_controller->get_id($nik_ayah, $nik_ibu);
-            
+            $orangtua_id = 0;
+            if(isset($_POST["nik_ayah"]) and isset($_POST["nik_ibu"])) {
+                if($ortu_controller->check_orangtua($nik_ayah, $nik_ibu) <= 0){
+                    // insert new data
+                    $ortu_controller->insert($nik_ayah, $nik_ibu);
+                } 
+                // get orang_tua id 
+                $orangtua_id = $ortu_controller->get_id($nik_ayah, $nik_ibu);
+            }
             $sql = "insert into penduduk set nik = '$nik', nama = '$nama', status_hub_kel = '$status_hub_kel',
                 tmp_lahir = '$tempat_lahir', tgl_lahir = '$tgl_lahir', pendidikan_id = $pendidikan,
                 pekerjaan_id = $pekerjaan, penghasilan = $penghasilan, gol_darah = '$gol_darah', agama_id = $agama,
                 wni = '$kewarganegaraan', status_nikah = '$status_nikah', jenis_kelamin = '$jenis_kelamin',
-                keluarga_id = $kk_id";
+                keluarga_id = $kk_id, orangtua_id = $orangtua_id";
             $conn->query($sql);
             check_error($conn);
             MysqlManager::close_connection($conn);

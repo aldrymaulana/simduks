@@ -168,7 +168,7 @@ jQuery(document).ready(function(){
 					dataType: "html",
 					success: function(data, status) {
 						$("#main").append(data);
-					}
+					} 
 				});					
 			}
 			event.preventDefault();

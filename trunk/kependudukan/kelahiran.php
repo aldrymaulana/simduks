@@ -10,14 +10,18 @@ if(isset($_POST['mode']))
 	switch($mode)
 	{
         case "add":
-     		$nik_ayah = $_POST['nik_ayah'];
-			$nik_ibu = $_POST['nik_ibu'];
-			if($ortu_controller->check_orangtua($nik_ayah, $nik_ibu) <= 0){
-                // insert new data
-  			    $ortu_controller->insert($nik_ayah, $nik_ibu);
-			} 
-			// get orang_tua id 
-			$orangtua_id = $ortu_controller->get_id($nik_ayah, $nik_ibu);
+            $orangtua_id = 0;
+            if(isset($_POST["nik_ayah"]) and isset($_POST["nik_ibu"])){
+                $nik_ayah = $_POST['nik_ayah'];
+                $nik_ibu = $_POST['nik_ibu'];
+            
+                if($ortu_controller->check_orangtua($nik_ayah, $nik_ibu) <= 0){
+                    // insert new data
+                    $ortu_controller->insert($nik_ayah, $nik_ibu);
+                } 
+                // get orang_tua id 
+                $orangtua_id = $ortu_controller->get_id($nik_ayah, $nik_ibu);
+            }
 			$kartukeluarga_id = get_kartukeluarga_id($nik_ayah);
 			$no_akte = $_POST['no_akte'];
 			$nama = $_POST['nama'];
