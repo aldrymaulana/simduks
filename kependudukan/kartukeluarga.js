@@ -67,11 +67,11 @@ var kk = jQuery("#kk").jqGrid({
     }
 }).navGrid("#kknav",
     {view: true},
-    {height: 210, width: 500, reloadAfterSubmit: true, jqModal: false, closeOnEscape:true}, // edit
-    {height: 210, width: 500, reloadAfterSubmit: true, jqModal: false, closeOnEscape: true}, // add
+    {height: 230, width: 500, reloadAfterSubmit: true, jqModal: false, closeOnEscape:true}, // edit
+    {height: 230, width: 500, reloadAfterSubmit: true, jqModal: false, closeOnEscape: true}, // add
     {reloadAfterSubmit: true, jqModal: false, closeOnEscape: true}, // delete
     {closeOnEscape: true}, // search
-    {height: 210, width: 500, jqModal: false, closeOnEscape: true} //view
+    {height: 230, width: 500, jqModal: false, closeOnEscape: true} //view
 ).navButtonAdd("#kknav",{caption:"Lap. KK",title:"Laporan Kartu keluarga",buttonimg:gridimgpath+'/find.gif',
     onClickButton:function(){
         $.ajax({
@@ -264,7 +264,7 @@ var kkdetail = jQuery("#kkdetail").jqGrid({
     editurl: "kependudukan/penduduk.php"
 	
 }).navGrid("#kkdetailnav",
-    {view: true, edit: true, add: false},
+    {view: true, edit: true, add: true},
     {
         onclickSubmit :  function(re, data) {
             return {"kk_id" : kk.getGridParam('selrow') };
