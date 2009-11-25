@@ -212,7 +212,7 @@ function select_enum($table, $column, $selected_enum = '', $attributes='')
     check_error($conn);
     $row = $result->fetch_array();
     $str = str_replace("'","", substr($row[1],6,strlen($row[1])-7));
-    $array = split(",", $str);
+    $array = explode(",", $str);
     MysqlManager::close_connection($conn);
     $selected_index = 0;
     if(sizeof($selected_enum) > 0)
@@ -232,7 +232,7 @@ function select_enum_without_default_value($table, $column, $attributes='')
     $str = str_replace("'","", substr($row[1], 6, strlen($row[1]) - 7));
     MysqlManager::close_connection($conn);
     
-    $array = split(",", $str);
+    $array = explode(",", $str);
     $result = "<select name='$column' $attributes >";
     foreach($array as $item)
     {            
