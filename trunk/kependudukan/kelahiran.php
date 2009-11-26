@@ -49,7 +49,7 @@ if(isset($_POST['mode']))
 				saksi2 = '$saksi2', created_at = now()";
 			$connection->query($sql);
 			check_error($connection);
-			echo "<a id='report_link' href='reports/pdf/lap1.php?nik=$nik' target='_blank'>Akta Kelahiran</a>";
+			echo "<a id='report_link' href='reports/pdf/lap1.php?id=$id_anak' target='_blank'>Akta Kelahiran</a>";
 		    break;
 		case "update":
 		    break;

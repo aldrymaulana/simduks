@@ -108,7 +108,7 @@ $("#akta").click(function(event){
 		$("#flash").html("<p style=\"color: red;\">Pilih Penduduk dulu </p>");
 		event.preventDefault();
 	} else {
-		$("#akta").attr("href", "reports/pdf/lap1.php?penduduk_id=" + id);
+		$("#akta").attr("href", "reports/pdf/lap1.php?id=" + id);
 		$("#akta").attr("target", "_blank");
 	}
 });
