@@ -3,7 +3,7 @@ require_once "../../tcpdf/config/lang/eng.php";
 require_once "../../tcpdf/tcpdf.php";
 include_once "../../includes/helpers.inc.php";
 
-$id = $_GET["penduduk_id"];
+$id = $_GET["id"];
 $penduduk = new AktaLoader($id);
 $penduduk->retrieve_data();
 
@@ -81,12 +81,11 @@ class AktaLoader
     
     public function retrieve_data(){
         $conn = MysqlManager::get_connection();
-        $sql = "select p.nik as nik, p.nama as nama, p.tmp_lahir as tempat_lahir, p.tgl_lahir as tgl_lahir,
+        $sql = "select p.nik as nik, p.nama as nama, p.tmp_lahir as tempat_lahir, p.tgl_lahir as tgl_lahir, 
         p.jenis_kelamin as jenis_kelamin, p.wni as wni, 
-        a.no_akta as no_akta, a.created_at as tanggal_pembuatan, pp.nama as ayah, ppp.nama as ibu
-        from penduduk p, penduduk pp, penduduk ppp, akta_kelahiran a, orang_tua o where
-        p.id = $this->id and p.id = a.penduduk_id and p.orangtua_id = o.id and o.bapak_id = pp.id and 
-        o.ibu_id = ppp.id";
+        a.no_akta as no_akta, a.created_at as tanggal_pembuatan, pp.nama as ayah, ppp.nama as ibu 
+        from penduduk p, penduduk pp, penduduk ppp, akta_kelahiran a, orang_tua o where p.id = ".$this->id." and p.id = a.penduduk_id and p.orangtua_id = o.id and o.bapak_id = pp.id and o.ibu_id = ppp.id";
+        
         
         $result = $conn->query($sql);
         check_error($conn);

@@ -48,7 +48,8 @@ jQuery(document).ready(function(){
 				nik : $("#nik_ayah").val()
 			},
 			success : function(data, status){
-				var html = "<li>";
+				$("#li_nama_ayah").remove();
+				var html = "<li id=\"li_nama_ayah\">";
 				html += "<label for=\"nama_ayah\">Nama Ayah</label>";
 				html += "<input type=\"text\" class=\"text ui-widget-content ui-corner-all\" name=\"nama_ayah\" id=\"nama_ayah\"  readonly=\"readonly\" value=\"" + data.nama + "\"/>";
 				html += "</li>";
@@ -68,7 +69,8 @@ jQuery(document).ready(function(){
 				nik : $("#nik_ibu").val()
 			},
 			success : function(data, status){
-				var html = "<li>";
+				$("#li_nama_ibu").remove();
+				var html = "<li id=\"li_nama_ibu\">";
 				html += "<label for=\"nama_ibu\">Nama Ibu</label>";
 				html += "<input type=\"text\" class=\"text ui-widget-content ui-corner-all\" name=\"nama_ibu\" id=\"nama_ibu\" readonly=\"readonly\" value=\"" + data.nama + "\"/>";
 				html += "</li>";
